@@ -2117,19 +2117,14 @@
 <!-- Weight Modal -->
 <div class="modal-overlay" id="weight-modal">
   <div class="modal weight-modal">
-    <div class="modal-header">
-      <h2>سجل الأوزان</h2>
-      <button class="btn-close" onclick="closeWeightModal()">×</button>
+    <!-- Header موحد -->
+    <div class="sub-modal-header">
+      <div id="weight-client-name" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;"></div>
+      <div id="weight-client-badges"></div>
+      <button class="btn-close" onclick="closeWeightModal()" style="flex-shrink:0;">×</button>
     </div>
-
-    <div class="weight-client-header">
-      <div class="weight-client-avatar" id="weight-client-avatar">👤</div>
-      <div class="weight-client-header-info">
-        <div id="weight-client-name">—</div>
-        <div class="weight-client-header-sub" id="weight-client-info"></div>
-        <div class="weight-client-header-badges" id="weight-client-badges"></div>
-      </div>
-    </div>
+    <!-- شريط تفاصيل العميل -->
+    <div id="weight-client-detail-bar"></div>
 
     <div class="weight-summary">
       <div class="w-sum-card"><span class="val" id="ws-start">—</span><span class="lbl">البداية (كجم)</span></div>
@@ -2814,7 +2809,7 @@ window.openWeightModal = async (id) => {
   weightClientId = id;
   const c = clients.find(x => x.id === id);
 
-  // Avatar بأول حرفين
+  // Avatar + اسم
   const avatarPalette = [
     ['#1a56db','#1e40af'], ['#059669','#047857'], ['#8b5cf6','#7c3aed'],
     ['#ec4899','#db2777'], ['#f59e0b','#d97706'], ['#06b6d4','#0891b2'],
@@ -2823,13 +2818,7 @@ window.openWeightModal = async (id) => {
   const nameHash = c.name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
   const [avatarColor, avatarDark] = avatarPalette[nameHash % avatarPalette.length];
   const initials = c.name.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase();
-  const avatarEl = document.getElementById('weight-client-avatar');
-  avatarEl.textContent = initials;
-  avatarEl.style.background = `linear-gradient(135deg, ${avatarColor}, ${avatarDark})`;
 
-  document.getElementById('weight-client-name').textContent = c.name;
-
-  // النوع والجنسية
   const genderMap = { male: 'ذكر', female: 'أنثى' };
   const natMap = {
     SA:'السعودية', AE:'الإمارات', EG:'مصر', KW:'الكويت', QA:'قطر',
@@ -2841,36 +2830,65 @@ window.openWeightModal = async (id) => {
   if (c.age) parts.push(`${c.age} سنة`);
   if (c.gender) parts.push(genderMap[c.gender] || c.gender);
   if (c.nationality) parts.push(natMap[c.nationality] || c.nationality);
-  document.getElementById('weight-client-info').textContent = parts.join(' · ');
 
-  // Badges — الهدف + BMI
-  const goalMap = { loss: { label: 'خسارة وزن', cls: 'goal-loss' }, gain: { label: 'زيادة وزن', cls: 'goal-gain' }, maintain: { label: 'تثبيت', cls: 'goal-maintain' } };
-  const goal = goalMap[c.goal] || { label: c.goal, cls: '' };
-  const bmi = c.weight && c.height ? (c.weight / ((c.height/100) ** 2)).toFixed(1) : null;
-  let bmiCls = 'bmi', bmiLabel = '';
-  if (bmi) {
-    if (bmi < 18.5) { bmiCls = 'bmi bmi-under'; bmiLabel = `BMI ${bmi} · نقص`; }
-    else if (bmi < 25) { bmiCls = 'bmi bmi-ideal'; bmiLabel = `BMI ${bmi} · مثالي`; }
-    else if (bmi < 30) { bmiCls = 'bmi bmi-over'; bmiLabel = `BMI ${bmi} · زيادة`; }
-    else { bmiCls = 'bmi bmi-over'; bmiLabel = `BMI ${bmi} · سمنة`; }
-  }
+  document.getElementById('weight-client-name').innerHTML = `
+    <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-size:14px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);
+      background:linear-gradient(135deg,${avatarColor},${avatarDark})">${initials}</div>
+    <div style="min-width:0;">
+      <div style="font-size:15px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.name}</div>
+      ${parts.length ? `<div style="font-size:11px;color:var(--text-muted);font-weight:500;margin-top:1px;">${parts.join(' · ')}</div>` : ''}
+    </div>`;
+
+  // Badge الاشتراك في الـ header
   const sub = getSubStatus(c.subStart, c.subMonths);
-  let subBadge = '';
+  let subBadgeHtml = '';
   if (!sub) {
-    subBadge = `<span class="wch-badge sub-none">بدون اشتراك</span>`;
+    subBadgeHtml = `<span class="sub-badge none">بدون اشتراك</span>`;
   } else if (sub.daysLeft <= 0) {
-    subBadge = `<span class="wch-badge sub-expired">⛔ منتهي منذ ${Math.abs(sub.daysLeft)} يوم</span>`;
+    subBadgeHtml = `<span class="sub-badge expired">⛔ منتهي</span>`;
   } else if (sub.daysLeft <= 7) {
-    subBadge = `<span class="wch-badge sub-warning">⚠️ ${formatDaysLeft(sub.daysLeft)} متبقي</span>`;
+    subBadgeHtml = `<span class="sub-badge warning">⚠️ ينتهي قريباً</span>`;
   } else {
-    subBadge = `<span class="wch-badge sub-active">✅ ${formatDaysLeft(sub.daysLeft)} متبقي</span>`;
+    subBadgeHtml = `<span class="sub-badge active">✅ فعال</span>`;
   }
-  document.getElementById('weight-client-badges').innerHTML = `
-    <span class="wch-badge ${goal.cls}">${goal.label}</span>
-    ${bmi ? `<span class="wch-badge ${bmiCls}">${bmiLabel}</span>` : ''}
-    ${c.height ? `<span class="wch-badge bmi">${c.height} سم</span>` : ''}
-    ${subBadge}
-  `;
+  document.getElementById('weight-client-badges').innerHTML = subBadgeHtml;
+
+  // شريط التفاصيل: الهدف + BMI + الطول + الاشتراك
+  const goalMap = { loss: { label: '📉 خسارة وزن' }, gain: { label: '📈 زيادة وزن' }, maintain: { label: '⚖️ تثبيت' } };
+  const goalLabel = (goalMap[c.goal] || {}).label || '—';
+  const bmi = c.weight && c.height ? (c.weight / ((c.height/100) ** 2)).toFixed(1) : null;
+  let bmiLabel = bmi || '—';
+  let bmiHighlight = '';
+  if (bmi) {
+    if      (bmi < 18.5) { bmiLabel = `${bmi} · نقص`;  bmiHighlight = 'highlight-warn'; }
+    else if (bmi < 25)   { bmiLabel = `${bmi} · مثالي`; bmiHighlight = 'highlight'; }
+    else                 { bmiLabel = `${bmi} · زيادة`; bmiHighlight = 'highlight-exp'; }
+  }
+  const subDetailVal = !sub ? '—'
+    : sub.daysLeft <= 0  ? `انتهى منذ ${Math.abs(sub.daysLeft)} يوم`
+    : formatDaysLeft(sub.daysLeft);
+  const subHighlight = !sub ? '' : sub.daysLeft <= 0 ? 'highlight-exp' : sub.daysLeft <= 7 ? 'highlight-warn' : 'highlight';
+
+  document.getElementById('weight-client-detail-bar').innerHTML = `
+    <div class="sub-detail-bar" style="margin-bottom:16px;">
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الهدف</div>
+        <div class="sub-detail-val">${goalLabel}</div>
+      </div>
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الطول</div>
+        <div class="sub-detail-val">${c.height ? c.height + ' سم' : '—'}</div>
+      </div>
+      <div class="sub-detail-item ${bmiHighlight}">
+        <div class="sub-detail-lbl">BMI</div>
+        <div class="sub-detail-val">${bmiLabel}</div>
+      </div>
+      <div class="sub-detail-item ${subHighlight}">
+        <div class="sub-detail-lbl">الاشتراك</div>
+        <div class="sub-detail-val">${subDetailVal}</div>
+      </div>
+    </div>`;
 
   document.getElementById('w-new-date').value = new Date().toISOString().split('T')[0];
 
