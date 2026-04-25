@@ -1,0 +1,4052 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إدارة العملاء | Organic Elements</title>
+<link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg: #f0f4f8;
+    --surface: #ffffff;
+    --surface2: #f7f9fc;
+    --border: #e2e8f0;
+    --accent: #1a56db;
+    --accent-dark: #1345b7;
+    --accent-light: #ebf2ff;
+    --accent-glow: rgba(26, 86, 219, 0.15);
+    --text: #0f172a;
+    --text-muted: #64748b;
+    --text-light: #94a3b8;
+    --danger: #e53e3e;
+    --danger-light: #fff5f5;
+    --warning: #d97706;
+    --success: #059669;
+    --success-light: #ecfdf5;
+    --radius-sm: 8px;
+    --radius: 14px;
+    --radius-lg: 20px;
+    --shadow-sm: 0 1px 3px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04);
+    --shadow: 0 4px 16px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+    --shadow-lg: 0 12px 40px rgba(0,0,0,0.08), 0 4px 12px rgba(0,0,0,0.05);
+    --transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Tajawal', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    direction: rtl;
+    font-size: 15px;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  /* ===== LOADING ===== */
+  .loading-overlay {
+    position: fixed; inset: 0;
+    background: #fff;
+    display: flex; align-items: center; justify-content: center;
+    z-index: 9999;
+    flex-direction: column; gap: 16px;
+  }
+  .spinner {
+    width: 40px; height: 40px;
+    border: 3px solid var(--border);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+  .loading-text { font-size: 13px; color: var(--text-muted); font-weight: 500; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ===== LOGIN ===== */
+  #login-screen {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(145deg, #f0f4ff 0%, #e8effe 50%, #dde9ff 100%);
+    padding: 20px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  #login-screen::before {
+    content: '';
+    position: absolute;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(26,86,219,0.08) 0%, transparent 70%);
+    top: -200px; left: -200px;
+    pointer-events: none;
+  }
+  #login-screen::after {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    background: radial-gradient(circle, rgba(26,86,219,0.06) 0%, transparent 70%);
+    bottom: -100px; right: -100px;
+    pointer-events: none;
+  }
+
+  .login-card {
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-radius: 28px;
+    padding: 48px 44px;
+    width: 100%;
+    max-width: 420px;
+    box-shadow: 0 24px 60px rgba(26,86,219,0.1), 0 4px 16px rgba(0,0,0,0.06);
+    border: 1px solid rgba(255,255,255,0.8);
+    position: relative; z-index: 1;
+  }
+
+  .login-logo {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .login-logo-icon {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, #1a56db, #3b82f6);
+    border-radius: 22px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 18px;
+    box-shadow: 0 8px 24px rgba(26,86,219,0.3);
+    overflow: hidden;
+  }
+
+  .login-logo-icon img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    border-radius: 22px;
+  }
+
+  .login-logo h1 {
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--text);
+    letter-spacing: -0.5px;
+  }
+  .login-logo p {
+    font-size: 13px;
+    color: var(--text-muted);
+    margin-top: 4px;
+  }
+
+  .field { margin-bottom: 18px; }
+
+  .field label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 8px;
+    display: block;
+  }
+
+  .field input {
+    width: 100%;
+    height: 50px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0 16px;
+    font-size: 15px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    transition: var(--transition);
+    outline: none;
+  }
+
+  .field input:focus {
+    background: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .btn-primary {
+    width: 100%;
+    height: 50px;
+    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    font-size: 15px;
+    font-weight: 700;
+    font-family: 'Tajawal', sans-serif;
+    cursor: pointer;
+    margin-top: 8px;
+    transition: var(--transition);
+    box-shadow: 0 4px 14px rgba(26,86,219,0.35);
+    letter-spacing: 0.3px;
+  }
+
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(26,86,219,0.45);
+  }
+  .btn-primary:active { transform: translateY(0); }
+
+  #login-error {
+    margin-top: 16px;
+    font-size: 13px;
+    color: var(--danger);
+    text-align: center;
+    font-weight: 600;
+    min-height: 20px;
+  }
+
+  /* ===== APP ===== */
+  #app-screen { display: none; }
+
+  .topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .topbar-brand {
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .topbar-logo {
+    width: 32px; height: 32px;
+    border-radius: 9px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(26,86,219,0.15);
+    flex-shrink: 0;
+  }
+  .topbar-logo img { width: 100%; height: 100%; object-fit: cover; }
+
+  .topbar-brand-text .brand-name {
+    font-size: 14px; font-weight: 800;
+    color: var(--text); line-height: 1;
+  }
+  .topbar-brand-text .brand-sub {
+    font-size: 10px; color: var(--text-muted);
+    font-weight: 400; margin-top: 2px;
+  }
+
+  .topbar-actions { display: flex; align-items: center; gap: 8px; }
+
+  .topbar-date {
+    font-size: 11px; color: var(--text-muted);
+    font-weight: 500; padding: 0 4px;
+    border-left: 1px solid var(--border);
+    padding-left: 12px; margin-left: 4px;
+  }
+
+  .user-badge {
+    background: var(--surface2);
+    color: var(--text-muted);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    padding: 4px 12px;
+    font-size: 11px;
+    font-weight: 600;
+    max-width: 160px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .btn-logout {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-logout:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+    background: var(--danger-light);
+  }
+
+  .btn-close-dashboard {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-close-dashboard:hover { border-color: var(--danger); color: var(--danger); background: var(--danger-light); }
+
+  .btn-dashboard {
+    background: var(--accent-light);
+    border: 1.5px solid rgba(26,86,219,0.2);
+    color: var(--accent);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-dashboard:hover { background: #dbeafe; }
+
+  .dash-followup-badge {
+    background: var(--danger-light);
+    color: var(--danger);
+    border: 1px solid rgba(229,62,62,0.2);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 11px; font-weight: 700;
+  }
+
+  .dash-followup-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 12px;
+    margin-top: 4px;
+  }
+
+  .dash-followup-item {
+    display: flex; align-items: center; gap: 12px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 14px;
+    transition: var(--transition);
+  }
+  .dash-followup-item:hover { border-color: var(--danger); background: var(--danger-light); }
+
+  .dash-followup-avatar {
+    width: 36px; height: 36px;
+    background: var(--danger-light);
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px; flex-shrink: 0;
+    border: 1px solid rgba(229,62,62,0.15);
+  }
+
+  .dash-followup-info { flex: 1; min-width: 0; }
+  .dash-followup-name { font-size: 14px; font-weight: 700; color: var(--text); white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .dash-followup-days {
+    font-size: 11px; font-weight: 600; margin-top: 2px;
+    color: var(--danger);
+  }
+
+  .dash-followup-wa {
+    background: #f0fdf4; color: #15803d;
+    border: 1px solid #bbf7d0;
+    border-radius: 8px;
+    padding: 5px 8px;
+    font-size: 14px; cursor: pointer;
+    transition: var(--transition); flex-shrink: 0;
+    text-decoration: none; display: flex; align-items: center;
+  }
+  .dash-followup-wa:hover { background: #dcfce7; }
+
+  .admin-users-table {
+    width: 100%; border-collapse: collapse;
+  }
+  .admin-users-table th {
+    padding: 10px 16px; font-size: 11px; font-weight: 700;
+    color: var(--text-muted); text-align: right;
+    text-transform: uppercase; letter-spacing: 0.4px;
+    background: var(--surface2); border-bottom: 1px solid var(--border);
+  }
+  .admin-users-table td {
+    padding: 14px 16px; font-size: 13px;
+    border-bottom: 1px solid #f1f5f9; vertical-align: middle;
+  }
+  .admin-users-table tr:last-child td { border-bottom: none; }
+  .admin-users-table tr:hover td { background: #fafcff; }
+
+  .admin-activity-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    display: inline-block; margin-left: 6px;
+  }
+  .admin-activity-dot.active { background: var(--success); }
+  .admin-activity-dot.inactive { background: var(--danger); }
+  .admin-activity-dot.unknown { background: var(--text-light); }
+
+  .admin-progress-bar {
+    height: 6px; background: var(--border);
+    border-radius: 10px; overflow: hidden; margin-top: 4px; width: 100%;
+  }
+  .admin-progress-fill {
+    height: 100%; border-radius: 10px; background: var(--accent);
+  }
+
+  /* ===== DASHBOARD MODAL ===== */
+  .dashboard-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: var(--bg);
+    z-index: 300;
+    overflow-y: auto;
+    padding: 0;
+  }
+  .dashboard-overlay.open { display: block; }
+
+  .dashboard-topbar {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 28px;
+    height: 60px;
+    display: flex; align-items: center; justify-content: space-between;
+    position: sticky; top: 0; z-index: 10;
+    box-shadow: var(--shadow-sm);
+  }
+  .dashboard-topbar h2 { font-size: 16px; font-weight: 800; color: var(--text); }
+
+  .dashboard-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 28px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+  }
+
+  .dash-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 22px;
+    box-shadow: var(--shadow-sm);
+  }
+  .dash-card.full { grid-column: 1 / -1; }
+
+  .dash-card-title {
+    font-size: 12px; font-weight: 700;
+    color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 0.5px; margin-bottom: 18px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .dash-card-title::before {
+    content: ''; display: inline-block;
+    width: 3px; height: 14px;
+    background: var(--accent); border-radius: 2px;
+  }
+
+  .dash-chart-wrap {
+    position: relative; height: 220px;
+  }
+
+  .dash-top-list {
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .dash-top-item {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .dash-top-rank {
+    width: 24px; height: 24px;
+    background: var(--accent-light); color: var(--accent);
+    border-radius: 8px; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .dash-top-rank.gold { background: #fef9c3; color: #92400e; }
+  .dash-top-rank.silver { background: #f1f5f9; color: #475569; }
+  .dash-top-rank.bronze { background: #fff7ed; color: #92400e; }
+  .dash-top-name { flex: 1; font-size: 14px; font-weight: 700; color: var(--text); }
+  .dash-top-val {
+    font-size: 13px; font-weight: 800;
+    padding: 3px 10px; border-radius: 20px;
+  }
+  .dash-top-val.loss { background: #dcfce7; color: #15803d; }
+  .dash-top-val.gain { background: #fef9c3; color: #92400e; }
+
+  .dash-bar-wrap { display: flex; flex-direction: column; gap: 10px; }
+  .dash-bar-item { display: flex; flex-direction: column; gap: 4px; }
+  .dash-bar-label { display: flex; justify-content: space-between; font-size: 12px; font-weight: 600; color: var(--text-muted); }
+  .dash-bar-track {
+    height: 8px; background: var(--border); border-radius: 10px; overflow: hidden;
+  }
+  .dash-bar-fill {
+    height: 100%; border-radius: 10px;
+    transition: width 0.6s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  @media (max-width: 768px) {
+    .dashboard-content { grid-template-columns: 1fr; padding: 16px; }
+    .dash-card.full { grid-column: 1; }
+  }
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-logout:hover {
+    border-color: var(--danger);
+    color: var(--danger);
+    background: var(--danger-light);
+  }
+
+  /* ===== MAIN ===== */
+  .main-content {
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 28px 28px 40px;
+  }
+
+  /* ===== STATS ===== */
+  .stats-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 14px;
+    margin-bottom: 14px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border-radius: var(--radius);
+    padding: 18px 20px;
+    box-shadow: var(--shadow-sm);
+    border: 1px solid var(--border);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    transition: var(--transition);
+    overflow: hidden;
+    position: relative;
+  }
+
+  .stat-card::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 4px; height: 100%;
+    border-radius: 0 var(--radius) var(--radius) 0;
+  }
+
+  .stat-card:nth-child(1)::before { background: var(--accent); }
+  .stat-card:nth-child(2)::before { background: var(--danger); }
+  .stat-card:nth-child(3)::before { background: var(--success); }
+  .stat-card:nth-child(4)::before { background: var(--warning); }
+
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+
+  .stat-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0; margin-top: 2px;
+  }
+
+  .stat-card:nth-child(1) .stat-icon { background: var(--accent-light); }
+  .stat-card:nth-child(2) .stat-icon { background: var(--danger-light); }
+  .stat-card:nth-child(3) .stat-icon { background: var(--success-light); }
+  .stat-card:nth-child(4) .stat-icon { background: #fffbeb; }
+
+  /* كارت حالة الاشتراكات */
+  .sub-status-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .sub-status-title {
+    font-size: 11px; font-weight: 700;
+    color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sub-status-items {
+    display: flex; align-items: center; flex: 1;
+  }
+  .sub-status-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 20px; flex: 1; justify-content: center;
+  }
+  .sub-status-val {
+    font-size: 20px; font-weight: 800; line-height: 1;
+  }
+  .sub-status-lbl {
+    font-size: 11px; font-weight: 500; color: var(--text-muted); white-space: nowrap;
+  }
+  .sub-status-divider {
+    width: 1px; height: 28px; background: var(--border); flex-shrink: 0;
+  }
+  .sub-status-active   .sub-status-val { color: #15803d; }
+  .sub-status-expiring .sub-status-val { color: #d97706; }
+  .sub-status-expired  .sub-status-val { color: #dc2626; }
+  .sub-status-none     .sub-status-val { color: var(--text-muted); }
+
+  .stat-info { flex: 1; min-width: 0; }
+  .stat-val {
+    font-size: 24px;
+    font-weight: 800;
+    color: var(--text);
+    line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .stat-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 500;
+    margin-top: 3px;
+  }
+
+  .stat-sub {
+    font-size: 10px; color: var(--text-light);
+    font-weight: 500; margin-top: 3px;
+  }
+  .stat-sub.positive { color: var(--success); }
+  .stat-sub.neutral { color: var(--text-light); }
+
+  /* ===== TOOLBAR ===== */
+  .toolbar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .search-wrap {
+    flex: 1;
+    position: relative;
+    max-width: 420px;
+  }
+
+  .search-icon {
+    position: absolute;
+    right: 14px; top: 50%; transform: translateY(-50%);
+    color: var(--text-light);
+    font-size: 13px;
+    pointer-events: none;
+  }
+
+  .search-box {
+    width: 100%;
+    height: 38px;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: 20px;
+    padding: 0 38px 0 14px;
+    font-size: 13px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    transition: var(--transition);
+    direction: rtl;
+    outline: none;
+    box-shadow: var(--shadow-sm);
+  }
+
+  .search-box:focus {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+    background: #fff;
+  }
+
+  .search-box::placeholder { color: var(--text-light); font-size: 13px; }
+
+  .btn-add {
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1.5px solid rgba(26,86,219,0.2);
+    border-radius: 20px;
+    padding: 0 16px;
+    height: 38px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .btn-add:hover {
+    background: #dbeafe;
+    border-color: var(--accent);
+  }
+
+  /* ===== FILTERS ===== */
+  .btn-filter {
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 20px;
+    padding: 0 14px;
+    height: 38px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px; font-weight: 600;
+    cursor: pointer; transition: var(--transition);
+    display: flex; align-items: center; gap: 6px;
+    white-space: nowrap; position: relative;
+    box-shadow: var(--shadow-sm);
+  }
+  .btn-filter:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-filter.has-filters { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+
+  .filter-badge {
+    background: var(--accent);
+    color: #fff;
+    border-radius: 20px;
+    padding: 1px 7px;
+    font-size: 10px; font-weight: 800;
+    min-width: 18px; text-align: center;
+  }
+
+  .filter-panel {
+    display: none;
+    position: absolute;
+    top: calc(100% + 6px);
+    left: 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-lg);
+    padding: 16px;
+    z-index: 150;
+    min-width: 320px;
+    animation: modalIn 0.15s ease;
+  }
+  .filter-panel.open { display: block; }
+
+  .filter-panel-row {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 12px; flex-wrap: wrap;
+  }
+  .filter-panel-row:last-child { margin-bottom: 0; }
+
+  .filter-label {
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    white-space: nowrap; min-width: 52px;
+  }
+  .filter-chip {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 20px;
+    padding: 3px 11px;
+    font-size: 11px; font-weight: 600;
+    cursor: pointer; transition: var(--transition);
+    font-family: 'Tajawal', sans-serif;
+    white-space: nowrap;
+  }
+  .filter-chip:hover { border-color: var(--accent); color: var(--accent); }
+  .filter-chip.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  .filter-select {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    border-radius: 20px;
+    padding: 3px 10px 3px 24px;
+    font-size: 11px; font-weight: 600;
+    cursor: pointer; transition: var(--transition);
+    font-family: 'Tajawal', sans-serif;
+    outline: none;
+    appearance: none;
+    -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%2394a3b8'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: left 8px center;
+  }
+  .filter-select:focus { border-color: var(--accent); }
+
+  .filter-panel-footer {
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+    display: flex; justify-content: flex-end;
+  }
+  .btn-clear-filters {
+    background: none; border: none;
+    color: var(--danger); font-size: 12px; font-weight: 600;
+    font-family: 'Tajawal', sans-serif;
+    cursor: pointer; padding: 0;
+  }
+  .btn-clear-filters:hover { text-decoration: underline; }
+
+  .filter-btn-wrap { position: relative; }
+
+  /* ===== CLIENT AVATAR ===== */
+  .client-avatar {
+    width: 40px; height: 40px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    letter-spacing: 0.5px;
+    position: relative;
+  }
+  .client-row-info {
+    display: flex; align-items: center; gap: 12px;
+  }
+  .client-row-text { display: flex; flex-direction: column; gap: 2px; }
+
+  /* ===== STEPPER ===== */
+  .stepper-header {
+    display: flex; align-items: center; gap: 0;
+    margin-bottom: 24px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stepper-step {
+    display: flex; align-items: center; gap: 8px; flex: 1;
+  }
+  .stepper-step:last-child { flex: 0; }
+  .stepper-num {
+    width: 28px; height: 28px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800;
+    background: var(--border); color: var(--text-muted);
+    transition: var(--transition); flex-shrink: 0;
+  }
+  .stepper-step.active .stepper-num {
+    background: var(--accent); color: #fff;
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+  .stepper-step.done .stepper-num {
+    background: var(--success); color: #fff;
+  }
+  .stepper-label {
+    font-size: 12px; font-weight: 600;
+    color: var(--text-muted); white-space: nowrap;
+  }
+  .stepper-step.active .stepper-label { color: var(--accent); }
+  .stepper-step.done .stepper-label { color: var(--success); }
+  .stepper-line {
+    flex: 1; height: 2px;
+    background: var(--border); margin: 0 8px;
+    transition: var(--transition);
+  }
+  .stepper-line.done { background: var(--success); }
+
+  .stepper-page { display: none; }
+  .stepper-page.active { display: block; }
+
+  .stepper-footer {
+    display: flex; gap: 10px;
+    margin-top: 24px; padding-top: 18px;
+    border-top: 1px solid var(--border);
+    justify-content: flex-end;
+  }
+
+  /* ===== TABLE ===== */
+  .table-wrap {
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  thead tr {
+    background: var(--surface2);
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th {
+    padding: 14px 20px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-align: right;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  th:nth-child(1) { width: 22%; }
+  th:nth-child(2) { width: 14%; }
+  th:nth-child(3) { width: 18%; }
+  th:nth-child(4) { width: 8%; }
+  th:nth-child(5) { width: 12%; }
+  th:nth-child(6) { width: 14%; }
+  th:nth-child(7) { width: 12%; text-align: center; }
+  th:nth-child(8) { width: 14%; text-align: center; }
+
+  tbody tr {
+    border-bottom: 1px solid #f1f5f9;
+    transition: var(--transition);
+    cursor: pointer;
+  }
+
+  tbody tr:last-child { border-bottom: none; }
+
+  tbody tr:hover {
+    background: #fafcff;
+  }
+
+  tbody td {
+    padding: 16px 20px;
+    font-size: 14px;
+    vertical-align: middle;
+  }
+
+  .client-name {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--text);
+  }
+
+  .client-meta {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 2px;
+  }
+
+  .whatsapp-link {
+    color: #16a34a;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 14px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 10px 4px 8px;
+    border-radius: 20px;
+    background: #f0fdf4;
+    border: 1px solid #bbf7d0;
+    transition: var(--transition);
+  }
+  .whatsapp-link:hover { background: #dcfce7; }
+
+  .weight-info {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .weight-val {
+    font-size: 16px;
+    font-weight: 800;
+    color: var(--text);
+  }
+
+  .height-val {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
+  }
+
+  .bmi-badge {
+    font-size: 11px;
+    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: 20px;
+    white-space: nowrap;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 700;
+    white-space: nowrap;
+  }
+
+  .badge-loss { background: #dcfce7; color: #15803d; }
+  .badge-gain { background: #fef9c3; color: #92400e; }
+  .badge-maintain { background: var(--accent-light); color: var(--accent); }
+
+  .action-btns {
+    display: flex; gap: 8px;
+    justify-content: center;
+  }
+
+  .btn-edit, .btn-del {
+    border: none; border-radius: var(--radius-sm);
+    padding: 7px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+
+  .btn-edit {
+    background: var(--accent-light);
+    color: var(--accent);
+    border: 1px solid rgba(26,86,219,0.15);
+  }
+  .btn-edit:hover { background: #dbeafe; }
+
+  .btn-del {
+    background: var(--danger-light);
+    color: var(--danger);
+    border: 1px solid rgba(229,62,62,0.15);
+  }
+  .btn-del:hover { background: #fecaca; }
+
+  .empty-state {
+    text-align: center;
+    padding: 70px 20px;
+    color: var(--text-muted);
+  }
+  .empty-state-illustration {
+    width: 80px; height: 80px;
+    background: linear-gradient(135deg, var(--accent-light), #e0eaff);
+    border-radius: 24px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 36px;
+    margin: 0 auto 20px;
+    box-shadow: 0 4px 16px rgba(26,86,219,0.1);
+  }
+  .empty-state-title {
+    font-size: 16px; font-weight: 800;
+    color: var(--text); margin-bottom: 8px;
+  }
+  .empty-state-sub {
+    font-size: 13px; color: var(--text-muted);
+    font-weight: 400; margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  .empty-state-btn {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--accent-light); color: var(--accent);
+    border: 1.5px solid rgba(26,86,219,0.2);
+    border-radius: 20px; padding: 8px 20px;
+    font-size: 13px; font-weight: 700;
+    font-family: 'Tajawal', sans-serif;
+    cursor: pointer; transition: var(--transition);
+  }
+  .empty-state-btn:hover { background: #dbeafe; }
+
+  /* ===== MODAL ===== */
+  .modal-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(15, 23, 42, 0.4);
+    z-index: 200;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(6px);
+  }
+  .modal-overlay.open { display: flex; }
+
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 28px;
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  @keyframes modalIn {
+    from { transform: scale(0.94) translateY(10px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .modal-header {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .modal-header h2 {
+    font-size: 17px; font-weight: 800; color: var(--text);
+  }
+
+  .btn-close {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
+    width: 32px; height: 32px;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 18px;
+    display: flex; align-items: center; justify-content: center;
+    transition: var(--transition);
+    line-height: 1;
+  }
+  .btn-close:hover { color: var(--danger); border-color: var(--danger); background: var(--danger-light); }
+
+  .form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .form-grid .full { grid-column: 1 / -1; }
+
+  .form-field label {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-bottom: 7px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+  }
+
+  .form-field input,
+  .form-field select,
+  .form-field textarea {
+    width: 100%;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    color: var(--text);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 14px;
+    transition: var(--transition);
+    direction: rtl;
+    outline: none;
+  }
+
+  .form-field textarea { resize: vertical; min-height: 80px; }
+
+  .form-field input:focus,
+  .form-field select:focus,
+  .form-field textarea:focus {
+    border-color: var(--accent);
+    background: #fff;
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+
+  .modal-footer {
+    display: flex; gap: 10px;
+    margin-top: 24px;
+    padding-top: 18px;
+    border-top: 1px solid var(--border);
+    justify-content: flex-end;
+  }
+
+  .btn-cancel {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--text-muted);
+    border-radius: var(--radius-sm);
+    padding: 10px 20px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-cancel:hover { border-color: var(--text-muted); color: var(--text); }
+
+  .btn-save {
+    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 28px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: 0 3px 10px rgba(26,86,219,0.3);
+  }
+  .btn-save:hover { transform: translateY(-1px); box-shadow: 0 5px 14px rgba(26,86,219,0.4); }
+
+  /* ===== WEIGHT MODAL ===== */
+  .weight-modal { max-width: 680px; }
+
+  .weight-chart-container {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+    height: 220px;
+    position: relative;
+    margin-top: 12px;
+    margin-bottom: 16px;
+  }
+  .weight-chart-empty {
+    display: flex; align-items: center; justify-content: center;
+    height: 100%; color: var(--text-light); font-size: 13px;
+  }
+
+  .weight-client-header {
+    display: flex; align-items: center; gap: 14px;
+    margin-bottom: 20px;
+    padding: 16px;
+    background: linear-gradient(135deg, var(--accent-light), #f0f7ff);
+    border-radius: var(--radius);
+    border: 1px solid rgba(26,86,219,0.1);
+  }
+  .weight-client-avatar {
+    width: 48px; height: 48px;
+    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px; font-weight: 800; color: #fff;
+    flex-shrink: 0;
+    box-shadow: 0 4px 12px rgba(26,86,219,0.25);
+  }
+  .weight-client-header-info { flex: 1; min-width: 0; }
+  #weight-client-name {
+    font-weight: 800; font-size: 16px; color: var(--text); line-height: 1;
+  }
+  .weight-client-header-sub {
+    font-size: 11px; color: var(--text-muted); margin-top: 4px; font-weight: 500;
+  }
+  .weight-client-header-badges {
+    display: flex; gap: 6px; flex-wrap: wrap; margin-top: 8px;
+  }
+  .wch-badge {
+    font-size: 11px; font-weight: 700;
+    padding: 3px 10px; border-radius: 20px;
+    white-space: nowrap;
+  }
+  .wch-badge.goal-loss { background: #dcfce7; color: #15803d; }
+  .wch-badge.goal-gain { background: #fef9c3; color: #92400e; }
+  .wch-badge.goal-maintain { background: var(--accent-light); color: var(--accent); }
+  .wch-badge.bmi { background: var(--surface); border: 1px solid var(--border); color: var(--text-muted); }
+  .wch-badge.bmi-ideal { background: #ecfdf5; color: #059669; border: 1px solid #a7f3d0; }
+  .wch-badge.bmi-over { background: #fff5f5; color: #e53e3e; border: 1px solid #fecaca; }
+  .wch-badge.bmi-under { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; }
+  .wch-badge.sub-active  { background: #dcfce7; color: #15803d; border: 1px solid #bbf7d0; }
+  .wch-badge.sub-warning { background: #fefce8; color: #92400e; border: 1px solid #fde68a; }
+  .wch-badge.sub-expired { background: #fff5f5; color: #e53e3e; border: 1px solid #fecaca; }
+  .wch-badge.sub-none    { background: var(--surface2); color: var(--text-light); border: 1px solid var(--border); }
+
+  .weight-summary {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 10px; margin-bottom: 0;
+  }
+
+  .w-sum-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 10px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    transition: var(--transition);
+  }
+  .w-sum-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0; left: 0; right: 0;
+    height: 3px;
+    border-radius: 0 0 var(--radius) var(--radius);
+  }
+  .w-sum-card:nth-child(1)::after { background: var(--accent); }
+  .w-sum-card:nth-child(2)::after { background: var(--success); }
+  .w-sum-card:nth-child(3)::after { background: var(--warning); }
+  .w-sum-card:nth-child(4)::after { background: #8b5cf6; }
+  .w-sum-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+  .w-sum-card .val {
+    font-size: 22px; font-weight: 800; color: var(--text);
+    display: block; line-height: 1;
+    letter-spacing: -0.5px;
+  }
+  .w-sum-card:nth-child(1) .val { color: var(--accent); }
+  .w-sum-card:nth-child(2) .val { color: var(--success); }
+  .w-sum-card:nth-child(3) .val { color: var(--warning); }
+  .w-sum-card:nth-child(4) .val { color: #8b5cf6; }
+  .w-sum-card .lbl {
+    font-size: 10px; color: var(--text-muted);
+    font-weight: 600; margin-top: 8px; display: block;
+    text-transform: uppercase; letter-spacing: 0.4px;
+  }
+
+  .weight-add-row {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px; align-items: end;
+    margin-bottom: 0;
+  }
+  .weight-add-row .form-field { margin: 0; }
+  .weight-add-row-btn { grid-column: 1 / -1; }
+
+  .btn-add-weight {
+    width: 100%;
+    background: linear-gradient(135deg, var(--success), #10b981);
+    color: #fff;
+    border: none; border-radius: var(--radius-sm);
+    height: 42px; cursor: pointer;
+    font-family: 'Tajawal', sans-serif;
+    font-weight: 700; font-size: 14px;
+    transition: var(--transition);
+    box-shadow: 0 3px 10px rgba(5,150,105,0.3);
+    letter-spacing: 0.3px;
+  }
+  .btn-add-weight:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 5px 16px rgba(5,150,105,0.4);
+  }
+  .btn-add-weight:disabled { opacity: 0.7; transform: none; cursor: not-allowed; }
+
+  /* section label */
+  .weight-history-label {
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+  }
+  .weight-history-label::before {
+    content: ''; display: inline-block;
+    width: 3px; height: 14px;
+    background: var(--accent); border-radius: 2px;
+  }
+
+  .weight-history-list {
+    display: flex; flex-direction: column; gap: 8px;
+    max-height: 320px; overflow-y: auto;
+    padding-left: 2px;
+  }
+  .weight-history-list::-webkit-scrollbar { width: 4px; }
+  .weight-history-list::-webkit-scrollbar-track { background: transparent; }
+  .weight-history-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .weight-entry {
+    display: flex; align-items: center;
+    justify-content: space-between;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 12px 16px;
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+  }
+  .weight-entry::before {
+    content: '';
+    position: absolute;
+    right: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    opacity: 0;
+    transition: var(--transition);
+  }
+  .weight-entry:hover { border-color: rgba(26,86,219,0.2); background: #fafcff; box-shadow: var(--shadow-sm); }
+  .weight-entry:hover::before { opacity: 1; }
+
+  .weight-entry-val {
+    font-size: 16px; font-weight: 800; color: var(--text);
+    display: flex; align-items: center; gap: 6px;
+  }
+  .weight-entry-val::before {
+    content: '⚖️'; font-size: 14px;
+  }
+  .weight-entry-date {
+    font-size: 11px; color: var(--text-muted);
+    background: var(--surface2); border: 1px solid var(--border);
+    padding: 3px 10px; border-radius: 20px;
+    flex-shrink: 0; font-weight: 600;
+  }
+  .btn-del-weight {
+    background: none; border: none;
+    color: var(--text-light); font-size: 16px; line-height: 1;
+    cursor: pointer; padding: 4px 7px; border-radius: 6px;
+    transition: var(--transition); flex-shrink: 0;
+    opacity: 0;
+  }
+  .weight-entry:hover .btn-del-weight { opacity: 1; }
+  .btn-del-weight:hover { background: var(--danger-light); color: var(--danger); }
+
+
+  /* ===== CONFIRM MODAL ===== */
+  .confirm-modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 32px 28px;
+    max-width: 360px; width: 100%;
+    text-align: center;
+    box-shadow: var(--shadow-lg);
+    animation: modalIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+  }
+
+  .confirm-icon {
+    width: 56px; height: 56px;
+    background: var(--danger-light);
+    border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 26px; margin: 0 auto 16px;
+  }
+
+  .confirm-modal h3 {
+    font-size: 17px; font-weight: 800; margin-bottom: 8px; color: var(--text);
+  }
+  .confirm-modal p {
+    font-size: 13px; color: var(--text-muted); margin-bottom: 24px;
+  }
+
+  .confirm-btns { display: flex; gap: 10px; justify-content: center; }
+  .confirm-btns .btn-cancel { flex: 1; }
+  .confirm-btns .btn-del {
+    flex: 1;
+    background: var(--danger);
+    color: #fff; border: none;
+    border-radius: var(--radius-sm);
+    padding: 10px 20px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 13px; font-weight: 700;
+    cursor: pointer; transition: var(--transition);
+  }
+  .confirm-btns .btn-del:hover { background: #c53030; }
+
+  /* ===== TOAST ===== */
+  .toast {
+    position: fixed; bottom: 24px; left: 50%;
+    transform: translateX(-50%) translateY(80px);
+    background: var(--text);
+    color: #fff;
+    border-radius: var(--radius-sm);
+    padding: 12px 24px;
+    font-size: 13px; font-weight: 600;
+    z-index: 999;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    box-shadow: var(--shadow-lg);
+  }
+  .toast.show { transform: translateX(-50%) translateY(0); }
+  .toast.error { background: var(--danger); }
+  .toast.success { background: var(--success); }
+
+  /* ===== SECTION HEADER ===== */
+  .section-header {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: 13px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .client-count {
+    font-size: 12px; color: var(--text-muted);
+    background: var(--surface2); border: 1px solid var(--border);
+    padding: 3px 10px; border-radius: 20px; font-weight: 600;
+  }
+
+  /* ===== DIET FILE ===== */
+  .diet-file-section {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    margin-top: 12px;
+  }
+  .diet-file-label {
+    font-size: 12px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    margin-bottom: 10px; display: block;
+  }
+  .diet-upload-area {
+    border: 2px dashed var(--border);
+    border-radius: var(--radius-sm);
+    padding: 14px;
+    text-align: center;
+    cursor: pointer;
+    transition: var(--transition);
+    background: var(--surface);
+  }
+  .diet-upload-area:hover {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+  .diet-upload-area input[type="file"] { display: none; }
+  .diet-upload-icon { font-size: 22px; margin-bottom: 4px; }
+  .diet-upload-text { font-size: 12px; color: var(--text-muted); font-weight: 500; }
+  .diet-upload-text span { color: var(--accent); font-weight: 700; }
+
+  .weight-entry-diet {
+    display: flex; align-items: center; gap: 6px;
+    margin-top: 6px;
+  }
+  .btn-diet-download {
+    display: inline-flex; align-items: center; gap: 4px;
+    background: #f0fdf4; color: #15803d;
+    border: 1px solid #bbf7d0;
+    border-radius: 20px;
+    padding: 3px 10px;
+    font-size: 11px; font-weight: 700;
+    font-family: 'Tajawal', sans-serif;
+    cursor: pointer; transition: var(--transition);
+    text-decoration: none;
+  }
+  .btn-diet-download:hover { background: #dcfce7; }
+  .btn-diet-del {
+    background: none; border: none;
+    color: var(--text-light); font-size: 14px;
+    cursor: pointer; padding: 2px 5px;
+    border-radius: 6px; transition: var(--transition);
+    opacity: 0;
+  }
+  .weight-entry:hover .btn-diet-del { opacity: 1; }
+  .btn-diet-del:hover { background: var(--danger-light); color: var(--danger); }
+
+  .diet-uploading {
+    font-size: 11px; color: var(--accent);
+    font-weight: 600; display: flex; align-items: center; gap: 6px;
+  }
+  .diet-spinner {
+    width: 12px; height: 12px;
+    border: 2px solid var(--accent-light);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    display: inline-block;
+  }
+
+  .btn-migration {
+    background: #fffbeb;
+    border: 1.5px solid #fde68a;
+    color: #92400e;
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .btn-migration:hover { background: #fef3c7; }
+
+  .col-registrar { display: none; }
+  body.is-admin .col-registrar { display: table-cell; }
+
+  /* ===== SUBSCRIPTION CARD IN WEIGHT MODAL ===== */
+  .sub-card {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px 18px;
+    margin-bottom: 16px;
+    display: flex; align-items: center; gap: 14px;
+    flex-wrap: wrap;
+  }
+  .sub-card.active-sub  { border-color: #bbf7d0; background: #f0fdf4; }
+  .sub-card.warning-sub { border-color: #fde68a; background: #fefce8; }
+  .sub-card.expired-sub { border-color: #fecaca; background: #fff5f5; }
+  .sub-card.none-sub    { border-color: var(--border); background: var(--surface2); }
+
+  .sub-card-icon { font-size: 26px; flex-shrink: 0; }
+
+  .sub-card-info { flex: 1; min-width: 0; }
+  .sub-card-title {
+    font-size: 13px; font-weight: 800; color: var(--text); margin-bottom: 2px;
+  }
+  .sub-card-detail {
+    font-size: 12px; color: var(--text-muted); font-weight: 500; line-height: 1.6;
+  }
+  .sub-card-days {
+    font-size: 15px; font-weight: 800; flex-shrink: 0; text-align: center; line-height: 1.3;
+  }
+  .sub-card-days .days-lbl { font-size: 10px; font-weight: 600; display: block; margin-top: 2px; }
+  .sub-card.active-sub  .sub-card-days { color: #15803d; }
+  .sub-card.warning-sub .sub-card-days { color: #92400e; }
+  .sub-card.expired-sub .sub-card-days { color: #e53e3e; }
+
+  .sub-renew-row {
+    display: flex; align-items: center; gap: 8px;
+    flex-wrap: wrap; margin-top: 10px;
+    padding-top: 10px; border-top: 1px solid var(--border);
+    width: 100%;
+  }
+  .sub-renew-label { font-size: 12px; font-weight: 700; color: var(--text-muted); white-space: nowrap; }
+  .sub-renew-select {
+    background: var(--surface); border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm); padding: 6px 10px;
+    font-size: 12px; font-family: 'Tajawal', sans-serif;
+    color: var(--text); outline: none; flex: 1; min-width: 120px;
+  }
+  .sub-renew-select:focus { border-color: var(--accent); }
+  .btn-renew {
+    background: var(--accent-light);
+    color: var(--accent); border: 1.5px solid rgba(26,86,219,0.25);
+    border-radius: var(--radius-sm);
+    padding: 7px 18px; font-family: 'Tajawal', sans-serif;
+    font-size: 12px; font-weight: 700; cursor: pointer;
+    transition: var(--transition); white-space: nowrap;
+  }
+  .btn-renew:hover { background: #dbeafe; border-color: var(--accent); }
+  .btn-renew:disabled { opacity: 0.5; cursor: not-allowed; }
+  .sub-badge {
+    display: inline-flex; align-items: center; gap: 5px;
+    padding: 4px 10px; border-radius: 20px;
+    font-size: 11px; font-weight: 700; white-space: nowrap;
+    border: 1px solid transparent;
+  }
+  .sub-badge.active   { background: #dcfce7; color: #15803d; border-color: #bbf7d0; }
+  .sub-badge.warning  { background: #fef9c3; color: #92400e; border-color: #fde68a; }
+  .sub-badge.expired  { background: #fff5f5; color: #e53e3e; border-color: #fecaca; }
+  .sub-badge.none     { background: var(--surface2); color: var(--text-light); border-color: var(--border); }
+
+  .btn-sub {
+    background: #f0fdf4;
+    color: #15803d;
+    border: 1px solid #bbf7d0;
+    border-radius: var(--radius-sm);
+    padding: 7px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+  }
+  .btn-sub:hover { background: #dcfce7; border-color: #86efac; }
+
+  .sub-modal-box { max-width: 500px; }
+
+  /* Header موحد */
+  .sub-modal-header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sub-modal-status-badge {
+    flex-shrink: 0;
+  }
+
+  /* شريط تفاصيل الاشتراك */
+  .sub-detail-bar {
+    display: flex; gap: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+  }
+  .sub-detail-bar.active-sub  { border-color: #bbf7d0; }
+  .sub-detail-bar.warning-sub { border-color: #fde68a; }
+  .sub-detail-bar.expired-sub { border-color: #fecaca; }
+
+  .sub-detail-item {
+    flex: 1; padding: 10px 14px; text-align: center;
+    background: var(--surface2);
+    border-left: 1px solid var(--border);
+    min-width: 0;
+  }
+  .sub-detail-item:last-child { border-left: none; }
+  .sub-detail-bar.active-sub  .sub-detail-item { background: #f0fdf4; border-color: #bbf7d0; }
+  .sub-detail-bar.warning-sub .sub-detail-item { background: #fefce8; border-color: #fde68a; }
+  .sub-detail-bar.expired-sub .sub-detail-item { background: #fff5f5; border-color: #fecaca; }
+
+  .sub-detail-lbl {
+    font-size: 10px; color: var(--text-muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 3px;
+  }
+  .sub-detail-val {
+    font-size: 13px; font-weight: 800; color: var(--text); white-space: nowrap;
+  }
+  .sub-detail-item.highlight .sub-detail-val { color: #15803d; }
+  .sub-detail-item.highlight-warn .sub-detail-val { color: #d97706; }
+  .sub-detail-item.highlight-exp  .sub-detail-val { color: #dc2626; }
+    display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+
+  /* أقسام modal الاشتراك */
+  .sub-section {
+    margin-top: 18px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface2);
+  }
+  .sub-section-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 14px;
+  }
+  .sub-section-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .sub-section-title {
+    font-size: 12px; font-weight: 800; color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .sub-section-hint {
+    font-size: 11px; color: var(--text-muted); margin-bottom: 0;
+  }
+  .sub-section-actions {
+    display: flex; justify-content: flex-end; gap: 8px;
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .sub-sections-divider {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 14px;
+    color: var(--text-muted); font-size: 11px; font-weight: 700;
+  }
+  .sub-sections-divider::before,
+  .sub-sections-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .sub-mini-bars {
+    margin-top: 7px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .smb-row {
+    display: flex; align-items: center; gap: 5px;
+  }
+  .smb-dot {
+    width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+  }
+  .smb-lbl {
+    font-size: 10px; color: var(--text-muted); font-weight: 500;
+    min-width: 62px; white-space: nowrap;
+  }
+  .smb-track {
+    flex: 1; height: 3px; background: var(--border);
+    border-radius: 99px; overflow: hidden;
+  }
+  .smb-fill {
+    height: 100%; border-radius: 99px;
+    transition: width 0.4s ease;
+    min-width: 3px;
+  }
+  .smb-num {
+    font-size: 10px; font-weight: 700; color: var(--text);
+    min-width: 14px; text-align: left;
+  }
+
+  /* سجل الاشتراكات */
+  .sub-history-wrap {
+    padding: 4px 0 8px;
+  }
+  .sub-history-loading {
+    font-size: 12px; color: var(--text-muted); padding: 8px 0;
+  }
+  .sub-history-empty {
+    font-size: 12px; color: var(--text-muted); padding: 8px 0; text-align: center;
+  }
+  .sub-history-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .sub-history-item:last-child { border-bottom: none; }
+  .sub-history-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0; margin-top: 1px;
+  }
+  .sub-history-dot.type-renew   { background: #dcfce7; }
+  .sub-history-dot.type-edit    { background: #dbeafe; }
+  .sub-history-dot.type-create  { background: #fef9c3; }
+  .sub-history-body { flex: 1; min-width: 0; }
+  .sub-history-title {
+    font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3;
+  }
+  .sub-history-meta {
+    font-size: 11px; color: var(--text-muted); margin-top: 3px;
+  }
+  .sub-history-date {
+    font-size: 11px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0;
+    margin-top: 4px;
+  }
+
+  .form-section {
+    grid-column: 1 / -1;
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 6px; margin-bottom: 2px;
+  }
+  .form-section-label {
+    font-size: 11px; font-weight: 700; color: var(--text-muted);
+    text-transform: uppercase; letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .form-section-line { flex: 1; height: 1px; background: var(--border); }
+
+  @media (max-width: 768px) {
+    .stats-row { grid-template-columns: repeat(2, 1fr); }
+    .form-grid { grid-template-columns: 1fr; }
+    .weight-summary { grid-template-columns: repeat(2, 1fr); }
+    .main-content { padding: 16px; }
+    .topbar { padding: 0 16px; }
+    .weight-add-row { grid-template-columns: 1fr 1fr; }
+    .weight-add-row .btn-add-weight { grid-column: 1 / -1; }
+    .action-btns { flex-direction: column; }
+    .login-card { padding: 36px 24px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="loading-overlay" id="loading">
+  <div class="spinner"></div>
+  <div class="loading-text">جاري التحميل...</div>
+</div>
+
+<!-- LOGIN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-logo">
+      <div class="login-logo-icon">
+        <img src="logo.jpg" alt="Logo">
+      </div>
+      <h1>Organic Elements</h1>
+      <p>نظام إدارة العملاء</p>
+    </div>
+    <div class="field">
+      <label>البريد الإلكتروني</label>
+      <input type="email" id="login-email" placeholder="example@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <div class="field">
+      <label>كلمة المرور</label>
+      <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    </div>
+    <button class="btn-primary" onclick="doLogin()">دخول →</button>
+    <div id="login-error"></div>
+  </div>
+</div>
+
+<!-- APP -->
+<div id="app-screen">
+  <div class="topbar">
+    <div class="topbar-brand">
+      <div class="topbar-logo">
+        <img src="logo.jpg" alt="Logo">
+      </div>
+      <div class="topbar-brand-text">
+        <div class="brand-name">Organic Elements</div>
+        <div class="brand-sub">إدارة العملاء</div>
+      </div>
+    </div>
+    <div class="topbar-actions">
+      <span class="topbar-date" id="topbar-date"></span>
+      <div class="user-badge" id="user-email-badge">—</div>
+      <button class="btn-dashboard" onclick="openDashboard()">📊 الداشبورد</button>
+      <button class="col-registrar btn-migration" onclick="runMigration()" title="تحديث إيميلات المسجِّلين" style="font-size:11px; padding:0 10px; height:30px; border-radius:20px;">🔄</button>
+      <button class="btn-logout" onclick="doLogout()">خروج</button>
+    </div>
+  </div>
+
+  <div class="main-content">
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-icon">👥</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-total">0</div>
+          <div class="stat-label">إجمالي العملاء</div>
+          <div class="stat-sub" id="stat-total-sub"></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📉</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-loss">0</div>
+          <div class="stat-label">خسارة وزن</div>
+          <div class="stat-sub" id="stat-loss-sub"></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">📈</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-gain">0</div>
+          <div class="stat-label">زيادة وزن</div>
+          <div class="stat-sub" id="stat-gain-sub"></div>
+        </div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon">⚖️</div>
+        <div class="stat-info">
+          <div class="stat-val" id="stat-maintain">0</div>
+          <div class="stat-label">تثبيت الوزن</div>
+          <div class="stat-sub" id="stat-maintain-sub"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- كارت الاشتراكات -->
+    <div class="sub-status-card" id="sub-status-card">
+      <div class="sub-status-title">حالة الاشتراكات</div>
+      <div class="sub-status-items">
+        <div class="sub-status-item sub-status-active">
+          <div class="sub-status-val" id="ssc-active">0</div>
+          <div class="sub-status-lbl">فعال</div>
+        </div>
+        <div class="sub-status-divider"></div>
+        <div class="sub-status-item sub-status-expiring">
+          <div class="sub-status-val" id="ssc-expiring">0</div>
+          <div class="sub-status-lbl">ينتهي قريباً</div>
+        </div>
+        <div class="sub-status-divider"></div>
+        <div class="sub-status-item sub-status-expired">
+          <div class="sub-status-val" id="ssc-expired">0</div>
+          <div class="sub-status-lbl">منتهي</div>
+        </div>
+        <div class="sub-status-divider"></div>
+        <div class="sub-status-item sub-status-none">
+          <div class="sub-status-val" id="ssc-none">0</div>
+          <div class="sub-status-lbl">بدون اشتراك</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="search-wrap">
+        <span class="search-icon">🔍</span>
+        <input class="search-box" type="text" id="search-input" placeholder="ابحث بالاسم أو رقم التليفون..." oninput="renderTable()">
+      </div>
+      <div class="filter-btn-wrap">
+        <button class="btn-filter" id="btn-filter" onclick="toggleFilterPanel()">
+          ⚙️ فلتر
+          <span class="filter-badge" id="filter-badge" style="display:none">0</span>
+        </button>
+        <div class="filter-panel" id="filter-panel">
+          <div class="filter-panel-row">
+            <span class="filter-label">الهدف</span>
+            <button class="filter-chip active" onclick="setFilter('goal','all',this)">الكل</button>
+            <button class="filter-chip" onclick="setFilter('goal','loss',this)">خسارة</button>
+            <button class="filter-chip" onclick="setFilter('goal','gain',this)">زيادة</button>
+            <button class="filter-chip" onclick="setFilter('goal','maintain',this)">تثبيت</button>
+          </div>
+          <div class="filter-panel-row">
+            <span class="filter-label">النوع</span>
+            <button class="filter-chip active" onclick="setFilter('gender','all',this)">الكل</button>
+            <button class="filter-chip" onclick="setFilter('gender','male',this)">ذكر</button>
+            <button class="filter-chip" onclick="setFilter('gender','female',this)">أنثى</button>
+          </div>
+          <div class="filter-panel-row">
+            <span class="filter-label">الجنسية</span>
+            <select class="filter-select" id="filter-nationality" onchange="setNatFilter(this.value)">
+              <option value="all">الكل</option>
+            </select>
+          </div>
+          <div class="filter-panel-row col-registrar">
+            <span class="filter-label">المسجِّل</span>
+            <select class="filter-select col-registrar" id="filter-registrar" onchange="setRegistrarFilter(this.value)">
+              <option value="all">الكل</option>
+            </select>
+          </div>
+          <div class="filter-panel-row">
+            <span class="filter-label">الاشتراك</span>
+            <button class="filter-chip active" onclick="setFilter('sub','all',this)">الكل</button>
+            <button class="filter-chip" onclick="setFilter('sub','active',this)">فعال</button>
+            <button class="filter-chip" onclick="setFilter('sub','expiring',this)">ينتهي قريباً</button>
+            <button class="filter-chip" onclick="setFilter('sub','expired',this)">منتهي</button>
+            <button class="filter-chip" onclick="setFilter('sub','none',this)">بدون</button>
+          </div>
+          <div class="filter-panel-footer">
+            <button class="btn-clear-filters" onclick="clearFilters()">مسح الفلاتر</button>
+          </div>
+        </div>
+      </div>
+      <button class="btn-add" onclick="openModal()">
+        <span>+</span> عميل جديد
+      </button>
+    </div>
+
+    <!-- Table -->
+    <div class="section-header">
+      <span class="section-title">قائمة العملاء</span>
+      <span class="client-count" id="client-count-badge">0 عميل</span>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>العميل</th>
+            <th>التليفون</th>
+            <th>الوزن / BMI</th>
+            <th>الهدف</th>
+            <th>الاشتراك</th>
+            <th class="col-registrar">المسجِّل</th>
+            <th>إجراءات</th>
+          </tr>
+        </thead>
+        <tbody id="clients-tbody"></tbody>
+      </table>
+      <div id="empty-state" class="empty-state" style="display:none">
+        <div class="empty-state-illustration">👥</div>
+        <div class="empty-state-title">لا يوجد عملاء بعد</div>
+        <div class="empty-state-sub">ابدأ بإضافة أول عميل لك<br>وتابع رحلته معك</div>
+        <button class="empty-state-btn" onclick="openModal()">+ إضافة عميل جديد</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Client Modal -->
+<div class="modal-overlay" id="client-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <h2 id="modal-title">إضافة عميل جديد</h2>
+      <button class="btn-close" onclick="closeModal()">×</button>
+    </div>
+
+    <!-- Stepper Header -->
+    <div class="stepper-header">
+      <div class="stepper-step active" id="step-ind-1">
+        <div class="stepper-num">1</div>
+        <div class="stepper-label">بيانات شخصية</div>
+      </div>
+      <div class="stepper-line" id="step-line-1"></div>
+      <div class="stepper-step" id="step-ind-2">
+        <div class="stepper-num">2</div>
+        <div class="stepper-label">بيانات جسمية</div>
+      </div>
+      <div class="stepper-line" id="step-line-2"></div>
+      <div class="stepper-step" id="step-ind-3">
+        <div class="stepper-num">3</div>
+        <div class="stepper-label">الهدف</div>
+      </div>
+    </div>
+
+    <!-- Step 1: بيانات شخصية -->
+    <div class="stepper-page active" id="step-page-1">
+      <div class="form-grid">
+        <div class="form-field full"><label>الاسم الكامل *</label><input type="text" id="f-name" placeholder="أدخل الاسم الكامل"></div>
+        <div class="form-field"><label>رقم التليفون</label><input type="number" id="f-phone" placeholder="05xxxxxxxx"></div>
+        <div class="form-field"><label>العمر (سنة)</label><input type="number" id="f-age" placeholder="25"></div>
+        <div class="form-field"><label>النوع</label>
+          <select id="f-gender">
+            <option value="">— اختر —</option>
+            <option value="male">👨 ذكر</option>
+            <option value="female">👩 أنثى</option>
+          </select>
+        </div>
+        <div class="form-field"><label>الجنسية</label>
+          <select id="f-nationality">
+            <option value="">— اختر —</option>
+            <option value="SA">🇸🇦 السعودية</option>
+            <option value="AE">🇦🇪 الإمارات</option>
+            <option value="EG">🇪🇬 مصر</option>
+            <option value="KW">🇰🇼 الكويت</option>
+            <option value="QA">🇶🇦 قطر</option>
+            <option value="BH">🇧🇭 البحرين</option>
+            <option value="OM">🇴🇲 عُمان</option>
+            <option value="JO">🇯🇴 الأردن</option>
+            <option value="LB">🇱🇧 لبنان</option>
+            <option value="SY">🇸🇾 سوريا</option>
+            <option value="IQ">🇮🇶 العراق</option>
+            <option value="YE">🇾🇪 اليمن</option>
+            <option value="LY">🇱🇾 ليبيا</option>
+            <option value="TN">🇹🇳 تونس</option>
+            <option value="DZ">🇩🇿 الجزائر</option>
+            <option value="MA">🇲🇦 المغرب</option>
+            <option value="SD">🇸🇩 السودان</option>
+            <option value="OTHER">🌍 أخرى</option>
+          </select>
+        </div>
+      </div>
+      <div class="stepper-footer">
+        <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+        <button class="btn-save" onclick="stepperNext(1)">التالي ←</button>
+      </div>
+    </div>
+
+    <!-- Step 2: بيانات جسمية -->
+    <div class="stepper-page" id="step-page-2">
+      <div class="form-grid">
+        <div class="form-field"><label>الوزن الحالي (كجم)</label><input type="number" id="f-weight" step="0.1" placeholder="70.0"></div>
+        <div class="form-field"><label>الطول (سم)</label><input type="number" id="f-height" placeholder="170"></div>
+      </div>
+      <div class="stepper-footer">
+        <button class="btn-cancel" onclick="stepperBack(2)">→ السابق</button>
+        <button class="btn-save" onclick="stepperNext(2)">التالي ←</button>
+      </div>
+    </div>
+
+    <!-- Step 3: الهدف والملاحظات -->
+    <div class="stepper-page" id="step-page-3">
+      <div class="form-grid">
+        <div class="form-field full"><label>الهدف</label>
+          <select id="f-goal">
+            <option value="loss">📉 خسارة وزن</option>
+            <option value="gain">📈 زيادة وزن</option>
+            <option value="maintain">⚖️ تثبيت</option>
+          </select>
+        </div>
+        <div class="form-section full">
+          <span class="form-section-label">الاشتراك</span>
+          <div class="form-section-line"></div>
+        </div>
+        <div class="form-field"><label>تاريخ بداية الاشتراك</label><input type="date" id="f-sub-start"></div>
+        <div class="form-field"><label>مدة الاشتراك</label>
+          <select id="f-sub-months">
+            <option value="">— بدون اشتراك —</option>
+            <option value="1">1 شهر</option>
+            <option value="2">2 شهر</option>
+            <option value="3">3 أشهر</option>
+            <option value="4">4 أشهر</option>
+            <option value="6">6 أشهر</option>
+            <option value="9">9 أشهر</option>
+            <option value="12">سنة كاملة</option>
+          </select>
+        </div>
+        <div class="form-field full"><label>ملاحظات</label><textarea id="f-notes" placeholder="أي معلومات إضافية..."></textarea></div>
+      </div>
+      <div class="stepper-footer">
+        <button class="btn-cancel" onclick="stepperBack(3)">→ السابق</button>
+        <button class="btn-save" onclick="saveClient()">💾 حفظ العميل</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Weight Modal -->
+<div class="modal-overlay" id="weight-modal">
+  <div class="modal weight-modal">
+    <div class="modal-header">
+      <h2>سجل الأوزان</h2>
+      <button class="btn-close" onclick="closeWeightModal()">×</button>
+    </div>
+
+    <div class="weight-client-header">
+      <div class="weight-client-avatar" id="weight-client-avatar">👤</div>
+      <div class="weight-client-header-info">
+        <div id="weight-client-name">—</div>
+        <div class="weight-client-header-sub" id="weight-client-info"></div>
+        <div class="weight-client-header-badges" id="weight-client-badges"></div>
+      </div>
+    </div>
+
+    <div class="weight-summary">
+      <div class="w-sum-card"><span class="val" id="ws-start">—</span><span class="lbl">البداية (كجم)</span></div>
+      <div class="w-sum-card"><span class="val" id="ws-current">—</span><span class="lbl">الحالي (كجم)</span></div>
+      <div class="w-sum-card"><span class="val" id="ws-diff">—</span><span class="lbl">الفرق (كجم)</span></div>
+      <div class="w-sum-card"><span class="val" id="ws-visits">0</span><span class="lbl">عدد الزيارات</span></div>
+    </div>
+
+    <div class="weight-chart-container" id="weight-chart-container">
+      <canvas id="weight-chart"></canvas>
+    </div>
+
+    <div class="weight-add-row">
+      <div class="form-field"><label>الوزن (كجم)</label><input type="number" id="w-new-weight" step="0.1" placeholder="70.0"></div>
+      <div class="form-field"><label>التاريخ</label><input type="date" id="w-new-date"></div>
+      <div class="form-field full diet-file-section" style="margin:0; grid-column:1/-1">
+        <span class="diet-file-label">📋 ملف الدايت (اختياري)</span>
+        <label class="diet-upload-area" id="diet-upload-label">
+          <input type="file" id="w-diet-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls" onchange="updateDietFileLabel()">
+          <div class="diet-upload-icon">📁</div>
+          <div class="diet-upload-text">اسحب الملف هنا أو <span>اضغط للاختيار</span></div>
+          <div id="diet-file-name" style="font-size:12px; color:var(--accent); font-weight:600; margin-top:4px; display:none"></div>
+        </label>
+      </div>
+      <div class="weight-add-row-btn">
+        <button class="btn-add-weight" onclick="addWeightEntry()">+ إضافة وزن جديد</button>
+      </div>
+    </div>
+
+    <div class="weight-history-label" style="margin-top:20px;">سجل الزيارات</div>
+    <div class="weight-history-list" id="weight-history-list"></div>
+  </div>
+</div>
+
+<!-- Subscription Modal -->
+<div class="modal-overlay" id="sub-modal">
+  <div class="modal sub-modal-box">
+    <!-- Header موحد: avatar + اسم + badge الحالة + زر إغلاق -->
+    <div class="sub-modal-header">
+      <div id="sub-modal-client-name" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;"></div>
+      <div id="sub-modal-status-badge"></div>
+      <button class="btn-close" onclick="closeSubModal()" style="flex-shrink:0;">×</button>
+    </div>
+    <!-- تفاصيل الاشتراك (بداية / نهاية / متبقي) -->
+    <div id="sub-modal-detail-bar"></div>
+    <!-- قسم تعديل الاشتراك -->
+    <div class="sub-section">
+      <div class="sub-section-header">
+        <span class="sub-section-dot" style="background:var(--accent);"></span>
+        <span class="sub-section-title">تعديل الاشتراك</span>
+      </div>
+      <div class="sub-modal-form">
+        <div class="form-field">
+          <label>تاريخ البداية</label>
+          <input type="date" id="sub-modal-start">
+        </div>
+        <div class="form-field">
+          <label>مدة الاشتراك</label>
+          <select id="sub-modal-months">
+            <option value="">— بدون اشتراك —</option>
+            <option value="1">1 شهر</option>
+            <option value="2">2 شهر</option>
+            <option value="3">3 أشهر</option>
+            <option value="4">4 أشهر</option>
+            <option value="6">6 أشهر</option>
+            <option value="9">9 أشهر</option>
+            <option value="12">سنة كاملة</option>
+          </select>
+        </div>
+      </div>
+      <div class="sub-section-actions">
+        <button class="btn-cancel" onclick="closeSubModal()">إغلاق</button>
+        <button class="btn-save" onclick="saveSubModal()">💾 حفظ التغييرات</button>
+      </div>
+    </div>
+
+    <!-- فاصل -->
+    <div class="sub-sections-divider">
+      <span>أو</span>
+    </div>
+
+    <!-- قسم التجديد -->
+    <div class="sub-section">
+      <div class="sub-section-header">
+        <span class="sub-section-dot" style="background:#059669;"></span>
+        <span class="sub-section-title">تجديد الاشتراك</span>
+      </div>
+      <div class="sub-section-hint">أضف شهور تُحتسب من تاريخ انتهاء الاشتراك الحالي</div>
+      <div class="sub-renew-row" style="margin-top:10px;padding-top:0;border-top:none;">
+        <span class="sub-renew-label">إضافة:</span>
+        <select class="sub-renew-select" id="sub-modal-renew-months">
+          <option value="1">1 شهر</option>
+          <option value="2">2 شهر</option>
+          <option value="3">3 أشهر</option>
+          <option value="4">4 أشهر</option>
+          <option value="6">6 أشهر</option>
+          <option value="9">9 أشهر</option>
+          <option value="12">سنة كاملة</option>
+        </select>
+        <button class="btn-renew" onclick="renewFromSubModal()">تجديد</button>
+      </div>
+    </div>
+
+    <!-- سجل الاشتراكات -->
+    <div class="sub-sections-divider"><span>السجل</span></div>
+    <div class="sub-history-wrap">
+      <div id="sub-history-list"><div class="sub-history-loading">⏳ جاري التحميل...</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- Confirm Modal -->
+<div class="modal-overlay" id="confirm-modal">
+  <div class="confirm-modal">
+    <div class="confirm-icon">🗑️</div>
+    <h3>حذف العميل؟</h3>
+    <p>هذا الإجراء لا يمكن التراجع عنه. سيتم حذف بيانات العميل بشكل نهائي.</p>
+    <div class="confirm-btns">
+      <button class="btn-cancel" onclick="closeConfirm()">إلغاء</button>
+      <button class="btn-del" id="confirm-del-btn">حذف</button>
+    </div>
+  </div>
+</div>
+
+<!-- Admin Dashboard -->
+<div class="dashboard-overlay" id="admin-dashboard-overlay">
+  <div class="dashboard-topbar">
+    <h2>🛡️ لوحة تحكم الأدمن</h2>
+    <button class="btn-close-dashboard" onclick="document.getElementById('admin-dashboard-overlay').classList.remove('open')">✕ إغلاق</button>
+  </div>
+
+  <!-- KPI Row -->
+  <div style="max-width:1200px; margin:0 auto; padding:28px 28px 0;">
+    <div class="stats-row" id="admin-kpi-row" style="margin-bottom:20px;"></div>
+  </div>
+
+  <div class="dashboard-content" style="padding-top:0;">
+
+    <!-- جدول المستخدمين -->
+    <div class="dash-card full">
+      <div class="dash-card-title">المستخدمون وعملاؤهم</div>
+      <div id="admin-users-table"></div>
+    </div>
+
+    <!-- الأكثر نشاطاً -->
+    <div class="dash-card">
+      <div class="dash-card-title">الأكثر نشاطاً في التسجيل</div>
+      <div class="dash-top-list" id="admin-top-active"></div>
+    </div>
+
+    <!-- آخر نشاط -->
+    <div class="dash-card">
+      <div class="dash-card-title">آخر تسجيل وزن في النظام</div>
+      <div class="dash-top-list" id="admin-last-weights"></div>
+    </div>
+
+    <!-- إحصائيات النمو -->
+    <div class="dash-card full">
+      <div class="dash-card-title">إحصائيات النمو — العملاء التراكميين (آخر 12 شهر)</div>
+      <div class="dash-chart-wrap" style="height:280px;"><canvas id="admin-growth-chart"></canvas></div>
+    </div>
+
+    <!-- نمو كل مستخدم -->
+    <div class="dash-card full">
+      <div class="dash-card-title">نمو العملاء لكل مستخدم (آخر 6 أشهر)</div>
+      <div class="dash-chart-wrap" style="height:280px;"><canvas id="admin-user-growth-chart"></canvas></div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Dashboard -->
+<div class="dashboard-overlay" id="dashboard-overlay">
+  <div class="dashboard-topbar">
+    <h2>📊 الداشبورد التحليلي</h2>
+    <button class="btn-close-dashboard" onclick="closeDashboard()">✕ إغلاق</button>
+  </div>
+  <div class="dashboard-content">
+
+    <!-- تذكير المتابعة -->
+    <div class="dash-card full">
+      <div class="dash-card-title" style="justify-content:space-between;">
+        <span>تذكير المتابعة — لم يُسجَّل وزن منذ أكثر من أسبوعين</span>
+        <span id="dash-followup-count" class="dash-followup-badge"></span>
+      </div>
+      <div id="dash-followup-list"></div>
+    </div>
+
+    <!-- حالة الاشتراكات -->
+    <div class="dash-card">
+      <div class="dash-card-title">حالة الاشتراكات</div>
+      <div class="dash-chart-wrap"><canvas id="dash-sub-chart"></canvas></div>
+    </div>
+
+    <!-- توزيع الأهداف -->
+    <div class="dash-card">
+      <div class="dash-card-title">توزيع الأهداف</div>
+      <div class="dash-chart-wrap"><canvas id="dash-goals-chart"></canvas></div>
+    </div>
+
+    <!-- نسبة الذكور والإناث -->
+    <div class="dash-card">
+      <div class="dash-card-title">نسبة الذكور والإناث</div>
+      <div class="dash-chart-wrap"><canvas id="dash-gender-chart"></canvas></div>
+    </div>
+
+    <!-- توزيع الجنسيات -->
+    <div class="dash-card full">
+      <div class="dash-card-title">توزيع الجنسيات</div>
+      <div class="dash-bar-wrap" id="dash-nationality-bars"></div>
+    </div>
+
+    <!-- الأكثر تقدماً -->
+    <div class="dash-card">
+      <div class="dash-card-title">الأكثر تقدماً في الوزن</div>
+      <div class="dash-top-list" id="dash-top-progress"></div>
+    </div>
+
+    <!-- نشاط التسجيل -->
+    <div class="dash-card">
+      <div class="dash-card-title">نشاط إضافة العملاء (آخر 6 أشهر)</div>
+      <div class="dash-chart-wrap"><canvas id="dash-activity-chart"></canvas></div>
+    </div>
+
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, where, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyAyOMhcHlrbBgkSfFu-hkIHBgpsHp3QJHY",
+  authDomain: "database-79473.firebaseapp.com",
+  projectId: "database-79473",
+  storageBucket: "database-79473.firebasestorage.app",
+  messagingSenderId: "932086122052",
+  appId: "1:932086122052:web:65aa7a47fb40f6150ade11",
+  measurementId: "G-BPJ02ZZ99Z"
+};
+
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
+
+const ADMIN_EMAILS = [
+  'mohamed.saad991991@gmail.com',
+  'projects@organicelements.ae'
+];
+let isAdmin = false;
+
+let clients = [];
+let editingId = null, deleteId = null, weightClientId = null, weightEntries = [];
+let weightChart = null;
+
+onAuthStateChanged(auth, user => {
+  document.getElementById('loading').style.display = 'none';
+  if (user) {
+    isAdmin = ADMIN_EMAILS.includes(user.email);
+    document.getElementById('app-screen').style.display = 'block';
+    document.getElementById('login-screen').style.display = 'none';
+    document.getElementById('user-email-badge').textContent = user.email.split('@')[0];
+    if (isAdmin) document.body.classList.add('is-admin');
+    // تاريخ اليوم
+    const today = new Date().toLocaleDateString('ar', { weekday: 'short', day: 'numeric', month: 'short' });
+    document.getElementById('topbar-date').textContent = today;
+    // حفظ بيانات اليوزر في users collection
+    setDoc(doc(db, 'users', user.uid), {
+      email: user.email,
+      lastLogin: serverTimestamp()
+    }, { merge: true });
+    loadClients();
+  } else {
+    document.getElementById('login-screen').style.display = 'flex';
+    document.getElementById('app-screen').style.display = 'none';
+  }
+});
+
+window.runMigration = async () => {
+  if (!isAdmin) return;
+  const btn = document.querySelector('.btn-migration');
+  btn.textContent = '⏳ جاري التحديث...';
+  btn.disabled = true;
+  try {
+    // جيب كل المستخدمين من users collection
+    const usersSnap = await getDocs(collection(db, 'users'));
+    const usersMap = {};
+    usersSnap.docs.forEach(d => { usersMap[d.id] = d.data().email; });
+
+    // جيب كل العملاء اللي مالهمش userEmail
+    const clientsSnap = await getDocs(collection(db, 'clients'));
+    let updated = 0;
+    for (const d of clientsSnap.docs) {
+      const data = d.data();
+      if (!data.userEmail && data.userId && usersMap[data.userId]) {
+        await updateDoc(doc(db, 'clients', d.id), { userEmail: usersMap[data.userId] });
+        updated++;
+      }
+    }
+    showToast(`تم تحديث ${updated} عميل`, 'success');
+    loadClients();
+  } catch (e) {
+    console.error(e);
+    showToast('خطأ في التحديث', 'error');
+  } finally {
+    btn.textContent = '🔄 تحديث المسجِّلين';
+    btn.disabled = false;
+  }
+};
+
+window.doLogin = async () => {
+  const email = document.getElementById('login-email').value.trim();
+  const pass = document.getElementById('login-pass').value;
+  const errEl = document.getElementById('login-error');
+  errEl.textContent = '';
+  try {
+    await signInWithEmailAndPassword(auth, email, pass);
+  } catch (e) {
+    errEl.textContent = 'بيانات الدخول غير صحيحة';
+  }
+};
+
+window.doLogout = () => signOut(auth);
+
+async function loadClients() {
+  const user = auth.currentUser;
+  if (!user) return;
+  try {
+    let snap;
+    if (isAdmin) {
+      snap = await getDocs(collection(db, 'clients'));
+      clients = snap.docs.map(d => ({ id: d.id, ...d.data() }))
+        .sort((a, b) => {
+          const ta = a.createdAt?.toMillis ? a.createdAt.toMillis() : 0;
+          const tb = b.createdAt?.toMillis ? b.createdAt.toMillis() : 0;
+          return tb - ta;
+        });
+    } else {
+      const q = query(collection(db, 'clients'), where("userId", "==", user.uid), orderBy('createdAt', 'desc'));
+      snap = await getDocs(q);
+      clients = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+    }
+    renderTable();
+    updateStats();
+  } catch (e) { console.error(e); }
+}
+
+window.saveClient = async () => {
+  const user = auth.currentUser;
+  const name = document.getElementById('f-name').value.trim();
+  if (!name || !user) return;
+  const data = {
+    userId: user.uid,
+    userEmail: user.email,
+    name,
+    phone: document.getElementById('f-phone').value.trim().replace(/^0+/, ''),
+    age: +document.getElementById('f-age').value,
+    gender: document.getElementById('f-gender').value,
+    nationality: document.getElementById('f-nationality').value,
+    weight: +document.getElementById('f-weight').value,
+    height: +document.getElementById('f-height').value,
+    goal: document.getElementById('f-goal').value,
+    notes: document.getElementById('f-notes').value,
+    subStart: document.getElementById('f-sub-start').value || null,
+    subMonths: +document.getElementById('f-sub-months').value || null,
+  };
+  try {
+    if (editingId) {
+      await updateDoc(doc(db, 'clients', editingId), data);
+      showToast('تم تحديث بيانات العميل', 'success');
+    } else {
+      data.createdAt = serverTimestamp();
+      const newClientRef = await addDoc(collection(db, 'clients'), data);
+      // تسجيل الوزن الأول تلقائياً في سجل الأوزان
+      if (data.weight) {
+        const today = new Date().toISOString().split('T')[0];
+        await addDoc(collection(db, 'clients', newClientRef.id, 'weights'), {
+          weight: data.weight,
+          date: today
+        });
+      }
+      // تسجيل الاشتراك الأول في سجل الاشتراكات
+      if (data.subStart && data.subMonths) {
+        const sub = getSubStatus(data.subStart, data.subMonths);
+        await addDoc(collection(db, 'clients', newClientRef.id, 'subHistory'), {
+          type: 'create',
+          months: data.subMonths,
+          startDate: data.subStart,
+          endDate: sub ? sub.end.toISOString().split('T')[0] : null,
+          by: user.email,
+          createdAt: serverTimestamp()
+        });
+      }
+      showToast('تم إضافة العميل بنجاح', 'success');
+    }
+    closeModal();
+    loadClients();
+  } catch (e) { showToast('خطأ في الحفظ', 'error'); }
+};
+
+function getNationalityFlag(code) {
+  const map = {
+    SA:'🇸🇦 السعودية', AE:'🇦🇪 الإمارات', EG:'🇪🇬 مصر', KW:'🇰🇼 الكويت',
+    QA:'🇶🇦 قطر', BH:'🇧🇭 البحرين', OM:'🇴🇲 عُمان', JO:'🇯🇴 الأردن',
+    LB:'🇱🇧 لبنان', SY:'🇸🇾 سوريا', IQ:'🇮🇶 العراق', YE:'🇾🇪 اليمن',
+    LY:'🇱🇾 ليبيا', TN:'🇹🇳 تونس', DZ:'🇩🇿 الجزائر', MA:'🇲🇦 المغرب',
+    SD:'🇸🇩 السودان', OTHER:'🌍 أخرى'
+  };
+  return map[code] || code;
+}
+
+function calculateBMI(w, h) {
+  if (!w || !h) return null;
+  const hMeters = h / 100;
+  return (w / (hMeters * hMeters)).toFixed(1);
+}
+
+function getBMICategory(bmi) {
+  if (bmi < 18.5) return { label: 'نقص', color: '#d97706', bg: '#fffbeb' };
+  if (bmi < 25) return { label: 'مثالي', color: '#059669', bg: '#ecfdf5' };
+  if (bmi < 30) return { label: 'زيادة', color: '#e53e3e', bg: '#fff5f5' };
+  return { label: 'سمنة', color: '#c53030', bg: '#fff5f5' };
+}
+
+function formatDaysLeft(daysLeft) {
+  if (daysLeft <= 0) return null;
+  const months = Math.floor(daysLeft / 30);
+  const days = daysLeft % 30;
+  if (months === 0) return `${days} يوم`;
+  if (days === 0) return `${months} ${months === 1 ? 'شهر' : 'أشهر'}`;
+  return `${months} ${months === 1 ? 'شهر' : 'أشهر'} و ${days} يوم`;
+}
+
+function getSubStatus(subStart, subMonths) {
+  if (!subStart || !subMonths) return null;
+  const start = new Date(subStart);
+  const end = new Date(start);
+  end.setMonth(end.getMonth() + subMonths);
+  const today = new Date();
+  today.setHours(0,0,0,0);
+  const daysLeft = Math.ceil((end - today) / (1000 * 60 * 60 * 24));
+  return { daysLeft, end, start };
+}
+
+function renderSubCard(client) {
+  const container = document.getElementById('sub-card-container');
+  const sub = getSubStatus(client.subStart, client.subMonths);
+
+  const renewOptions = [1,2,3,4,6,9,12].map(m =>
+    `<option value="${m}">${m === 12 ? 'سنة كاملة' : m + (m === 1 ? ' شهر' : ' أشهر')}</option>`
+  ).join('');
+
+  const renewRow = `
+    <div class="sub-renew-row">
+      <span class="sub-renew-label">تجديد:</span>
+      <select class="sub-renew-select" id="sub-renew-months">${renewOptions}</select>
+      <button class="btn-renew" onclick="renewSubscription('${client.id}')">تجديد</button>
+    </div>`;
+
+  if (!sub) {
+    container.innerHTML = `
+      <div class="sub-card none-sub">
+        <div class="sub-card-icon">📋</div>
+        <div class="sub-card-info">
+          <div class="sub-card-title">بدون اشتراك</div>
+          <div class="sub-card-detail">لم يتم تسجيل اشتراك لهذا العميل</div>
+        </div>
+        ${renewRow}
+      </div>`;
+    return;
+  }
+
+  const fmt = d => new Date(d).toLocaleDateString('ar', { day:'numeric', month:'long', year:'numeric' });
+  const endStr = fmt(sub.end);
+  const startStr = fmt(sub.start);
+
+  if (sub.daysLeft <= 0) {
+    const daysAgo = Math.abs(sub.daysLeft);
+    container.innerHTML = `
+      <div class="sub-card expired-sub">
+        <div class="sub-card-icon">⛔</div>
+        <div class="sub-card-info">
+          <div class="sub-card-title">الاشتراك منتهي</div>
+          <div class="sub-card-detail">بدأ: ${startStr}<br>انتهى: ${endStr} · (مدة ${client.subMonths} ${client.subMonths === 1 ? 'شهر' : 'أشهر'})</div>
+        </div>
+        <div class="sub-card-days" style="color:#e53e3e">
+          ${daysAgo}
+          <span class="days-lbl">يوم مضى</span>
+        </div>
+        ${renewRow}
+      </div>`;
+  } else if (sub.daysLeft <= 7) {
+    container.innerHTML = `
+      <div class="sub-card warning-sub">
+        <div class="sub-card-icon">⚠️</div>
+        <div class="sub-card-info">
+          <div class="sub-card-title">الاشتراك على وشك الانتهاء</div>
+          <div class="sub-card-detail">بدأ: ${startStr}<br>ينتهي: ${endStr}</div>
+        </div>
+        <div class="sub-card-days">
+          ${formatDaysLeft(sub.daysLeft)}
+          <span class="days-lbl">متبقي</span>
+        </div>
+        ${renewRow}
+      </div>`;
+  } else {
+    container.innerHTML = `
+      <div class="sub-card active-sub">
+        <div class="sub-card-icon">✅</div>
+        <div class="sub-card-info">
+          <div class="sub-card-title">اشتراك فعال</div>
+          <div class="sub-card-detail">بدأ: ${startStr}<br>ينتهي: ${endStr}</div>
+        </div>
+        <div class="sub-card-days">
+          ${formatDaysLeft(sub.daysLeft)}
+          <span class="days-lbl">متبقي</span>
+        </div>
+        ${renewRow}
+      </div>`;
+  }
+}
+
+window.renewSubscription = async (clientId) => {
+  const addMonths = +document.getElementById('sub-renew-months').value;
+  if (!addMonths) return;
+  const btn = document.querySelector('.btn-renew');
+  btn.disabled = true;
+  btn.textContent = '⏳ جاري...';
+
+  try {
+    const c = clients.find(x => x.id === clientId);
+    const sub = getSubStatus(c.subStart, c.subMonths);
+
+    let newStart, newMonths;
+    if (!sub || sub.daysLeft <= 0) {
+      // اشتراك منتهي أو مفيش — ابدأ من النهارده
+      newStart = new Date().toISOString().split('T')[0];
+      newMonths = addMonths;
+    } else {
+      // اشتراك فعال — أضف من تاريخ انتهائه
+      newStart = c.subStart;
+      newMonths = (c.subMonths || 0) + addMonths;
+    }
+
+    await updateDoc(doc(db, 'clients', clientId), {
+      subStart: newStart,
+      subMonths: newMonths
+    });
+
+    // تحديث الكاش المحلي
+    const idx = clients.findIndex(x => x.id === clientId);
+    if (idx !== -1) { clients[idx].subStart = newStart; clients[idx].subMonths = newMonths; }
+    renderSubCard(clients.find(x => x.id === clientId));
+    renderTable();
+    showToast(`تم التجديد بنجاح — ${addMonths} ${addMonths === 1 ? 'شهر' : 'أشهر'}`, 'success');
+  } catch(e) {
+    console.error(e);
+    showToast('خطأ في التجديد', 'error');
+  } finally {
+    const b = document.querySelector('.btn-renew');
+    if (b) { b.disabled = false; b.textContent = '🔄 تجديد'; }
+  }
+};
+
+window.renderTable = () => {
+  const q = document.getElementById('search-input').value.toLowerCase();
+  let filtered = clients.filter(c =>
+    c.name.toLowerCase().includes(q) || (c.phone || '').includes(q)
+  );
+  if (activeFilters.goal !== 'all') filtered = filtered.filter(c => c.goal === activeFilters.goal);
+  if (activeFilters.gender !== 'all') filtered = filtered.filter(c => c.gender === activeFilters.gender);
+  if (activeFilters.nationality !== 'all') filtered = filtered.filter(c => c.nationality === activeFilters.nationality);
+  if (activeFilters.registrar !== 'all') filtered = filtered.filter(c => c.userEmail === activeFilters.registrar);
+  if (activeFilters.sub !== 'all') {
+    filtered = filtered.filter(c => {
+      const sub = getSubStatus(c.subStart, c.subMonths);
+      if (activeFilters.sub === 'active')   return sub && sub.daysLeft > 7;
+      if (activeFilters.sub === 'expiring') return sub && sub.daysLeft > 0 && sub.daysLeft <= 7;
+      if (activeFilters.sub === 'expired')  return sub && sub.daysLeft <= 0;
+      if (activeFilters.sub === 'none')     return !sub;
+      return true;
+    });
+  }
+
+  const tbody = document.getElementById('clients-tbody');
+  populateFilterDropdowns();
+
+  // update count badge
+  document.getElementById('client-count-badge').textContent = `${filtered.length} عميل`;
+
+  tbody.innerHTML = filtered.map(c => {
+    const bmi = calculateBMI(c.weight, c.height);
+    const cat = bmi ? getBMICategory(bmi) : null;
+    const goalMap = { loss: 'خسارة وزن', gain: 'زيادة وزن', maintain: 'تثبيت' };
+    const goalText = goalMap[c.goal] || c.goal;
+    const avatarPalette = [
+      ['#1a56db','#1e40af'], // أزرق
+      ['#059669','#047857'], // أخضر
+      ['#8b5cf6','#7c3aed'], // بنفسجي
+      ['#ec4899','#db2777'], // وردي
+      ['#f59e0b','#d97706'], // برتقالي
+      ['#06b6d4','#0891b2'], // سماوي
+      ['#e53e3e','#c53030'], // أحمر
+      ['#0ea5e9','#0284c7'], // أزرق فاتح
+      ['#10b981','#059669'], // أخضر فاتح
+      ['#6366f1','#4f46e5'], // نيلي
+    ];
+    const nameHash = c.name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    const [avatarColor, avatarDark] = avatarPalette[nameHash % avatarPalette.length];
+    const initials = c.name.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase();
+
+    return `
+    <tr onclick="openWeightModal('${c.id}')">
+      <td>
+        <div class="client-row-info">
+          <div class="client-avatar" style="background:linear-gradient(135deg,${avatarColor},${avatarDark})">${initials}</div>
+          <div class="client-row-text">
+            <div class="client-name">${c.name}</div>
+            ${c.age ? `<div class="client-meta">${c.age} سنة</div>` : ''}
+          </div>
+        </div>
+      </td>
+      <td>
+        ${c.phone
+          ? `<a href="https://wa.me/971${c.phone.replace(/^0+/, '')}" class="whatsapp-link" target="_blank" onclick="event.stopPropagation()">📱 ${c.phone}</a>`
+          : '<span style="color:var(--text-light)">—</span>'}
+      </td>
+      <td>
+        <div class="weight-info">
+          ${c.weight ? `<span class="weight-val">${c.weight} كجم</span>` : '<span style="color:var(--text-light)">—</span>'}
+          ${c.height ? `<span class="height-val">${c.height} سم</span>` : ''}
+          ${bmi ? `<span class="bmi-badge" style="background:${cat.bg}; color:${cat.color}; border:1px solid ${cat.color}20;">${bmi} · ${cat.label}</span>` : ''}
+        </div>
+      </td>
+      <td><span class="badge badge-${c.goal}">${goalText}</span></td>
+      <td onclick="event.stopPropagation()">
+        ${(() => {
+          const sub = getSubStatus(c.subStart, c.subMonths);
+          if (!sub) return '<span class="sub-badge none">بدون اشتراك</span>';
+          if (sub.daysLeft <= 0) return `<span class="sub-badge expired">⛔ منتهي</span>`;
+          if (sub.daysLeft <= 7) return `<span class="sub-badge warning">⚠️ ينتهي قريباً</span>`;
+          return `<span class="sub-badge active">✅ فعال</span>`;
+        })()}
+      </td>
+      <td class="col-registrar" onclick="event.stopPropagation()">
+        <span style="font-size:12px; color:var(--text-muted);">${c.userEmail || '—'}</span>
+      </td>
+      <td onclick="event.stopPropagation()">
+        <div class="action-btns">
+          <button class="btn-edit" onclick="editClient('${c.id}')">تعديل</button>
+          <button class="btn-sub" onclick="openSubModal('${c.id}')">الاشتراك</button>
+          <button class="btn-del" onclick="confirmDelete('${c.id}')">حذف</button>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+
+  const emptyEl = document.getElementById('empty-state');
+  if (filtered.length === 0) {
+    const isSearching = document.getElementById('search-input').value || Object.values(activeFilters).some(v => v !== 'all');
+    emptyEl.innerHTML = isSearching ? `
+      <div class="empty-state-illustration">🔍</div>
+      <div class="empty-state-title">لا توجد نتائج</div>
+      <div class="empty-state-sub">جرب تغيير كلمة البحث أو الفلاتر</div>
+      <button class="empty-state-btn" onclick="clearFilters();document.getElementById('search-input').value='';renderTable()">مسح البحث والفلاتر</button>
+    ` : `
+      <div class="empty-state-illustration">👥</div>
+      <div class="empty-state-title">لا يوجد عملاء بعد</div>
+      <div class="empty-state-sub">ابدأ بإضافة أول عميل لك<br>وتابع رحلته معك</div>
+      <button class="empty-state-btn" onclick="openModal()">+ إضافة عميل جديد</button>
+    `;
+    emptyEl.style.display = 'block';
+  } else {
+    emptyEl.style.display = 'none';
+  }
+};
+
+window.openWeightModal = async (id) => {
+  weightClientId = id;
+  const c = clients.find(x => x.id === id);
+
+  // Avatar بأول حرفين
+  const avatarPalette = [
+    ['#1a56db','#1e40af'], ['#059669','#047857'], ['#8b5cf6','#7c3aed'],
+    ['#ec4899','#db2777'], ['#f59e0b','#d97706'], ['#06b6d4','#0891b2'],
+    ['#e53e3e','#c53030'], ['#0ea5e9','#0284c7'], ['#10b981','#059669'], ['#6366f1','#4f46e5'],
+  ];
+  const nameHash = c.name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const [avatarColor, avatarDark] = avatarPalette[nameHash % avatarPalette.length];
+  const initials = c.name.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase();
+  const avatarEl = document.getElementById('weight-client-avatar');
+  avatarEl.textContent = initials;
+  avatarEl.style.background = `linear-gradient(135deg, ${avatarColor}, ${avatarDark})`;
+
+  document.getElementById('weight-client-name').textContent = c.name;
+
+  // النوع والجنسية
+  const genderMap = { male: 'ذكر', female: 'أنثى' };
+  const natMap = {
+    SA:'السعودية', AE:'الإمارات', EG:'مصر', KW:'الكويت', QA:'قطر',
+    BH:'البحرين', OM:'عُمان', JO:'الأردن', LB:'لبنان', SY:'سوريا',
+    IQ:'العراق', YE:'اليمن', LY:'ليبيا', TN:'تونس', DZ:'الجزائر',
+    MA:'المغرب', SD:'السودان', OTHER:'أخرى'
+  };
+  const parts = [];
+  if (c.age) parts.push(`${c.age} سنة`);
+  if (c.gender) parts.push(genderMap[c.gender] || c.gender);
+  if (c.nationality) parts.push(natMap[c.nationality] || c.nationality);
+  document.getElementById('weight-client-info').textContent = parts.join(' · ');
+
+  // Badges — الهدف + BMI
+  const goalMap = { loss: { label: 'خسارة وزن', cls: 'goal-loss' }, gain: { label: 'زيادة وزن', cls: 'goal-gain' }, maintain: { label: 'تثبيت', cls: 'goal-maintain' } };
+  const goal = goalMap[c.goal] || { label: c.goal, cls: '' };
+  const bmi = c.weight && c.height ? (c.weight / ((c.height/100) ** 2)).toFixed(1) : null;
+  let bmiCls = 'bmi', bmiLabel = '';
+  if (bmi) {
+    if (bmi < 18.5) { bmiCls = 'bmi bmi-under'; bmiLabel = `BMI ${bmi} · نقص`; }
+    else if (bmi < 25) { bmiCls = 'bmi bmi-ideal'; bmiLabel = `BMI ${bmi} · مثالي`; }
+    else if (bmi < 30) { bmiCls = 'bmi bmi-over'; bmiLabel = `BMI ${bmi} · زيادة`; }
+    else { bmiCls = 'bmi bmi-over'; bmiLabel = `BMI ${bmi} · سمنة`; }
+  }
+  const sub = getSubStatus(c.subStart, c.subMonths);
+  let subBadge = '';
+  if (!sub) {
+    subBadge = `<span class="wch-badge sub-none">بدون اشتراك</span>`;
+  } else if (sub.daysLeft <= 0) {
+    subBadge = `<span class="wch-badge sub-expired">⛔ منتهي منذ ${Math.abs(sub.daysLeft)} يوم</span>`;
+  } else if (sub.daysLeft <= 7) {
+    subBadge = `<span class="wch-badge sub-warning">⚠️ ${formatDaysLeft(sub.daysLeft)} متبقي</span>`;
+  } else {
+    subBadge = `<span class="wch-badge sub-active">✅ ${formatDaysLeft(sub.daysLeft)} متبقي</span>`;
+  }
+  document.getElementById('weight-client-badges').innerHTML = `
+    <span class="wch-badge ${goal.cls}">${goal.label}</span>
+    ${bmi ? `<span class="wch-badge ${bmiCls}">${bmiLabel}</span>` : ''}
+    ${c.height ? `<span class="wch-badge bmi">${c.height} سم</span>` : ''}
+    ${subBadge}
+  `;
+
+  document.getElementById('w-new-date').value = new Date().toISOString().split('T')[0];
+
+  document.getElementById('weight-modal').classList.add('open');
+  loadWeightEntries();
+};
+
+async function loadWeightEntries() {
+  const q = query(collection(db, 'clients', weightClientId, 'weights'), orderBy('date', 'desc'));
+  const snap = await getDocs(q);
+  weightEntries = snap.docs.map(d => ({ id: d.id, ...d.data() }));
+  renderWeightHistory();
+}
+
+window.downloadDietFile = (url, fileName) => {
+  window.open(url, '_blank');
+};
+
+window.updateDietFileLabel = () => {
+  const file = document.getElementById('w-diet-file').files[0];
+  const nameEl = document.getElementById('diet-file-name');
+  if (file) {
+    nameEl.textContent = '📄 ' + file.name;
+    nameEl.style.display = 'block';
+  } else {
+    nameEl.style.display = 'none';
+  }
+};
+
+const SUPABASE_URL = 'https://purijdmtblnzyugorzsa.supabase.co';
+const SUPABASE_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InB1cmlqZG10Ymxuenl1Z29yenNhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY0MTE3ODMsImV4cCI6MjA5MTk4Nzc4M30.FxKtpu_mmbW19vI5tJooexu5Jbj-p9stamM0-ZuY9Y4';
+
+async function uploadToSupabase(file) {
+  const ext = file.name.split('.').pop();
+  const filePath = `${weightClientId}/${Date.now()}.${ext}`;
+
+  const res = await fetch(`${SUPABASE_URL}/storage/v1/object/diets/${filePath}`, {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${SUPABASE_KEY}`,
+      'Content-Type': file.type || 'application/octet-stream',
+      'x-upsert': 'true'
+    },
+    body: file
+  });
+
+  if (!res.ok) {
+    const err = await res.text();
+    throw new Error('Supabase upload failed: ' + err);
+  }
+
+  const publicURL = `${SUPABASE_URL}/storage/v1/object/public/diets/${filePath}`;
+  return { url: publicURL, filePath };
+}
+
+window.addWeightEntry = async () => {
+  const w = +document.getElementById('w-new-weight').value;
+  const d = document.getElementById('w-new-date').value;
+  if (!w || !d) return;
+
+  const btn = document.querySelector('.btn-add-weight');
+  btn.disabled = true;
+  btn.innerHTML = '<span class="diet-spinner" style="width:14px;height:14px;border-width:2px;"></span> جاري الحفظ...';
+
+  try {
+    const dietFile = document.getElementById('w-diet-file').files[0];
+    let dietFileURL = null, dietFileName = null, dietPublicId = null;
+
+    if (dietFile) {
+      const result = await uploadToSupabase(dietFile);
+      dietFileURL = result.url;
+      dietPublicId = result.filePath;
+      dietFileName = dietFile.name;
+    }
+
+    const entryData = { weight: w, date: d };
+    if (dietFileURL) {
+      entryData.dietFileURL = dietFileURL;
+      entryData.dietFileName = dietFileName;
+      entryData.dietPublicId = dietPublicId;
+    }
+
+    await addDoc(collection(db, 'clients', weightClientId, 'weights'), entryData);
+    await updateDoc(doc(db, 'clients', weightClientId), { weight: w });
+
+    document.getElementById('w-new-weight').value = '';
+    document.getElementById('w-diet-file').value = '';
+    document.getElementById('diet-file-name').style.display = 'none';
+    loadWeightEntries();
+    loadClients();
+    showToast('تم إضافة الوزن بنجاح', 'success');
+  } catch (e) {
+    console.error(e);
+    showToast('خطأ في الحفظ', 'error');
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '+ إضافة وزن جديد';
+  }
+};
+
+window.deleteWeightEntry = async (entryId) => {
+  await deleteDoc(doc(db, 'clients', weightClientId, 'weights', entryId));
+  const remaining = weightEntries.filter(e => e.id !== entryId);
+  if (remaining.length > 0) {
+    const sorted = [...remaining].sort((a, b) => new Date(b.date) - new Date(a.date));
+    await updateDoc(doc(db, 'clients', weightClientId), { weight: sorted[0].weight });
+  }
+  loadWeightEntries();
+  loadClients();
+};
+
+function renderWeightHistory() {
+  const list = document.getElementById('weight-history-list');
+  if (weightEntries.length === 0) {
+    list.innerHTML = '<div class="empty-state" style="padding:40px 20px"><div class="empty-state-illustration" style="width:60px;height:60px;font-size:26px;border-radius:16px;">⚖️</div><div class="empty-state-title" style="font-size:14px;">لا يوجد سجل أوزان</div><div class="empty-state-sub" style="font-size:12px;">أضف أول وزن للعميل من الأعلى</div></div>';
+    ['ws-start','ws-current','ws-diff','ws-visits'].forEach(id => document.getElementById(id).textContent = '—');
+    document.getElementById('ws-visits').textContent = '0';
+    renderWeightChart([]);
+    return;
+  }
+
+  list.innerHTML = weightEntries.map(e => `
+    <div class="weight-entry">
+      <span class="weight-entry-val">${e.weight} كجم</span>
+      <div style="margin-right:auto; display:flex; align-items:center; gap:8px;">
+        ${e.dietFileURL ? `
+          <button class="btn-diet-download" onclick="downloadDietFile('${e.dietFileURL}', '${(e.dietFileName || 'diet').replace(/'/g, "\\'")}')">
+            📥 ${e.dietFileName ? e.dietFileName.length > 18 ? e.dietFileName.substring(0,18)+'...' : e.dietFileName : 'دايت'}
+          </button>` : ''}
+        <span class="weight-entry-date">${e.date}</span>
+        <button class="btn-del-weight" onclick="deleteWeightEntry('${e.id}')" title="حذف">×</button>
+      </div>
+    </div>`).join('');
+
+  const sorted = [...weightEntries].sort((a, b) => new Date(a.date) - new Date(b.date));
+  const startWeight = sorted[0].weight;
+  const currentWeight = sorted[sorted.length - 1].weight;
+  const diff = (currentWeight - startWeight).toFixed(1);
+
+  document.getElementById('ws-start').textContent = startWeight;
+  document.getElementById('ws-current').textContent = currentWeight;
+  document.getElementById('ws-visits').textContent = weightEntries.length;
+  document.getElementById('ws-diff').textContent = diff > 0 ? `+${diff}` : diff;
+
+  renderWeightChart(sorted);
+}
+
+function renderWeightChart(sorted) {
+  const canvas = document.getElementById('weight-chart');
+  const container = document.getElementById('weight-chart-container');
+
+  if (sorted.length < 2) {
+    if (weightChart) { weightChart.destroy(); weightChart = null; }
+    canvas.style.display = 'none';
+    if (!container.querySelector('.weight-chart-empty')) {
+      container.innerHTML = '<canvas id="weight-chart" style="display:none"></canvas><div class="weight-chart-empty">أضف زيارتين على الأقل لعرض الرسم البياني</div>';
+    }
+    return;
+  }
+
+  // restore canvas if it was hidden
+  canvas.style.display = 'block';
+  const emptyMsg = container.querySelector('.weight-chart-empty');
+  if (emptyMsg) emptyMsg.remove();
+
+  const labels = sorted.map(e => e.date);
+  const data = sorted.map(e => e.weight);
+  const lost = data[data.length - 1] <= data[0];
+
+  if (weightChart) { weightChart.destroy(); weightChart = null; }
+
+  weightChart = new Chart(canvas, {
+    type: 'line',
+    data: {
+      labels,
+      datasets: [{
+        label: 'الوزن (كجم)',
+        data,
+        borderColor: lost ? '#059669' : '#e53e3e',
+        backgroundColor: lost ? 'rgba(5,150,105,0.08)' : 'rgba(229,62,62,0.08)',
+        borderWidth: 2.5,
+        pointBackgroundColor: lost ? '#059669' : '#e53e3e',
+        pointRadius: 4,
+        pointHoverRadius: 6,
+        tension: 0.35,
+        fill: true
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          rtl: true,
+          textDirection: 'rtl',
+          callbacks: {
+            label: ctx => `${ctx.parsed.y} كجم`
+          }
+        }
+      },
+      scales: {
+        x: {
+          ticks: { font: { family: 'Tajawal', size: 11 }, color: '#64748b', maxTicksLimit: 6 },
+          grid: { color: '#e2e8f0' }
+        },
+        y: {
+          ticks: { font: { family: 'Tajawal', size: 11 }, color: '#64748b', callback: v => v + ' كجم' },
+          grid: { color: '#e2e8f0' }
+        }
+      }
+    }
+  });
+}
+
+window.editClient = (id) => {
+  const c = clients.find(x => x.id === id);
+  editingId = id;
+  document.getElementById('f-name').value = c.name;
+  document.getElementById('f-phone').value = c.phone || '';
+  document.getElementById('f-goal').value = c.goal;
+  document.getElementById('f-age').value = c.age || '';
+  document.getElementById('f-gender').value = c.gender || '';
+  document.getElementById('f-nationality').value = c.nationality || '';
+  document.getElementById('f-weight').value = c.weight || '';
+  document.getElementById('f-height').value = c.height || '';
+  document.getElementById('f-notes').value = c.notes || '';
+  document.getElementById('f-sub-start').value = c.subStart || '';
+  document.getElementById('f-sub-months').value = c.subMonths || '';
+  document.getElementById('modal-title').textContent = 'تعديل بيانات العميل';
+  goToStep(1);
+  document.getElementById('client-modal').classList.add('open');
+};
+
+window.confirmDelete = (id) => {
+  deleteId = id;
+  document.getElementById('confirm-modal').classList.add('open');
+  document.getElementById('confirm-del-btn').onclick = async () => {
+    await deleteDoc(doc(db, 'clients', deleteId));
+    showToast('تم حذف العميل', 'error');
+    closeConfirm();
+    loadClients();
+  };
+};
+
+function updateStats() {
+  const total = clients.length;
+  const loss = clients.filter(c => c.goal === 'loss').length;
+  const gain = clients.filter(c => c.goal === 'gain').length;
+  const maintain = clients.filter(c => c.goal === 'maintain').length;
+
+  // عملاء هذا الشهر
+  const now = new Date();
+  const thisMonth = clients.filter(c => {
+    if (!c.createdAt) return false;
+    const d = c.createdAt.toDate ? c.createdAt.toDate() : new Date(c.createdAt);
+    return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
+  }).length;
+
+  // إحصائيات الاشتراكات
+  let subActive = 0, subExpiring = 0, subExpired = 0, subNone = 0;
+  clients.forEach(c => {
+    const sub = getSubStatus(c.subStart, c.subMonths);
+    if (!sub) { subNone++; }
+    else if (sub.daysLeft <= 0) { subExpired++; }
+    else if (sub.daysLeft <= 7) { subExpiring++; }
+    else { subActive++; }
+  });
+
+  document.getElementById('stat-total').textContent = total;
+  document.getElementById('stat-loss').textContent = loss;
+  document.getElementById('stat-gain').textContent = gain;
+  document.getElementById('stat-maintain').textContent = maintain;
+  document.getElementById('client-count-badge').textContent = `${clients.length} عميل`;
+
+  const totalSubEl = document.getElementById('stat-total-sub');
+  if (thisMonth > 0) {
+    totalSubEl.textContent = `+${thisMonth} هذا الشهر`;
+    totalSubEl.className = 'stat-sub positive';
+  } else {
+    totalSubEl.textContent = 'لا إضافات هذا الشهر';
+    totalSubEl.className = 'stat-sub neutral';
+  }
+
+  // كارت حالة الاشتراكات
+  const sscActive    = document.getElementById('ssc-active');
+  const sscExpiring  = document.getElementById('ssc-expiring');
+  const sscExpired   = document.getElementById('ssc-expired');
+  const sscNone      = document.getElementById('ssc-none');
+  if (sscActive)   sscActive.textContent   = subActive;
+  if (sscExpiring) sscExpiring.textContent = subExpiring;
+  if (sscExpired)  sscExpired.textContent  = subExpired;
+  if (sscNone)     sscNone.textContent     = subNone;
+
+  const pct = (n) => total > 0 ? Math.round((n / total) * 100) + '%' : '0%';
+  document.getElementById('stat-loss-sub').textContent = `${pct(loss)} من الإجمالي`;
+  document.getElementById('stat-loss-sub').className = 'stat-sub';
+  document.getElementById('stat-gain-sub').textContent = `${pct(gain)} من الإجمالي`;
+  document.getElementById('stat-gain-sub').className = 'stat-sub';
+  document.getElementById('stat-maintain-sub').textContent = `${pct(maintain)} من الإجمالي`;
+  document.getElementById('stat-maintain-sub').className = 'stat-sub';
+}
+
+// ===== ADMIN DASHBOARD =====
+async function buildAdminDashboard() {
+  // جيب كل المستخدمين
+  const usersSnap = await getDocs(collection(db, 'users'));
+  const users = usersSnap.docs.map(d => ({ uid: d.id, ...d.data() }));
+
+  // جيب كل العملاء مع آخر وزن ليهم
+  const allWeightData = await Promise.all(
+    clients.map(async c => {
+      const q = query(collection(db, 'clients', c.id, 'weights'), orderBy('date', 'desc'));
+      const snap = await getDocs(q);
+      const entries = snap.docs.map(d => d.data());
+      return { client: c, lastEntry: entries[0] || null, totalEntries: entries.length };
+    })
+  );
+
+  // KPIs
+  const totalClients = clients.length;
+  const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
+  const activeClients = allWeightData.filter(d => d.lastEntry && new Date(d.lastEntry.date) >= twoWeeksAgo).length;
+  const inactiveClients = totalClients - activeClients;
+
+  // إجمالي الاشتراكات الفعالة عبر كل المستخدمين
+  let totalSubActive = 0, totalSubExpiring = 0, totalSubExpired = 0;
+  clients.forEach(c => {
+    const sub = getSubStatus(c.subStart, c.subMonths);
+    if (!sub) return;
+    if (sub.daysLeft <= 0) totalSubExpired++;
+    else if (sub.daysLeft <= 7) totalSubExpiring++;
+    else totalSubActive++;
+  });
+
+  document.getElementById('admin-kpi-row').innerHTML = `
+    <div class="stat-card">
+      <div class="stat-icon">👥</div>
+      <div class="stat-info">
+        <div class="stat-val">${users.length}</div>
+        <div class="stat-label">إجمالي المستخدمين</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">🧑‍💼</div>
+      <div class="stat-info">
+        <div class="stat-val">${totalClients}</div>
+        <div class="stat-label">إجمالي العملاء</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">✅</div>
+      <div class="stat-info">
+        <div class="stat-val" style="color:#15803d">${totalSubActive}</div>
+        <div class="stat-label">اشتراكات فعالة</div>
+      </div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-icon">⛔</div>
+      <div class="stat-info">
+        <div class="stat-val" style="color:var(--danger)">${totalSubExpired}</div>
+        <div class="stat-label">اشتراكات منتهية</div>
+      </div>
+    </div>`;
+
+  // جدول المستخدمين
+  const userStats = users.map(u => {
+    const userClients = clients.filter(c => c.userId === u.uid);
+    const userWeightData = allWeightData.filter(d => d.client.userId === u.uid);
+    const activeWeightCount = userWeightData.filter(d => d.lastEntry && new Date(d.lastEntry.date) >= twoWeeksAgo).length;
+    const lastLogin = u.lastLogin?.toDate ? u.lastLogin.toDate() : null;
+
+    // إحصائيات الاشتراكات
+    let subActive = 0, subExpiring = 0, subExpired = 0, subNone = 0;
+    userClients.forEach(c => {
+      const sub = getSubStatus(c.subStart, c.subMonths);
+      if (!sub) subNone++;
+      else if (sub.daysLeft <= 0) subExpired++;
+      else if (sub.daysLeft <= 7) subExpiring++;
+      else subActive++;
+    });
+
+    return { ...u, clientCount: userClients.length, activeWeightCount, subActive, subExpiring, subExpired, subNone, lastLogin };
+  }).sort((a, b) => b.subActive - a.subActive);
+
+  const maxClients = Math.max(...userStats.map(u => u.clientCount), 1);
+  const maxSubActive = Math.max(...userStats.map(u => u.subActive), 1);
+
+  document.getElementById('admin-users-table').innerHTML = `
+    <table class="admin-users-table">
+      <thead>
+        <tr>
+          <th>#</th>
+          <th>المستخدم</th>
+          <th>إجمالي العملاء</th>
+          <th>اشتراك فعال</th>
+          <th>ينتهي قريباً</th>
+          <th>منتهي</th>
+          <th>بدون اشتراك</th>
+          <th>آخر دخول</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${userStats.map((u, i) => `
+          <tr>
+            <td style="color:var(--text-muted);font-weight:700;font-size:13px;">${i + 1}</td>
+            <td><span style="font-weight:700;color:var(--text);">${u.email.split('@')[0]}</span><br><span style="font-size:11px;color:var(--text-muted);">${u.email}</span></td>
+            <td>
+              <div style="font-weight:800;color:var(--accent);margin-bottom:4px;">${u.clientCount}</div>
+              <div class="admin-progress-bar">
+                <div class="admin-progress-fill" style="width:${(u.clientCount/maxClients)*100}%;background:var(--accent);"></div>
+              </div>
+            </td>
+            <td>
+              <div style="font-weight:800;color:#15803d;margin-bottom:4px;">✅ ${u.subActive}</div>
+              <div class="admin-progress-bar">
+                <div class="admin-progress-fill" style="width:${(u.subActive/maxSubActive)*100}%;background:#15803d;"></div>
+              </div>
+            </td>
+            <td><span style="color:#d97706;font-weight:700;">⚠️ ${u.subExpiring}</span></td>
+            <td><span style="color:#dc2626;font-weight:700;">⛔ ${u.subExpired}</span></td>
+            <td><span style="color:var(--text-muted);font-weight:600;">— ${u.subNone}</span></td>
+            <td style="color:var(--text-muted);font-size:12px;">${u.lastLogin ? u.lastLogin.toLocaleDateString('ar') : '—'}</td>
+          </tr>`).join('')}
+      </tbody>
+    </table>`;
+
+  // الأكثر اشتراكات فعالة
+  const topActive = [...userStats].slice(0, 5);
+  const rankClass = ['gold', 'silver', 'bronze'];
+  document.getElementById('admin-top-active').innerHTML = topActive.length ? topActive.map((u, i) => `
+    <div class="dash-top-item">
+      <div class="dash-top-rank ${rankClass[i] || ''}">${i+1}</div>
+      <div class="dash-top-name">${u.email.split('@')[0]}</div>
+      <div class="dash-top-val loss">✅ ${u.subActive} فعال</div>
+    </div>`).join('') : '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات</div>';
+
+  // آخر تسجيل وزن
+  const lastWeights = allWeightData
+    .filter(d => d.lastEntry)
+    .sort((a, b) => new Date(b.lastEntry.date) - new Date(a.lastEntry.date))
+    .slice(0, 5);
+
+  document.getElementById('admin-last-weights').innerHTML = lastWeights.length ? lastWeights.map((d, i) => `
+    <div class="dash-top-item">
+      <div class="dash-top-rank ${rankClass[i] || ''}">${i+1}</div>
+      <div class="dash-top-name">${d.client.name}</div>
+      <div class="dash-top-val" style="background:var(--accent-light);color:var(--accent);">${d.lastEntry.date}</div>
+    </div>`).join('') : '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات</div>';
+
+  buildAdminGrowthChart();
+  buildAdminUserGrowthChart(users);
+}
+
+let adminGrowthChart = null, adminUserGrowthChart = null;
+
+function buildAdminGrowthChart() {
+  const now = new Date();
+  const months = [];
+  const totals = [];
+
+  for (let i = 11; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const nextMonth = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
+    const label = d.toLocaleDateString('ar', { month: 'short', year: '2-digit' });
+    months.push(label);
+    // عدد العملاء التراكمي لحد نهاية الشهر ده
+    const count = clients.filter(c => {
+      if (!c.createdAt) return false;
+      const cd = c.createdAt.toDate ? c.createdAt.toDate() : new Date(c.createdAt);
+      return cd < nextMonth;
+    }).length;
+    totals.push(count);
+  }
+
+  if (adminGrowthChart) { adminGrowthChart.destroy(); adminGrowthChart = null; }
+  adminGrowthChart = new Chart(document.getElementById('admin-growth-chart'), {
+    type: 'line',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'إجمالي العملاء',
+        data: totals,
+        borderColor: '#1a56db',
+        backgroundColor: 'rgba(26,86,219,0.08)',
+        borderWidth: 2.5,
+        pointBackgroundColor: '#1a56db',
+        pointRadius: 4, pointHoverRadius: 6,
+        tension: 0.35, fill: true
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y} عميل` } }
+      },
+      scales: {
+        x: { ticks: { font: { family: 'Tajawal', size: 11 }, color: '#64748b' }, grid: { display: false } },
+        y: { ticks: { font: { family: 'Tajawal', size: 11 }, color: '#64748b', stepSize: 1 }, grid: { color: '#e2e8f0' }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function buildAdminUserGrowthChart(users) {
+  const now = new Date();
+  const months = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    months.push(d.toLocaleDateString('ar', { month: 'short', year: '2-digit' }));
+  }
+
+  const colors = ['#1a56db', '#059669', '#f59e0b', '#ec4899', '#8b5cf6', '#06b6d4'];
+
+  const datasets = users.map((u, idx) => {
+    const data = [];
+    for (let i = 5; i >= 0; i--) {
+      const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+      const nextMonth = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
+      const count = clients.filter(c => {
+        if (c.userId !== u.uid || !c.createdAt) return false;
+        const cd = c.createdAt.toDate ? c.createdAt.toDate() : new Date(c.createdAt);
+        return cd >= d && cd < nextMonth;
+      }).length;
+      data.push(count);
+    }
+    const color = colors[idx % colors.length];
+    return {
+      label: u.email.split('@')[0],
+      data,
+      borderColor: color,
+      backgroundColor: color + '20',
+      borderWidth: 2, pointRadius: 4,
+      tension: 0.35, fill: false
+    };
+  });
+
+  if (adminUserGrowthChart) { adminUserGrowthChart.destroy(); adminUserGrowthChart = null; }
+  adminUserGrowthChart = new Chart(document.getElementById('admin-user-growth-chart'), {
+    type: 'bar',
+    data: { labels: months, datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Tajawal', size: 12 }, padding: 14 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y} عميل` } }
+      },
+      scales: {
+        x: { ticks: { font: { family: 'Tajawal', size: 11 }, color: '#64748b' }, grid: { display: false } },
+        y: { ticks: { font: { family: 'Tajawal', size: 11 }, color: '#64748b', stepSize: 1 }, grid: { color: '#e2e8f0' }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+// ===== DASHBOARD =====
+let dashGoalsChart = null, dashGenderChart = null, dashActivityChart = null, dashSubChart = null;
+
+window.openDashboard = async () => {
+  if (isAdmin) {
+    document.getElementById('admin-dashboard-overlay').classList.add('open');
+    await buildAdminDashboard();
+  } else {
+    document.getElementById('dashboard-overlay').classList.add('open');
+    await buildDashboard();
+  }
+};
+
+window.closeDashboard = () => {
+  document.getElementById('dashboard-overlay').classList.remove('open');
+};
+
+async function buildDashboard() {
+  // جيب كل بيانات الأوزان للعملاء
+  const weightData = await Promise.all(
+    clients.map(async c => {
+      const q = query(collection(db, 'clients', c.id, 'weights'), orderBy('date', 'asc'));
+      const snap = await getDocs(q);
+      const entries = snap.docs.map(d => d.data());
+      return { client: c, entries };
+    })
+  );
+
+  buildSubChart();
+  buildGoalsChart();
+  buildGenderChart();
+  buildNationalityBars();
+  buildTopProgress(weightData);
+  buildActivityChart();
+  buildFollowUp(weightData);
+}
+
+function buildSubChart() {
+  let subActive = 0, subExpiring = 0, subExpired = 0, subNone = 0;
+  clients.forEach(c => {
+    const sub = getSubStatus(c.subStart, c.subMonths);
+    if (!sub) subNone++;
+    else if (sub.daysLeft <= 0) subExpired++;
+    else if (sub.daysLeft <= 7) subExpiring++;
+    else subActive++;
+  });
+
+  if (dashSubChart) { dashSubChart.destroy(); dashSubChart = null; }
+
+  const labels  = ['فعال', 'ينتهي قريباً', 'منتهي', 'بدون اشتراك'];
+  const data    = [subActive, subExpiring, subExpired, subNone];
+  const colors  = ['#15803d', '#d97706', '#dc2626', '#94a3b8'];
+
+  dashSubChart = new Chart(document.getElementById('dash-sub-chart'), {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: colors,
+        borderWidth: 0,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { font: { family: 'Tajawal', size: 12 }, padding: 14,
+            filter: (item, chart) => chart.datasets[0].data[item.index] > 0
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+              const pct = total > 0 ? Math.round((ctx.parsed / total) * 100) : 0;
+              return ` ${ctx.label}: ${ctx.parsed} عميل (${pct}%)`;
+            }
+          }
+        }
+      },
+      cutout: '62%'
+    }
+  });
+}
+
+function buildGoalsChart() {
+  const loss = clients.filter(c => c.goal === 'loss').length;
+  const gain = clients.filter(c => c.goal === 'gain').length;
+  const maintain = clients.filter(c => c.goal === 'maintain').length;
+
+  if (dashGoalsChart) { dashGoalsChart.destroy(); dashGoalsChart = null; }
+  dashGoalsChart = new Chart(document.getElementById('dash-goals-chart'), {
+    type: 'doughnut',
+    data: {
+      labels: ['خسارة وزن', 'زيادة وزن', 'تثبيت'],
+      datasets: [{ data: [loss, gain, maintain], backgroundColor: ['#059669','#f59e0b','#1a56db'], borderWidth: 0, hoverOffset: 6 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Tajawal', size: 12 }, padding: 14 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} عميل` } }
+      },
+      cutout: '65%'
+    }
+  });
+}
+
+function buildGenderChart() {
+  const male = clients.filter(c => c.gender === 'male').length;
+  const female = clients.filter(c => c.gender === 'female').length;
+  const unknown = clients.length - male - female;
+
+  if (dashGenderChart) { dashGenderChart.destroy(); dashGenderChart = null; }
+  const labels = ['ذكر', 'أنثى', ...(unknown > 0 ? ['غير محدد'] : [])];
+  const data = [male, female, ...(unknown > 0 ? [unknown] : [])];
+  dashGenderChart = new Chart(document.getElementById('dash-gender-chart'), {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{ data, backgroundColor: ['#3b82f6','#ec4899','#94a3b8'], borderWidth: 0, hoverOffset: 6 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Tajawal', size: 12 }, padding: 14 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.parsed} عميل` } }
+      },
+      cutout: '65%'
+    }
+  });
+}
+
+function buildNationalityBars() {
+  const natMap = {
+    SA:'السعودية', AE:'الإمارات', EG:'مصر', KW:'الكويت', QA:'قطر',
+    BH:'البحرين', OM:'عُمان', JO:'الأردن', LB:'لبنان', SY:'سوريا',
+    IQ:'العراق', YE:'اليمن', LY:'ليبيا', TN:'تونس', DZ:'الجزائر',
+    MA:'المغرب', SD:'السودان', OTHER:'أخرى'
+  };
+  const counts = {};
+  clients.forEach(c => {
+    if (c.nationality) {
+      const label = natMap[c.nationality] || c.nationality;
+      counts[label] = (counts[label] || 0) + 1;
+    }
+  });
+  const sorted = Object.entries(counts).sort((a,b) => b[1]-a[1]);
+  const max = sorted[0]?.[1] || 1;
+  const colors = ['#1a56db','#059669','#f59e0b','#ec4899','#8b5cf6','#06b6d4','#e53e3e','#84cc16'];
+
+  const container = document.getElementById('dash-nationality-bars');
+  if (sorted.length === 0) {
+    container.innerHTML = '<div style="color:var(--text-light);font-size:13px;text-align:center;padding:20px">لا توجد بيانات جنسيات</div>';
+    return;
+  }
+  container.innerHTML = sorted.map(([name, count], i) => `
+    <div class="dash-bar-item">
+      <div class="dash-bar-label"><span>${name}</span><span>${count} عميل</span></div>
+      <div class="dash-bar-track">
+        <div class="dash-bar-fill" style="width:${(count/max)*100}%; background:${colors[i % colors.length]}"></div>
+      </div>
+    </div>`).join('');
+}
+
+function buildTopProgress(weightData) {
+  const progress = weightData
+    .filter(d => d.entries.length >= 2)
+    .map(d => {
+      const first = d.entries[0].weight;
+      const last = d.entries[d.entries.length - 1].weight;
+      const diff = last - first;
+      return { name: d.client.name, diff, goal: d.client.goal };
+    })
+    .filter(d => Math.abs(d.diff) > 0)
+    .sort((a, b) => Math.abs(b.diff) - Math.abs(a.diff))
+    .slice(0, 5);
+
+  const container = document.getElementById('dash-top-progress');
+  if (progress.length === 0) {
+    container.innerHTML = '<div style="color:var(--text-light);font-size:13px;text-align:center;padding:20px">لا توجد بيانات كافية</div>';
+    return;
+  }
+  const rankClass = ['gold','silver','bronze'];
+  container.innerHTML = progress.map((p, i) => {
+    const isLoss = p.diff < 0;
+    const val = Math.abs(p.diff).toFixed(1);
+    return `
+    <div class="dash-top-item">
+      <div class="dash-top-rank ${rankClass[i] || ''}">${i+1}</div>
+      <div class="dash-top-name">${p.name}</div>
+      <div class="dash-top-val ${isLoss ? 'loss' : 'gain'}">${isLoss ? '▼' : '▲'} ${val} كجم</div>
+    </div>`;
+  }).join('');
+}
+
+function buildActivityChart() {
+  const months = [];
+  const counts = [];
+  const now = new Date();
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const label = d.toLocaleDateString('ar', { month: 'short', year: '2-digit' });
+    months.push(label);
+    const count = clients.filter(c => {
+      if (!c.createdAt) return false;
+      const cd = c.createdAt.toDate ? c.createdAt.toDate() : new Date(c.createdAt);
+      return cd.getFullYear() === d.getFullYear() && cd.getMonth() === d.getMonth();
+    }).length;
+    counts.push(count);
+  }
+
+  if (dashActivityChart) { dashActivityChart.destroy(); dashActivityChart = null; }
+  dashActivityChart = new Chart(document.getElementById('dash-activity-chart'), {
+    type: 'bar',
+    data: {
+      labels: months,
+      datasets: [{
+        label: 'عملاء جدد',
+        data: counts,
+        backgroundColor: 'rgba(26,86,219,0.15)',
+        borderColor: '#1a56db',
+        borderWidth: 2,
+        borderRadius: 8,
+        hoverBackgroundColor: 'rgba(26,86,219,0.25)'
+      }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false }, tooltip: { callbacks: { label: ctx => ` ${ctx.parsed.y} عميل جديد` } } },
+      scales: {
+        x: { ticks: { font: { family: 'Tajawal', size: 11 }, color: '#64748b' }, grid: { display: false } },
+        y: { ticks: { font: { family: 'Tajawal', size: 11 }, color: '#64748b', stepSize: 1 }, grid: { color: '#e2e8f0' }, beginAtZero: true }
+      }
+    }
+  });
+}
+
+function buildFollowUp(weightData) {
+  const now = new Date();
+  const twoWeeksAgo = new Date(now - 14 * 24 * 60 * 60 * 1000);
+
+  const overdue = weightData
+    .map(d => {
+      if (d.entries.length === 0) {
+        return { client: d.client, lastDate: null, days: null };
+      }
+      const lastEntry = d.entries[d.entries.length - 1];
+      const lastDate = new Date(lastEntry.date);
+      const days = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
+      return { client: d.client, lastDate, days };
+    })
+    .filter(d => d.days === null || d.days >= 14)
+    .sort((a, b) => (b.days ?? 9999) - (a.days ?? 9999));
+
+  const badge = document.getElementById('dash-followup-count');
+  const container = document.getElementById('dash-followup-list');
+
+  if (overdue.length === 0) {
+    badge.style.display = 'none';
+    container.innerHTML = '<div style="color:var(--success);font-size:13px;font-weight:600;padding:12px 0;">✅ جميع العملاء تم متابعتهم خلال الأسبوعين الماضيين</div>';
+    return;
+  }
+
+  badge.textContent = `${overdue.length} عميل`;
+  badge.style.display = 'inline-block';
+
+  container.innerHTML = `<div class="dash-followup-list">` + overdue.map(d => {
+    const daysText = d.days === null ? 'لم يُسجَّل وزن بعد' : `منذ ${d.days} يوم`;
+    const phone = d.client.phone ? `https://wa.me/971${d.client.phone.replace(/^0+/, '')}` : null;
+    return `
+    <div class="dash-followup-item">
+      <div class="dash-followup-avatar">⚠️</div>
+      <div class="dash-followup-info">
+        <div class="dash-followup-name">${d.client.name}</div>
+        <div class="dash-followup-days">${daysText}</div>
+      </div>
+      ${phone ? `<a class="dash-followup-wa" href="${phone}" target="_blank" title="واتساب">📱</a>` : ''}
+    </div>`;
+  }).join('') + `</div>`;
+}
+
+let currentStep = 1;
+
+function goToStep(step) {
+  currentStep = step;
+  [1,2,3].forEach(i => {
+    document.getElementById(`step-page-${i}`).classList.toggle('active', i === step);
+    const ind = document.getElementById(`step-ind-${i}`);
+    ind.classList.remove('active','done');
+    if (i === step) ind.classList.add('active');
+    else if (i < step) ind.classList.add('done');
+  });
+  [1,2].forEach(i => {
+    const line = document.getElementById(`step-line-${i}`);
+    line.classList.toggle('done', i < step);
+  });
+}
+
+window.stepperNext = (from) => {
+  if (from === 1) {
+    if (!document.getElementById('f-name').value.trim()) {
+      showToast('أدخل الاسم الكامل', 'error'); return;
+    }
+  }
+  goToStep(from + 1);
+};
+
+window.stepperBack = (from) => goToStep(from - 1);
+
+window.toggleFilterPanel = () => {
+  document.getElementById('filter-panel').classList.toggle('open');
+};
+
+// إغلاق الفلتر لو ضغط برا
+document.addEventListener('click', e => {
+  const wrap = document.querySelector('.filter-btn-wrap');
+  if (wrap && !wrap.contains(e.target)) {
+    document.getElementById('filter-panel')?.classList.remove('open');
+  }
+});
+
+window.clearFilters = () => {
+  activeFilters.goal = 'all';
+  activeFilters.gender = 'all';
+  activeFilters.nationality = 'all';
+  activeFilters.registrar = 'all';
+  activeFilters.sub = 'all';
+  document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.filter-chip').forEach(c => {
+    if (c.onclick?.toString().includes("'all'")) c.classList.add('active');
+  });
+  document.getElementById('filter-nationality').value = 'all';
+  document.getElementById('filter-registrar').value = 'all';
+  updateFilterBadge();
+  renderTable();
+};
+
+function updateFilterBadge() {
+  const count = Object.values(activeFilters).filter(v => v !== 'all').length;
+  const badge = document.getElementById('filter-badge');
+  const btn = document.getElementById('btn-filter');
+  if (count > 0) {
+    badge.textContent = count;
+    badge.style.display = 'inline-block';
+    btn.classList.add('has-filters');
+  } else {
+    badge.style.display = 'none';
+    btn.classList.remove('has-filters');
+  }
+}
+
+// ===== FILTERS =====
+const activeFilters = { goal: 'all', gender: 'all', nationality: 'all', registrar: 'all', sub: 'all' };
+
+window.setFilter = (type, value, btn) => {
+  activeFilters[type] = value;
+  btn.closest('.filter-panel').querySelectorAll(`.filter-chip`).forEach(c => {
+    if (c.onclick?.toString().includes(`'${type}'`)) c.classList.remove('active');
+  });
+  btn.classList.add('active');
+  updateFilterBadge();
+  renderTable();
+};
+
+window.setNatFilter = (value) => { activeFilters.nationality = value; updateFilterBadge(); renderTable(); };
+window.setRegistrarFilter = (value) => { activeFilters.registrar = value; updateFilterBadge(); renderTable(); };
+
+function populateFilterDropdowns() {
+  // الجنسيات الموجودة فعلاً
+  const natMap = {
+    SA:'السعودية', AE:'الإمارات', EG:'مصر', KW:'الكويت', QA:'قطر',
+    BH:'البحرين', OM:'عُمان', JO:'الأردن', LB:'لبنان', SY:'سوريا',
+    IQ:'العراق', YE:'اليمن', LY:'ليبيا', TN:'تونس', DZ:'الجزائر',
+    MA:'المغرب', SD:'السودان', OTHER:'أخرى'
+  };
+  const nats = [...new Set(clients.map(c => c.nationality).filter(Boolean))];
+  const natSel = document.getElementById('filter-nationality');
+  const currentNat = natSel.value;
+  natSel.innerHTML = '<option value="all">الكل</option>' +
+    nats.map(n => `<option value="${n}">${natMap[n] || n}</option>`).join('');
+  natSel.value = nats.includes(currentNat) ? currentNat : 'all';
+
+  // المسجِّلين
+  const registrars = [...new Set(clients.map(c => c.userEmail).filter(Boolean))];
+  const regSel = document.getElementById('filter-registrar');
+  const currentReg = regSel.value;
+  regSel.innerHTML = '<option value="all">الكل</option>' +
+    registrars.map(e => `<option value="${e}">${e.split('@')[0]}</option>`).join('');
+  regSel.value = registrars.includes(currentReg) ? currentReg : 'all';
+}
+
+window.openModal = () => {
+  editingId = null;
+  document.getElementById('modal-title').textContent = 'إضافة عميل جديد';
+  ['f-name','f-phone','f-age','f-weight','f-height','f-notes'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-goal').value = 'loss';
+  document.getElementById('f-gender').value = '';
+  document.getElementById('f-nationality').value = '';
+  document.getElementById('f-sub-start').value = '';
+  document.getElementById('f-sub-months').value = '';
+  goToStep(1);
+  document.getElementById('client-modal').classList.add('open');
+};
+
+window.closeModal = () => {
+  document.getElementById('client-modal').classList.remove('open');
+  goToStep(1);
+};
+window.closeSubModal = () => document.getElementById('sub-modal').classList.remove('open');
+
+let subModalClientId = null;
+
+async function loadSubHistory(clientId) {
+  const listEl = document.getElementById('sub-history-list');
+  if (!listEl) return;
+  listEl.innerHTML = '<div class="sub-history-loading">⏳ جاري التحميل...</div>';
+  try {
+    const q = query(collection(db, 'clients', clientId, 'subHistory'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      listEl.innerHTML = '<div class="sub-history-empty">لا يوجد سجل اشتراكات بعد</div>';
+      return;
+    }
+    const fmtDate = (ts) => {
+      if (!ts) return '—';
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleDateString('ar', { day: 'numeric', month: 'long', year: 'numeric' });
+    };
+    const typeConfig = {
+      renew:  { icon: '🔄', cls: 'type-renew',  label: 'تجديد' },
+      edit:   { icon: '✏️', cls: 'type-edit',   label: 'تعديل' },
+      create: { icon: '🆕', cls: 'type-create', label: 'تفعيل' },
+    };
+    const fmtRange = (dateVal) => {
+      if (!dateVal) return null;
+      if (typeof dateVal === 'string') return dateVal;
+      if (dateVal.toDate) return dateVal.toDate().toISOString().split('T')[0];
+      return String(dateVal);
+    };
+    listEl.innerHTML = snap.docs.map(d => {
+      const h = d.data();
+      const cfg = typeConfig[h.type] || typeConfig.edit;
+      const months = h.months ? `${h.months} ${h.months === 1 ? 'شهر' : 'أشهر'}` : '';
+      const start = fmtRange(h.startDate);
+      const end   = fmtRange(h.endDate);
+      const range = (start && end) ? `${start} ← ${end}` : '';
+      return `
+        <div class="sub-history-item">
+          <div class="sub-history-dot ${cfg.cls}">${cfg.icon}</div>
+          <div class="sub-history-body">
+            <div class="sub-history-title">${cfg.label}${months ? ' · ' + months : ''}</div>
+            ${range ? `<div class="sub-history-meta">${range}</div>` : ''}
+            ${h.by ? `<div class="sub-history-meta">بواسطة: ${h.by}</div>` : ''}
+          </div>
+          <div class="sub-history-date">${fmtDate(h.createdAt)}</div>
+        </div>`;
+    }).join('');
+  } catch(e) {
+    listEl.innerHTML = '<div class="sub-history-empty">تعذّر تحميل السجل</div>';
+  }
+}
+
+window.openSubModal = (id) => {
+  subModalClientId = id;
+  const c = clients.find(x => x.id === id);
+  const avatarPalette = [
+    ['#1a56db','#1e40af'], ['#059669','#047857'], ['#8b5cf6','#7c3aed'],
+    ['#ec4899','#db2777'], ['#f59e0b','#d97706'], ['#06b6d4','#0891b2'],
+    ['#e53e3e','#c53030'], ['#0ea5e9','#0284c7'], ['#10b981','#059669'], ['#6366f1','#4f46e5'],
+  ];
+  const nameHash = c.name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const [avColor, avDark] = avatarPalette[nameHash % avatarPalette.length];
+  const avInitials = c.name.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase();
+
+  // Avatar + اسم
+  document.getElementById('sub-modal-client-name').innerHTML = `
+    <div style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+      font-size:14px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);
+      background:linear-gradient(135deg,${avColor},${avDark})">${avInitials}</div>
+    <div style="min-width:0;">
+      <div style="font-size:15px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.name}</div>
+      <div style="font-size:11px;color:var(--text-muted);font-weight:500;margin-top:1px;">إدارة الاشتراك</div>
+    </div>`;
+
+  // Badge الحالة
+  const sub = getSubStatus(c.subStart, c.subMonths);
+  const statusBadgeEl = document.getElementById('sub-modal-status-badge');
+  if (!sub) {
+    statusBadgeEl.innerHTML = `<span class="sub-badge none">بدون اشتراك</span>`;
+  } else if (sub.daysLeft <= 0) {
+    statusBadgeEl.innerHTML = `<span class="sub-badge expired">⛔ منتهي</span>`;
+  } else if (sub.daysLeft <= 7) {
+    statusBadgeEl.innerHTML = `<span class="sub-badge warning">⚠️ ينتهي قريباً</span>`;
+  } else {
+    statusBadgeEl.innerHTML = `<span class="sub-badge active">✅ فعال</span>`;
+  }
+
+  // شريط التفاصيل
+  const detailBar = document.getElementById('sub-modal-detail-bar');
+  const fmt = d => d ? new Date(d).toLocaleDateString('ar', {day:'numeric', month:'short', year:'numeric'}) : '—';
+  if (sub) {
+    let barCls = sub.daysLeft <= 0 ? 'expired-sub' : sub.daysLeft <= 7 ? 'warning-sub' : 'active-sub';
+    let remHighlight = sub.daysLeft <= 0 ? 'highlight-exp' : sub.daysLeft <= 7 ? 'highlight-warn' : 'highlight';
+    let remVal = sub.daysLeft <= 0 ? `انتهى منذ ${Math.abs(sub.daysLeft)} يوم` : formatDaysLeft(sub.daysLeft);
+    detailBar.innerHTML = `
+      <div class="sub-detail-bar ${barCls}">
+        <div class="sub-detail-item">
+          <div class="sub-detail-lbl">بداية</div>
+          <div class="sub-detail-val">${fmt(c.subStart)}</div>
+        </div>
+        <div class="sub-detail-item">
+          <div class="sub-detail-lbl">نهاية</div>
+          <div class="sub-detail-val">${fmt(sub.end)}</div>
+        </div>
+        <div class="sub-detail-item ${remHighlight}">
+          <div class="sub-detail-lbl">متبقي</div>
+          <div class="sub-detail-val">${remVal}</div>
+        </div>
+      </div>`;
+  } else {
+    detailBar.innerHTML = '';
+  }
+
+  // تعبئة الفورم
+  document.getElementById('sub-modal-start').value = c.subStart || '';
+  document.getElementById('sub-modal-months').value = c.subMonths || '';
+  document.getElementById('sub-modal').classList.add('open');
+
+  // جلب السجل
+  loadSubHistory(id);
+};
+
+window.saveSubModal = async () => {
+  const btn = document.querySelector('#sub-modal .btn-save');
+  btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
+  try {
+    const newStart = document.getElementById('sub-modal-start').value || null;
+    const newMonths = +document.getElementById('sub-modal-months').value || null;
+    await updateDoc(doc(db, 'clients', subModalClientId), { subStart: newStart, subMonths: newMonths });
+
+    // سجّل العملية
+    const c = clients.find(x => x.id === subModalClientId);
+    const sub = newStart && newMonths ? getSubStatus(newStart, newMonths) : null;
+    await addDoc(collection(db, 'clients', subModalClientId, 'subHistory'), {
+      type: 'edit',
+      months: newMonths || null,
+      startDate: newStart || null,
+      endDate: sub ? sub.end.toISOString().split('T')[0] : null,
+      by: auth.currentUser?.email || '—',
+      createdAt: serverTimestamp()
+    });
+
+    const idx = clients.findIndex(x => x.id === subModalClientId);
+    if (idx !== -1) { clients[idx].subStart = newStart; clients[idx].subMonths = newMonths; }
+    renderTable(); updateStats();
+    closeSubModal();
+    showToast('تم حفظ بيانات الاشتراك', 'success');
+  } catch(e) { showToast('خطأ في الحفظ', 'error'); }
+  finally { btn.disabled = false; btn.textContent = '💾 حفظ التغييرات'; }
+};
+
+window.renewFromSubModal = async () => {
+  const addMonths = +document.getElementById('sub-modal-renew-months').value;
+  if (!addMonths) return;
+  const btn = document.querySelector('#sub-modal .btn-renew');
+  btn.disabled = true; btn.textContent = '⏳ جاري...';
+  try {
+    const c = clients.find(x => x.id === subModalClientId);
+    const sub = getSubStatus(c.subStart, c.subMonths);
+    let newStart, newMonths;
+    if (!sub || sub.daysLeft <= 0) {
+      newStart = new Date().toISOString().split('T')[0];
+      newMonths = addMonths;
+    } else {
+      newStart = c.subStart;
+      newMonths = (c.subMonths || 0) + addMonths;
+    }
+    await updateDoc(doc(db, 'clients', subModalClientId), { subStart: newStart, subMonths: newMonths });
+
+    // سجّل التجديد
+    const newSub = getSubStatus(newStart, newMonths);
+    await addDoc(collection(db, 'clients', subModalClientId, 'subHistory'), {
+      type: 'renew',
+      months: addMonths,
+      startDate: newStart,
+      endDate: newSub ? newSub.end.toISOString().split('T')[0] : null,
+      by: auth.currentUser?.email || '—',
+      createdAt: serverTimestamp()
+    });
+
+    const idx = clients.findIndex(x => x.id === subModalClientId);
+    if (idx !== -1) { clients[idx].subStart = newStart; clients[idx].subMonths = newMonths; }
+    renderTable(); updateStats();
+    openSubModal(subModalClientId);
+    showToast(`تم التجديد — ${addMonths} ${addMonths===1?'شهر':'أشهر'}`, 'success');
+  } catch(e) { showToast('خطأ في التجديد', 'error'); }
+  finally { const b = document.querySelector('#sub-modal .btn-renew'); if(b){b.disabled=false; b.textContent='تجديد';} }
+};
+
+window.closeWeightModal = () => document.getElementById('weight-modal').classList.remove('open');
+window.closeConfirm = () => document.getElementById('confirm-modal').classList.remove('open');
+
+// Close on overlay click
+document.querySelectorAll('.modal-overlay').forEach(overlay => {
+  overlay.addEventListener('click', (e) => {
+    if (e.target === overlay) overlay.classList.remove('open');
+  });
+});
+
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+</script>
+</body>
+</html>
