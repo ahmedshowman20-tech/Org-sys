@@ -67,100 +67,110 @@
   #login-screen {
     min-height: 100vh;
     display: flex;
+    align-items: stretch;
+    background: #fff;
+    position: relative;
+    overflow: hidden;
+    direction: rtl;
+  }
+
+  /* الجانب الأيمن — branding */
+  .login-brand {
+    flex: 1;
+    background: linear-gradient(150deg, #1a56db 0%, #1e40af 60%, #1e3a8a 100%);
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(145deg, #f0f4ff 0%, #e8effe 50%, #dde9ff 100%);
-    padding: 20px;
+    padding: 60px 48px;
     position: relative;
     overflow: hidden;
   }
-
-  #login-screen::before {
+  .login-brand::before {
     content: '';
     position: absolute;
-    width: 600px; height: 600px;
-    background: radial-gradient(circle, rgba(26,86,219,0.08) 0%, transparent 70%);
-    top: -200px; left: -200px;
-    pointer-events: none;
+    width: 500px; height: 500px;
+    background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
+    top: -150px; right: -150px;
   }
-  #login-screen::after {
+  .login-brand::after {
     content: '';
     position: absolute;
-    width: 400px; height: 400px;
-    background: radial-gradient(circle, rgba(26,86,219,0.06) 0%, transparent 70%);
-    bottom: -100px; right: -100px;
-    pointer-events: none;
+    width: 350px; height: 350px;
+    background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
+    bottom: -100px; left: -100px;
   }
-
-  .login-card {
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(20px);
-    border-radius: 28px;
-    padding: 48px 44px;
-    width: 100%;
-    max-width: 420px;
-    box-shadow: 0 24px 60px rgba(26,86,219,0.1), 0 4px 16px rgba(0,0,0,0.06);
-    border: 1px solid rgba(255,255,255,0.8);
+  .login-brand-content {
     position: relative; z-index: 1;
-  }
-
-  .login-logo {
     text-align: center;
-    margin-bottom: 36px;
   }
-
-  .login-logo-icon {
-    width: 80px; height: 80px;
-    background: linear-gradient(135deg, #1a56db, #3b82f6);
-    border-radius: 22px;
-    display: flex; align-items: center; justify-content: center;
-    margin: 0 auto 18px;
-    box-shadow: 0 8px 24px rgba(26,86,219,0.3);
+  .login-brand-logo {
+    width: 90px; height: 90px;
+    border-radius: 24px;
     overflow: hidden;
+    margin: 0 auto 24px;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+    border: 3px solid rgba(255,255,255,0.2);
   }
+  .login-brand-logo img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .login-brand h1 {
+    font-size: 28px; font-weight: 800;
+    color: #fff; letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .login-brand-divider {
+    width: 40px; height: 3px;
+    background: rgba(255,255,255,0.35);
+    border-radius: 99px;
+    margin: 16px auto;
+  }
+  .login-brand-dots {
+    display: flex; gap: 8px; justify-content: center; margin-top: 40px;
+  }
+  .login-brand-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+  }
+  .login-brand-dot.active { background: rgba(255,255,255,0.9); width: 24px; border-radius: 99px; }
 
-  .login-logo-icon img {
-    width: 100%; height: 100%;
-    object-fit: cover;
-    border-radius: 22px;
+  /* الجانب الأيسر — فورم */
+  .login-form-side {
+    width: 420px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 44px;
+    background: #fff;
   }
+  .login-form-inner { width: 100%; }
 
-  .login-logo h1 {
-    font-size: 22px;
-    font-weight: 800;
-    color: var(--text);
-    letter-spacing: -0.5px;
+  .login-form-title {
+    font-size: 20px; font-weight: 800;
+    color: var(--text); margin-bottom: 6px;
   }
-  .login-logo p {
-    font-size: 13px;
-    color: var(--text-muted);
-    margin-top: 4px;
+  .login-form-sub {
+    font-size: 13px; color: var(--text-muted);
+    margin-bottom: 32px; font-weight: 500;
   }
 
   .field { margin-bottom: 18px; }
-
   .field label {
-    font-size: 13px;
-    font-weight: 600;
-    color: var(--text);
-    margin-bottom: 8px;
-    display: block;
+    font-size: 13px; font-weight: 600;
+    color: var(--text); margin-bottom: 8px; display: block;
   }
-
   .field input {
-    width: 100%;
-    height: 50px;
+    width: 100%; height: 50px;
     background: var(--bg);
     border: 1.5px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 0 16px;
-    font-size: 15px;
-    color: var(--text);
+    font-size: 15px; color: var(--text);
     font-family: 'Tajawal', sans-serif;
-    transition: var(--transition);
-    outline: none;
+    transition: var(--transition); outline: none;
   }
-
   .field input:focus {
     background: #fff;
     border-color: var(--accent);
@@ -168,35 +178,31 @@
   }
 
   .btn-primary {
-    width: 100%;
-    height: 50px;
+    width: 100%; height: 50px;
     background: linear-gradient(135deg, var(--accent), #3b82f6);
-    color: #fff;
-    border: none;
+    color: #fff; border: none;
     border-radius: var(--radius-sm);
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 15px; font-weight: 700;
     font-family: 'Tajawal', sans-serif;
-    cursor: pointer;
-    margin-top: 8px;
+    cursor: pointer; margin-top: 8px;
     transition: var(--transition);
     box-shadow: 0 4px 14px rgba(26,86,219,0.35);
-    letter-spacing: 0.3px;
   }
-
-  .btn-primary:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 20px rgba(26,86,219,0.45);
-  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,86,219,0.45); }
   .btn-primary:active { transform: translateY(0); }
 
   #login-error {
-    margin-top: 16px;
-    font-size: 13px;
-    color: var(--danger);
-    text-align: center;
-    font-weight: 600;
-    min-height: 20px;
+    margin-top: 16px; font-size: 13px;
+    color: var(--danger); text-align: center;
+    font-weight: 600; min-height: 20px;
+  }
+
+  /* Responsive */
+  @media (max-width: 700px) {
+    #login-screen { flex-direction: column; }
+    .login-brand { padding: 40px 24px; min-height: 220px; flex: none; }
+    .login-brand h1 { font-size: 22px; }
+    .login-form-side { width: 100%; padding: 36px 24px; }
   }
 
   /* ===== APP ===== */
@@ -801,6 +807,38 @@
   .client-row-text { display: flex; flex-direction: column; gap: 2px; }
 
   /* ===== STEPPER ===== */
+  /* Edit Tabs */
+  .edit-tabs {
+    display: flex; gap: 4px;
+    margin-bottom: 20px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+    border: 1px solid var(--border);
+  }
+  .edit-tab {
+    flex: 1; padding: 8px 10px;
+    border: none; background: transparent;
+    border-radius: calc(var(--radius-sm) - 2px);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--text-muted); cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+  }
+  .edit-tab:hover { color: var(--text); background: rgba(0,0,0,0.04); }
+  .edit-tab.active {
+    background: #fff;
+    color: var(--accent);
+    font-weight: 700;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .edit-footer {
+    display: flex; justify-content: flex-end; gap: 10px;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
   .stepper-header {
     display: flex; align-items: center; gap: 0;
     margin-bottom: 24px;
@@ -1804,24 +1842,42 @@
 
 <!-- LOGIN -->
 <div id="login-screen">
-  <div class="login-card">
-    <div class="login-logo">
-      <div class="login-logo-icon">
+  <!-- الجانب الأيمن: فورم -->
+  <div class="login-form-side">
+    <div class="login-form-inner">
+      <div class="login-brand-logo" style="margin:0 0 20px 0;width:64px;height:64px;border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(26,86,219,0.2);border:2px solid rgba(26,86,219,0.1);">
+        <img src="logo.jpg" alt="Logo" style="width:100%;height:100%;object-fit:cover;">
+      </div>
+      <div class="login-form-title">مرحباً بك 👋</div>
+      <div class="login-form-sub">سجّل دخولك للمتابعة</div>
+      <div class="field">
+        <label>البريد الإلكتروني</label>
+        <input type="email" id="login-email" placeholder="example@email.com" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <div class="field">
+        <label>كلمة المرور</label>
+        <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      </div>
+      <button class="btn-primary" onclick="doLogin()">دخول ←</button>
+      <div id="login-error"></div>
+    </div>
+  </div>
+
+  <!-- الجانب الأيسر: Branding -->
+  <div class="login-brand">
+    <div class="login-brand-content">
+      <div class="login-brand-logo">
         <img src="logo.jpg" alt="Logo">
       </div>
       <h1>Organic Elements</h1>
-      <p>نظام إدارة العملاء</p>
+      <div class="login-brand-divider"></div>
+      <p style="color:rgba(255,255,255,0.75);font-size:15px;font-weight:500;margin-top:4px;letter-spacing:0.3px;">نظام إدارة العملاء</p>
+      <div class="login-brand-dots">
+        <div class="login-brand-dot active"></div>
+        <div class="login-brand-dot"></div>
+        <div class="login-brand-dot"></div>
+      </div>
     </div>
-    <div class="field">
-      <label>البريد الإلكتروني</label>
-      <input type="email" id="login-email" placeholder="example@email.com" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <div class="field">
-      <label>كلمة المرور</label>
-      <input type="password" id="login-pass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
-    </div>
-    <button class="btn-primary" onclick="doLogin()">دخول →</button>
-    <div id="login-error"></div>
   </div>
 </div>
 
@@ -2003,8 +2059,8 @@
       <button class="btn-close" onclick="closeModal()">×</button>
     </div>
 
-    <!-- Stepper Header -->
-    <div class="stepper-header">
+    <!-- Stepper — يظهر عند الإضافة فقط -->
+    <div class="stepper-header" id="modal-stepper-header">
       <div class="stepper-step active" id="step-ind-1">
         <div class="stepper-num">1</div>
         <div class="stepper-label">بيانات شخصية</div>
@@ -2021,7 +2077,14 @@
       </div>
     </div>
 
-    <!-- Step 1: بيانات شخصية -->
+    <!-- Tabs — تظهر عند التعديل فقط -->
+    <div class="edit-tabs" id="modal-edit-tabs" style="display:none;">
+      <button class="edit-tab active" onclick="switchEditTab('personal', this)">👤 بيانات شخصية</button>
+      <button class="edit-tab" onclick="switchEditTab('body', this)">⚖️ بيانات جسمية</button>
+      <button class="edit-tab" onclick="switchEditTab('goal', this)">🎯 الهدف والاشتراك</button>
+    </div>
+
+    <!-- Step 1 / Tab: بيانات شخصية -->
     <div class="stepper-page active" id="step-page-1">
       <div class="form-grid">
         <div class="form-field full"><label>الاسم الكامل *</label><input type="text" id="f-name" placeholder="أدخل الاسم الكامل"></div>
@@ -2058,25 +2121,33 @@
           </select>
         </div>
       </div>
-      <div class="stepper-footer">
+      <div class="stepper-footer" id="step-footer-1">
         <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
         <button class="btn-save" onclick="stepperNext(1)">التالي ←</button>
       </div>
+      <div class="edit-footer" id="edit-footer-1" style="display:none;">
+        <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+        <button class="btn-save" onclick="saveClient()">💾 حفظ التغييرات</button>
+      </div>
     </div>
 
-    <!-- Step 2: بيانات جسمية -->
+    <!-- Step 2 / Tab: بيانات جسمية -->
     <div class="stepper-page" id="step-page-2">
       <div class="form-grid">
         <div class="form-field"><label>الوزن الحالي (كجم)</label><input type="number" id="f-weight" step="0.1" placeholder="70.0"></div>
         <div class="form-field"><label>الطول (سم)</label><input type="number" id="f-height" placeholder="170"></div>
       </div>
-      <div class="stepper-footer">
+      <div class="stepper-footer" id="step-footer-2">
         <button class="btn-cancel" onclick="stepperBack(2)">→ السابق</button>
         <button class="btn-save" onclick="stepperNext(2)">التالي ←</button>
       </div>
+      <div class="edit-footer" id="edit-footer-2" style="display:none;">
+        <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+        <button class="btn-save" onclick="saveClient()">💾 حفظ التغييرات</button>
+      </div>
     </div>
 
-    <!-- Step 3: الهدف والملاحظات -->
+    <!-- Step 3 / Tab: الهدف والملاحظات -->
     <div class="stepper-page" id="step-page-3">
       <div class="form-grid">
         <div class="form-field full"><label>الهدف</label>
@@ -2105,9 +2176,13 @@
         </div>
         <div class="form-field full"><label>ملاحظات</label><textarea id="f-notes" placeholder="أي معلومات إضافية..."></textarea></div>
       </div>
-      <div class="stepper-footer">
+      <div class="stepper-footer" id="step-footer-3">
         <button class="btn-cancel" onclick="stepperBack(3)">→ السابق</button>
         <button class="btn-save" onclick="saveClient()">💾 حفظ العميل</button>
+      </div>
+      <div class="edit-footer" id="edit-footer-3" style="display:none;">
+        <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+        <button class="btn-save" onclick="saveClient()">💾 حفظ التغييرات</button>
       </div>
     </div>
 
@@ -3104,6 +3179,19 @@ function renderWeightChart(sorted) {
   });
 }
 
+window.switchEditTab = (tab, btn) => {
+  // إخفاء كل الصفحات
+  [1,2,3].forEach(i => {
+    document.getElementById(`step-page-${i}`).classList.remove('active');
+  });
+  // إلغاء تفعيل كل الـ tabs
+  document.querySelectorAll('.edit-tab').forEach(t => t.classList.remove('active'));
+  // إظهار الصفحة المطلوبة
+  const map = { personal: 1, body: 2, goal: 3 };
+  document.getElementById(`step-page-${map[tab]}`).classList.add('active');
+  btn.classList.add('active');
+};
+
 window.editClient = (id) => {
   const c = clients.find(x => x.id === id);
   editingId = id;
@@ -3119,7 +3207,18 @@ window.editClient = (id) => {
   document.getElementById('f-sub-start').value = c.subStart || '';
   document.getElementById('f-sub-months').value = c.subMonths || '';
   document.getElementById('modal-title').textContent = 'تعديل بيانات العميل';
+
+  // إظهار الـ tabs وإخفاء الـ stepper
+  document.getElementById('modal-stepper-header').style.display = 'none';
+  document.getElementById('modal-edit-tabs').style.display = 'flex';
+  // إخفاء stepper footers وإظهار edit footers
+  [1,2,3].forEach(i => {
+    document.getElementById(`step-footer-${i}`).style.display = 'none';
+    document.getElementById(`edit-footer-${i}`).style.display = 'flex';
+  });
+  // إظهار أول tab
   goToStep(1);
+  document.querySelectorAll('.edit-tab').forEach((t,i) => t.classList.toggle('active', i===0));
   document.getElementById('client-modal').classList.add('open');
 };
 
@@ -3856,6 +3955,15 @@ window.openModal = () => {
 
 window.closeModal = () => {
   document.getElementById('client-modal').classList.remove('open');
+  editingId = null;
+  // إرجاع الـ stepper
+  document.getElementById('modal-stepper-header').style.display = 'flex';
+  document.getElementById('modal-edit-tabs').style.display = 'none';
+  [1,2,3].forEach(i => {
+    document.getElementById(`step-footer-${i}`).style.display = 'flex';
+    document.getElementById(`edit-footer-${i}`).style.display = 'none';
+  });
+  document.getElementById('modal-title').textContent = 'إضافة عميل جديد';
   goToStep(1);
 };
 window.closeSubModal = () => document.getElementById('sub-modal').classList.remove('open');
