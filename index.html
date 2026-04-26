@@ -1275,77 +1275,54 @@
   .wch-badge.sub-expired { background: #fff5f5; color: #e53e3e; border: 1px solid #fecaca; }
   .wch-badge.sub-none    { background: var(--surface2); color: var(--text-light); border: 1px solid var(--border); }
 
-  .weight-summary {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 10px; margin-bottom: 0;
-  }
+  /* summary bar — مدمج في detail bar */
+  #weight-summary-bar .sub-detail-bar { margin-bottom: 12px; }
 
-  .w-sum-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
+  /* منطقة إضافة وزن */
+  .weight-add-section {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
-    padding: 14px 10px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition);
+    padding: 14px 16px;
+    margin-bottom: 4px;
   }
-  .w-sum-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 3px;
-    border-radius: 0 0 var(--radius) var(--radius);
-  }
-  .w-sum-card:nth-child(1)::after { background: var(--accent); }
-  .w-sum-card:nth-child(2)::after { background: var(--success); }
-  .w-sum-card:nth-child(3)::after { background: var(--warning); }
-  .w-sum-card:nth-child(4)::after { background: #8b5cf6; }
-  .w-sum-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-  .w-sum-card .val {
-    font-size: 22px; font-weight: 800; color: var(--text);
-    display: block; line-height: 1;
-    letter-spacing: -0.5px;
-  }
-  .w-sum-card:nth-child(1) .val { color: var(--accent); }
-  .w-sum-card:nth-child(2) .val { color: var(--success); }
-  .w-sum-card:nth-child(3) .val { color: var(--warning); }
-  .w-sum-card:nth-child(4) .val { color: #8b5cf6; }
-  .w-sum-card .lbl {
-    font-size: 10px; color: var(--text-muted);
-    font-weight: 600; margin-top: 8px; display: block;
+  .weight-add-section-title {
+    font-size: 11px; font-weight: 700;
+    color: var(--text-muted); margin-bottom: 12px;
     text-transform: uppercase; letter-spacing: 0.4px;
   }
-
   .weight-add-row {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px; align-items: end;
-    margin-bottom: 0;
+    display: grid; grid-template-columns: 1fr 1fr auto;
+    gap: 10px; align-items: end;
   }
   .weight-add-row .form-field { margin: 0; }
-  .weight-add-row-btn { grid-column: 1 / -1; }
+  .weight-add-row-btn { }
 
   .btn-add-weight {
-    width: 100%;
+    height: 42px; padding: 0 20px;
     background: linear-gradient(135deg, var(--success), #10b981);
-    color: #fff;
-    border: none; border-radius: var(--radius-sm);
-    height: 42px; cursor: pointer;
-    font-family: 'Tajawal', sans-serif;
+    color: #fff; border: none; border-radius: var(--radius-sm);
+    cursor: pointer; font-family: 'Tajawal', sans-serif;
     font-weight: 700; font-size: 14px;
     transition: var(--transition);
     box-shadow: 0 3px 10px rgba(5,150,105,0.3);
-    letter-spacing: 0.3px;
+    white-space: nowrap;
   }
-  .btn-add-weight:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 16px rgba(5,150,105,0.4);
-  }
+  .btn-add-weight:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(5,150,105,0.4); }
   .btn-add-weight:disabled { opacity: 0.7; transform: none; cursor: not-allowed; }
+
+  .diet-toggle-row { margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 10px; }
+  .diet-toggle-btn {
+    background: none; border: none;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--text-muted); cursor: pointer;
+    padding: 0; display: flex; align-items: center; gap: 5px;
+  }
+  .diet-toggle-btn:hover { color: var(--accent); }
+  .diet-toggle-arrow { font-size: 10px; transition: transform 0.2s; }
+  .diet-toggle-btn.open .diet-toggle-arrow { transform: rotate(180deg); }
+  .diet-upload-area-wrap { margin-top: 8px; }
 
   /* section label */
   .weight-history-label {
@@ -2201,31 +2178,34 @@
     <!-- شريط تفاصيل العميل -->
     <div id="weight-client-detail-bar"></div>
 
-    <div class="weight-summary">
-      <div class="w-sum-card"><span class="val" id="ws-start">—</span><span class="lbl">البداية (كجم)</span></div>
-      <div class="w-sum-card"><span class="val" id="ws-current">—</span><span class="lbl">الحالي (كجم)</span></div>
-      <div class="w-sum-card"><span class="val" id="ws-diff">—</span><span class="lbl">الفرق (كجم)</span></div>
-      <div class="w-sum-card"><span class="val" id="ws-visits">0</span><span class="lbl">عدد الزيارات</span></div>
-    </div>
+    <!-- ملخص الأوزان (يتعبى بـ JS) -->
+    <div id="weight-summary-bar" style="margin-bottom:16px;"></div>
 
     <div class="weight-chart-container" id="weight-chart-container">
       <canvas id="weight-chart"></canvas>
     </div>
 
-    <div class="weight-add-row">
-      <div class="form-field"><label>الوزن (كجم)</label><input type="number" id="w-new-weight" step="0.1" placeholder="70.0"></div>
-      <div class="form-field"><label>التاريخ</label><input type="date" id="w-new-date"></div>
-      <div class="form-field full diet-file-section" style="margin:0; grid-column:1/-1">
-        <span class="diet-file-label">📋 ملف الدايت (اختياري)</span>
+    <!-- منطقة إضافة وزن جديد -->
+    <div class="weight-add-section">
+      <div class="weight-add-section-title">➕ إضافة وزن جديد</div>
+      <div class="weight-add-row">
+        <div class="form-field"><label>الوزن (كجم)</label><input type="number" id="w-new-weight" step="0.1" placeholder="70.0"></div>
+        <div class="form-field"><label>التاريخ</label><input type="date" id="w-new-date"></div>
+        <div class="weight-add-row-btn">
+          <button class="btn-add-weight" onclick="addWeightEntry()">حفظ</button>
+        </div>
+      </div>
+      <!-- ملف الدايت collapsible -->
+      <div class="diet-toggle-row">
+        <button class="diet-toggle-btn" onclick="toggleDietUpload(this)">📋 إرفاق ملف دايت <span class="diet-toggle-arrow">▾</span></button>
+      </div>
+      <div class="diet-upload-area-wrap" id="diet-upload-wrap" style="display:none;">
         <label class="diet-upload-area" id="diet-upload-label">
           <input type="file" id="w-diet-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls" onchange="updateDietFileLabel()">
           <div class="diet-upload-icon">📁</div>
           <div class="diet-upload-text">اسحب الملف هنا أو <span>اضغط للاختيار</span></div>
-          <div id="diet-file-name" style="font-size:12px; color:var(--accent); font-weight:600; margin-top:4px; display:none"></div>
+          <div id="diet-file-name" style="font-size:12px;color:var(--accent);font-weight:600;margin-top:4px;display:none"></div>
         </label>
-      </div>
-      <div class="weight-add-row-btn">
-        <button class="btn-add-weight" onclick="addWeightEntry()">+ إضافة وزن جديد</button>
       </div>
     </div>
 
@@ -2340,8 +2320,21 @@
 
     <!-- جدول المستخدمين -->
     <div class="dash-card full">
-      <div class="dash-card-title">المستخدمون وعملاؤهم</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div class="dash-card-title" style="margin-bottom:0;">المستخدمون وعملاؤهم</div>
+        <input type="text" id="admin-user-search" placeholder="🔍 بحث بالاسم أو الإيميل..."
+          oninput="filterAdminTable(this.value)"
+          style="height:36px;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+          padding:0 12px;font-family:'Tajawal',sans-serif;font-size:13px;
+          color:var(--text);background:var(--bg);outline:none;width:240px;">
+      </div>
       <div id="admin-users-table"></div>
+    </div>
+
+    <!-- رسم بياني للاشتراكات لكل مستخدم -->
+    <div class="dash-card full">
+      <div class="dash-card-title">توزيع الاشتراكات لكل مستخدم</div>
+      <div class="dash-chart-wrap" style="height:280px;"><canvas id="admin-sub-chart"></canvas></div>
     </div>
 
     <!-- الأكثر نشاطاً -->
@@ -3075,38 +3068,77 @@ window.deleteWeightEntry = async (entryId) => {
   loadClients();
 };
 
+window.toggleDietUpload = (btn) => {
+  const wrap = document.getElementById('diet-upload-wrap');
+  const isOpen = wrap.style.display !== 'none';
+  wrap.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+};
+
 function renderWeightHistory() {
   const list = document.getElementById('weight-history-list');
+  const summaryBar = document.getElementById('weight-summary-bar');
+
   if (weightEntries.length === 0) {
     list.innerHTML = '<div class="empty-state" style="padding:40px 20px"><div class="empty-state-illustration" style="width:60px;height:60px;font-size:26px;border-radius:16px;">⚖️</div><div class="empty-state-title" style="font-size:14px;">لا يوجد سجل أوزان</div><div class="empty-state-sub" style="font-size:12px;">أضف أول وزن للعميل من الأعلى</div></div>';
-    ['ws-start','ws-current','ws-diff','ws-visits'].forEach(id => document.getElementById(id).textContent = '—');
-    document.getElementById('ws-visits').textContent = '0';
+    summaryBar.innerHTML = '';
     renderWeightChart([]);
     return;
   }
-
-  list.innerHTML = weightEntries.map(e => `
-    <div class="weight-entry">
-      <span class="weight-entry-val">${e.weight} كجم</span>
-      <div style="margin-right:auto; display:flex; align-items:center; gap:8px;">
-        ${e.dietFileURL ? `
-          <button class="btn-diet-download" onclick="downloadDietFile('${e.dietFileURL}', '${(e.dietFileName || 'diet').replace(/'/g, "\\'")}')">
-            📥 ${e.dietFileName ? e.dietFileName.length > 18 ? e.dietFileName.substring(0,18)+'...' : e.dietFileName : 'دايت'}
-          </button>` : ''}
-        <span class="weight-entry-date">${e.date}</span>
-        <button class="btn-del-weight" onclick="deleteWeightEntry('${e.id}')" title="حذف">×</button>
-      </div>
-    </div>`).join('');
 
   const sorted = [...weightEntries].sort((a, b) => new Date(a.date) - new Date(b.date));
   const startWeight = sorted[0].weight;
   const currentWeight = sorted[sorted.length - 1].weight;
   const diff = (currentWeight - startWeight).toFixed(1);
+  const diffSign = diff > 0 ? '+' : '';
+  const diffColor = diff < 0 ? '#15803d' : diff > 0 ? '#dc2626' : 'var(--text-muted)';
 
-  document.getElementById('ws-start').textContent = startWeight;
-  document.getElementById('ws-current').textContent = currentWeight;
-  document.getElementById('ws-visits').textContent = weightEntries.length;
-  document.getElementById('ws-diff').textContent = diff > 0 ? `+${diff}` : diff;
+  // ملخص مدمج
+  summaryBar.innerHTML = `
+    <div class="sub-detail-bar">
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">البداية</div>
+        <div class="sub-detail-val" style="color:var(--accent)">${startWeight} كجم</div>
+      </div>
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الحالي</div>
+        <div class="sub-detail-val" style="color:var(--success)">${currentWeight} كجم</div>
+      </div>
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الفرق</div>
+        <div class="sub-detail-val" style="color:${diffColor}">${diffSign}${diff} كجم</div>
+      </div>
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الزيارات</div>
+        <div class="sub-detail-val" style="color:#8b5cf6">${weightEntries.length}</div>
+      </div>
+    </div>`;
+
+  // الـ entries مع الفرق عن السابقة
+  const entriesByDate = [...weightEntries].sort((a, b) => new Date(b.date) - new Date(a.date));
+  list.innerHTML = entriesByDate.map((e, i) => {
+    const prev = entriesByDate[i + 1];
+    let diffBadge = '';
+    if (prev) {
+      const d = (e.weight - prev.weight).toFixed(1);
+      const sign = d > 0 ? '+' : '';
+      const col = d < 0 ? '#15803d' : d > 0 ? '#dc2626' : 'var(--text-muted)';
+      const icon = d < 0 ? '↓' : d > 0 ? '↑' : '—';
+      diffBadge = `<span style="font-size:11px;font-weight:700;color:${col};background:${col}15;padding:2px 7px;border-radius:20px;">${icon} ${sign}${d}</span>`;
+    } else {
+      diffBadge = `<span style="font-size:10px;color:var(--text-muted);background:var(--surface2);padding:2px 7px;border-radius:20px;">بداية</span>`;
+    }
+    return `
+      <div class="weight-entry">
+        <span class="weight-entry-val">${e.weight} كجم</span>
+        ${diffBadge}
+        <div style="margin-right:auto;display:flex;align-items:center;gap:8px;">
+          ${e.dietFileURL ? `<button class="btn-diet-download" onclick="downloadDietFile('${e.dietFileURL}','${(e.dietFileName||'diet').replace(/'/g,"\\'")}')">📥 ${e.dietFileName ? e.dietFileName.length>18?e.dietFileName.substring(0,18)+'...':e.dietFileName:'دايت'}</button>` : ''}
+          <span class="weight-entry-date">${e.date}</span>
+          <button class="btn-del-weight" onclick="deleteWeightEntry('${e.id}')" title="حذف">×</button>
+        </div>
+      </div>`;
+  }).join('');
 
   renderWeightChart(sorted);
 }
@@ -3440,9 +3472,52 @@ async function buildAdminDashboard() {
 
   buildAdminGrowthChart();
   buildAdminUserGrowthChart(users);
+  buildAdminSubChart(userStats);
 }
 
-let adminGrowthChart = null, adminUserGrowthChart = null;
+let adminGrowthChart = null, adminUserGrowthChart = null, adminSubChart = null;
+
+// فلتر جدول المستخدمين
+window.filterAdminTable = (val) => {
+  const q = val.trim().toLowerCase();
+  document.querySelectorAll('#admin-users-table tbody tr').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = !q || text.includes(q) ? '' : 'none';
+  });
+};
+
+function buildAdminSubChart(userStats) {
+  if (adminSubChart) { adminSubChart.destroy(); adminSubChart = null; }
+  const labels  = userStats.map(u => u.email.split('@')[0]);
+  const active   = userStats.map(u => u.subActive);
+  const expiring = userStats.map(u => u.subExpiring);
+  const expired  = userStats.map(u => u.subExpired);
+  const none     = userStats.map(u => u.subNone);
+
+  adminSubChart = new Chart(document.getElementById('admin-sub-chart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'فعال',          data: active,   backgroundColor: '#15803d' },
+        { label: 'ينتهي قريباً',  data: expiring, backgroundColor: '#d97706' },
+        { label: 'منتهي',         data: expired,  backgroundColor: '#dc2626' },
+        { label: 'بدون اشتراك',  data: none,     backgroundColor: '#cbd5e1' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Tajawal', size: 12 }, padding: 16 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}` } }
+      },
+      scales: {
+        x: { stacked: true, ticks: { font: { family: 'Tajawal', size: 12 } } },
+        y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1, font: { family: 'Tajawal', size: 12 } } }
+      }
+    }
+  });
+}
 
 function buildAdminGrowthChart() {
   const now = new Date();
