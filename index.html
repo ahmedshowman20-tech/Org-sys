@@ -1565,8 +1565,11 @@
   }
   .btn-migration:hover { background: #fef3c7; }
 
-  .col-registrar { display: none; }
-  body.is-admin .col-registrar { display: table-cell; }
+  .col-registrar { display: none !important; }
+  body.is-admin .col-registrar { display: table-cell !important; }
+  body.is-admin .filter-panel-row.col-registrar { display: flex !important; }
+  .admin-only { display: none; }
+  body.is-admin .admin-only { display: inline-flex; }
 
   /* ===== SUBSCRIPTION CARD IN WEIGHT MODAL ===== */
   .sub-card {
@@ -1824,6 +1827,39 @@
     .action-btns { flex-direction: column; }
     .login-card { padding: 36px 24px; }
   }
+
+  /* ===== PAGINATION ===== */
+  .pagination-bar {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 20px;
+    flex-wrap: wrap; gap: 10px;
+    border-top: 1px solid var(--border);
+    background: var(--surface2);
+  }
+  .pagination-info {
+    font-size: 12px; color: var(--text-muted); font-weight: 500;
+  }
+  .pagination-controls {
+    display: flex; align-items: center; gap: 4px;
+  }
+  .pg-btn {
+    min-width: 32px; height: 32px; border-radius: 8px;
+    border: 1.5px solid var(--border); background: var(--surface);
+    color: var(--text); font-size: 13px; font-family: 'Tajawal', sans-serif;
+    font-weight: 600; cursor: pointer; transition: var(--transition);
+    display: flex; align-items: center; justify-content: center; padding: 0 8px;
+  }
+  .pg-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
+  .pg-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .pg-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .pg-size-select {
+    height: 32px; border-radius: 8px; border: 1.5px solid var(--border);
+    background: var(--surface); color: var(--text); font-size: 12px;
+    font-family: 'Tajawal', sans-serif; font-weight: 600;
+    padding: 0 8px; outline: none; cursor: pointer;
+  }
+  .pg-size-select:focus { border-color: var(--accent); }
+
 </style>
 </head>
 <body>
@@ -1911,7 +1947,7 @@
     <div class="topbar-actions">
       <span class="topbar-date" id="topbar-date"></span>
       <button class="btn-dashboard" onclick="openDashboard()">📊 الداشبورد</button>
-      <button class="col-registrar btn-migration" onclick="runMigration()" title="تحديث إيميلات المسجِّلين" style="font-size:11px; padding:0 10px; height:30px; border-radius:20px;">🔄</button>
+      
       <!-- User Menu -->
       <div class="user-menu-wrap" id="user-menu-wrap">
         <button class="user-menu-btn" onclick="toggleUserMenu()" id="user-menu-btn">
@@ -2077,6 +2113,18 @@
         <div class="empty-state-title">لا يوجد عملاء بعد</div>
         <div class="empty-state-sub">ابدأ بإضافة أول عميل لك<br>وتابع رحلته معك</div>
         <button class="empty-state-btn" onclick="openModal()">+ إضافة عميل جديد</button>
+      </div>
+      <div class="pagination-bar" id="pagination-bar" style="display:none;">
+        <div style="display:flex;align-items:center;gap:8px;">
+          <span class="pagination-info" id="pagination-info"></span>
+          <select class="pg-size-select" id="pg-size-select" onchange="changePageSize(+this.value)">
+            <option value="10">10 لكل صفحة</option>
+            <option value="25" selected>25 لكل صفحة</option>
+            <option value="50">50 لكل صفحة</option>
+            <option value="100">100 لكل صفحة</option>
+          </select>
+        </div>
+        <div class="pagination-controls" id="pagination-controls"></div>
       </div>
     </div>
   </div>
@@ -2501,8 +2549,9 @@ const ADMIN_EMAILS = [
 ];
 let isAdmin = false;
 
-let clients = [];
+let clients = [], filteredClients = [];
 let editingId = null, deleteId = null, weightClientId = null, weightEntries = [];
+let currentPage = 1, pageSize = 25;
 let weightChart = null;
 
 onAuthStateChanged(auth, user => {
@@ -2544,6 +2593,8 @@ onAuthStateChanged(auth, user => {
 
     loadClients();
   } else {
+    isAdmin = false;
+    document.body.classList.remove('is-admin');
     document.getElementById('login-screen').style.display = 'flex';
     document.getElementById('app-screen').style.display = 'none';
   }
@@ -2876,6 +2927,67 @@ window.renewSubscription = async (clientId) => {
   }
 };
 
+
+const PAGE_SIZES = [10, 25, 50, 100];
+
+function renderPagination() {
+  const total = filteredClients.length;
+  const totalPages = Math.max(1, Math.ceil(total / pageSize));
+  const bar = document.getElementById('pagination-bar');
+  const info = document.getElementById('pagination-info');
+  const controls = document.getElementById('pagination-controls');
+
+  if (total === 0) { bar.style.display = 'none'; return; }
+  bar.style.display = total <= pageSize ? 'none' : 'flex';
+
+  const start = Math.min((currentPage - 1) * pageSize + 1, total);
+  const end   = Math.min(currentPage * pageSize, total);
+  info.textContent = `${start}–${end} من ${total} عميل`;
+
+  // sync select
+  const sel = document.getElementById('pg-size-select');
+  if (sel) sel.value = pageSize;
+
+  // build page buttons
+  const maxBtns = 5;
+  let pages = [];
+  if (totalPages <= maxBtns + 2) {
+    for (let i = 1; i <= totalPages; i++) pages.push(i);
+  } else {
+    pages.push(1);
+    let lo = Math.max(2, currentPage - 1), hi = Math.min(totalPages - 1, currentPage + 1);
+    if (currentPage <= 3) { lo = 2; hi = Math.min(totalPages - 1, 5); }
+    if (currentPage >= totalPages - 2) { lo = Math.max(2, totalPages - 4); hi = totalPages - 1; }
+    if (lo > 2) pages.push('…');
+    for (let i = lo; i <= hi; i++) pages.push(i);
+    if (hi < totalPages - 1) pages.push('…');
+    pages.push(totalPages);
+  }
+
+  controls.innerHTML =
+    `<button class="pg-btn" onclick="goToPage(${currentPage - 1})" ${currentPage === 1 ? 'disabled' : ''}>‹</button>` +
+    pages.map(p => p === '…'
+      ? `<span style="padding:0 4px;color:var(--text-muted)">…</span>`
+      : `<button class="pg-btn ${p === currentPage ? 'active' : ''}" onclick="goToPage(${p})">${p}</button>`
+    ).join('') +
+    `<button class="pg-btn" onclick="goToPage(${currentPage + 1})" ${currentPage === totalPages ? 'disabled' : ''}>›</button>`;
+}
+
+window.goToPage = (p) => {
+  const totalPages = Math.max(1, Math.ceil(filteredClients.length / pageSize));
+  if (p < 1 || p > totalPages) return;
+  currentPage = p;
+  window._paginating = true;
+  renderTable();
+  document.getElementById('clients-tbody').closest('.table-wrap').scrollIntoView({ behavior: 'smooth', block: 'start' });
+};
+
+window.changePageSize = (size) => {
+  pageSize = size;
+  currentPage = 1;
+  renderTable();
+};
+
 window.renderTable = () => {
   const q = document.getElementById('search-input').value.toLowerCase();
   let filtered = clients.filter(c =>
@@ -2902,7 +3014,17 @@ window.renderTable = () => {
   // update count badge
   document.getElementById('client-count-badge').textContent = `${filtered.length} عميل`;
 
-  tbody.innerHTML = filtered.map(c => {
+  filteredClients = filtered;
+  // Reset to page 1 when filter/search changes (not when paginating)
+  if (!window._paginating) currentPage = 1;
+  window._paginating = false;
+
+  const totalPages = Math.max(1, Math.ceil(filteredClients.length / pageSize));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * pageSize;
+  const paginated = filteredClients.slice(start, start + pageSize);
+
+  tbody.innerHTML = paginated.map(c => {
     const bmi = calculateBMI(c.weight, c.height);
     const cat = bmi ? getBMICategory(bmi) : null;
     const goalMap = { loss: 'خسارة وزن', gain: 'زيادة وزن', maintain: 'تثبيت' };
@@ -2969,6 +3091,7 @@ window.renderTable = () => {
     </tr>`;
   }).join('');
 
+  renderPagination();
   const emptyEl = document.getElementById('empty-state');
   if (filtered.length === 0) {
     const isSearching = document.getElementById('search-input').value || Object.values(activeFilters).some(v => v !== 'all');
