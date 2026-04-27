@@ -74,66 +74,118 @@
     direction: rtl;
   }
 
+  /* الجانب الأيمن — branding */
   .login-brand {
     flex: 1;
     background: linear-gradient(150deg, #1a56db 0%, #1e40af 60%, #1e3a8a 100%);
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    padding: 60px 48px; position: relative; overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 48px;
+    position: relative;
+    overflow: hidden;
   }
   .login-brand::before {
-    content: ''; position: absolute;
+    content: '';
+    position: absolute;
     width: 500px; height: 500px;
     background: radial-gradient(circle, rgba(255,255,255,0.08) 0%, transparent 70%);
     top: -150px; right: -150px;
   }
   .login-brand::after {
-    content: ''; position: absolute;
+    content: '';
+    position: absolute;
     width: 350px; height: 350px;
     background: radial-gradient(circle, rgba(255,255,255,0.06) 0%, transparent 70%);
     bottom: -100px; left: -100px;
   }
-  .login-brand-content { position: relative; z-index: 1; text-align: center; }
+  .login-brand-content {
+    position: relative; z-index: 1;
+    text-align: center;
+  }
   .login-brand-logo {
-    width: 90px; height: 90px; border-radius: 24px;
-    overflow: hidden; margin: 0 auto 24px;
+    width: 90px; height: 90px;
+    border-radius: 24px;
+    overflow: hidden;
+    margin: 0 auto 24px;
     box-shadow: 0 12px 40px rgba(0,0,0,0.2);
     border: 3px solid rgba(255,255,255,0.2);
   }
-  .login-brand-logo img { width: 100%; height: 100%; object-fit: cover; }
-  .login-brand h1 { font-size: 28px; font-weight: 800; color: #fff; letter-spacing: -0.5px; margin-bottom: 10px; }
-  .login-brand-divider { width: 40px; height: 3px; background: rgba(255,255,255,0.35); border-radius: 99px; margin: 16px auto; }
-  .login-brand-dots { display: flex; gap: 8px; justify-content: center; margin-top: 40px; }
-  .login-brand-dot { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.3); }
+  .login-brand-logo img {
+    width: 100%; height: 100%; object-fit: cover;
+  }
+  .login-brand h1 {
+    font-size: 28px; font-weight: 800;
+    color: #fff; letter-spacing: -0.5px;
+    margin-bottom: 10px;
+  }
+  .login-brand-divider {
+    width: 40px; height: 3px;
+    background: rgba(255,255,255,0.35);
+    border-radius: 99px;
+    margin: 16px auto;
+  }
+  .login-brand-dots {
+    display: flex; gap: 8px; justify-content: center; margin-top: 40px;
+  }
+  .login-brand-dot {
+    width: 8px; height: 8px; border-radius: 50%;
+    background: rgba(255,255,255,0.3);
+  }
   .login-brand-dot.active { background: rgba(255,255,255,0.9); width: 24px; border-radius: 99px; }
 
+  /* الجانب الأيسر — فورم */
   .login-form-side {
-    width: 420px; flex-shrink: 0;
-    display: flex; align-items: center; justify-content: center;
-    padding: 48px 44px; background: #fff;
+    width: 420px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 44px;
+    background: #fff;
   }
   .login-form-inner { width: 100%; }
-  .login-form-title { font-size: 20px; font-weight: 800; color: var(--text); margin-bottom: 6px; }
-  .login-form-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 32px; font-weight: 500; }
+
+  .login-form-title {
+    font-size: 20px; font-weight: 800;
+    color: var(--text); margin-bottom: 6px;
+  }
+  .login-form-sub {
+    font-size: 13px; color: var(--text-muted);
+    margin-bottom: 32px; font-weight: 500;
+  }
 
   .field { margin-bottom: 18px; }
-  .field label { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; display: block; }
+  .field label {
+    font-size: 13px; font-weight: 600;
+    color: var(--text); margin-bottom: 8px; display: block;
+  }
   .field input {
     width: 100%; height: 50px;
-    background: var(--bg); border: 1.5px solid var(--border);
-    border-radius: var(--radius-sm); padding: 0 16px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 0 16px;
     font-size: 15px; color: var(--text);
     font-family: 'Tajawal', sans-serif;
     transition: var(--transition); outline: none;
   }
-  .field input:focus { background: #fff; border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-glow); }
+  .field input:focus {
+    background: #fff;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
 
   .btn-primary {
     width: 100%; height: 50px;
     background: linear-gradient(135deg, var(--accent), #3b82f6);
-    color: #fff; border: none; border-radius: var(--radius-sm);
-    font-size: 15px; font-weight: 700; font-family: 'Tajawal', sans-serif;
-    cursor: pointer; margin-top: 8px; transition: var(--transition);
+    color: #fff; border: none;
+    border-radius: var(--radius-sm);
+    font-size: 15px; font-weight: 700;
+    font-family: 'Tajawal', sans-serif;
+    cursor: pointer; margin-top: 8px;
+    transition: var(--transition);
     box-shadow: 0 4px 14px rgba(26,86,219,0.35);
   }
   .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,86,219,0.45); }
@@ -145,6 +197,7 @@
     font-weight: 600; min-height: 20px;
   }
 
+  /* Responsive */
   @media (max-width: 700px) {
     #login-screen { flex-direction: column; }
     .login-brand { padding: 40px 24px; min-height: 220px; flex: none; }
@@ -198,37 +251,53 @@
     padding-left: 12px; margin-left: 4px;
   }
 
-  .user-badge {
-    background: var(--surface2);
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 11px;
-    font-weight: 600;
-    max-width: 160px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .btn-logout {
-    background: transparent;
-    border: 1.5px solid var(--border);
-    color: var(--text-muted);
-    border-radius: var(--radius-sm);
-    padding: 6px 14px;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
+  /* User Menu Dropdown */
+  .user-menu-wrap { position: relative; }
+  .user-menu-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 20px; padding: 4px 12px 4px 8px;
+    cursor: pointer; font-family: 'Tajawal', sans-serif;
     transition: var(--transition);
   }
-  .btn-logout:hover {
-    border-color: var(--danger);
-    color: var(--danger);
-    background: var(--danger-light);
+  .user-menu-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+  .user-menu-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    color: #fff; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
+  .user-menu-name {
+    font-size: 12px; font-weight: 700; color: var(--text);
+    max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .user-menu-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.2s; }
+  .user-menu-wrap.open .user-menu-arrow { transform: rotate(180deg); }
+
+  .user-menu-dropdown {
+    position: absolute; top: calc(100% + 8px); left: 0;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    min-width: 200px; z-index: 1000;
+    display: none; flex-direction: column;
+    overflow: hidden;
+  }
+  .user-menu-wrap.open .user-menu-dropdown { display: flex; }
+  .user-menu-info { padding: 12px 14px; }
+  .user-menu-info-name { font-size: 13px; font-weight: 800; color: var(--text); }
+  .user-menu-info-email { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .user-menu-divider { height: 1px; background: var(--border); }
+  .user-menu-item {
+    padding: 10px 14px; text-align: right;
+    background: none; border: none; width: 100%;
+    font-family: 'Tajawal', sans-serif; font-size: 13px;
+    font-weight: 600; color: var(--text); cursor: pointer;
+    transition: background 0.15s;
+  }
+  .user-menu-item:hover { background: var(--surface2); }
+  .user-menu-item.danger { color: var(--danger); }
+  .user-menu-item.danger:hover { background: var(--danger-light); }
 
   .btn-close-dashboard {
     background: transparent;
@@ -466,19 +535,19 @@
   .stats-row {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 16px;
-    margin-bottom: 24px;
+    gap: 14px;
+    margin-bottom: 14px;
   }
 
   .stat-card {
     background: var(--surface);
     border-radius: var(--radius);
-    padding: 20px 22px;
+    padding: 18px 20px;
     box-shadow: var(--shadow-sm);
     border: 1px solid var(--border);
     display: flex;
-    align-items: center;
-    gap: 16px;
+    align-items: flex-start;
+    gap: 14px;
     transition: var(--transition);
     overflow: hidden;
     position: relative;
@@ -497,17 +566,13 @@
   .stat-card:nth-child(3)::before { background: var(--success); }
   .stat-card:nth-child(4)::before { background: var(--warning); }
 
-  .stat-card:hover {
-    transform: translateY(-2px);
-    box-shadow: var(--shadow);
-  }
+  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
 
   .stat-icon {
-    width: 44px; height: 44px;
-    border-radius: 12px;
+    width: 40px; height: 40px;
+    border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 20px;
-    flex-shrink: 0;
+    font-size: 18px; flex-shrink: 0; margin-top: 2px;
   }
 
   .stat-card:nth-child(1) .stat-icon { background: var(--accent-light); }
@@ -515,24 +580,62 @@
   .stat-card:nth-child(3) .stat-icon { background: var(--success-light); }
   .stat-card:nth-child(4) .stat-icon { background: #fffbeb; }
 
-  .stat-info { flex: 1; }
+  /* كارت حالة الاشتراكات */
+  .sub-status-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow-sm);
+    padding: 12px 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .sub-status-title {
+    font-size: 11px; font-weight: 700;
+    color: var(--text-muted); text-transform: uppercase;
+    letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0;
+  }
+  .sub-status-items {
+    display: flex; align-items: center; flex: 1;
+  }
+  .sub-status-item {
+    display: flex; align-items: center; gap: 8px;
+    padding: 4px 20px; flex: 1; justify-content: center;
+  }
+  .sub-status-val {
+    font-size: 20px; font-weight: 800; line-height: 1;
+  }
+  .sub-status-lbl {
+    font-size: 11px; font-weight: 500; color: var(--text-muted); white-space: nowrap;
+  }
+  .sub-status-divider {
+    width: 1px; height: 28px; background: var(--border); flex-shrink: 0;
+  }
+  .sub-status-active   .sub-status-val { color: #15803d; }
+  .sub-status-expiring .sub-status-val { color: #d97706; }
+  .sub-status-expired  .sub-status-val { color: #dc2626; }
+  .sub-status-none     .sub-status-val { color: var(--text-muted); }
+
+  .stat-info { flex: 1; min-width: 0; }
   .stat-val {
-    font-size: 28px;
+    font-size: 24px;
     font-weight: 800;
     color: var(--text);
     line-height: 1;
     letter-spacing: -0.5px;
   }
   .stat-label {
-    font-size: 12px;
+    font-size: 11px;
     color: var(--text-muted);
     font-weight: 500;
-    margin-top: 4px;
+    margin-top: 3px;
   }
 
   .stat-sub {
-    font-size: 11px; color: var(--text-light);
-    font-weight: 500; margin-top: 4px;
+    font-size: 10px; color: var(--text-light);
+    font-weight: 500; margin-top: 3px;
   }
   .stat-sub.positive { color: var(--success); }
   .stat-sub.neutral { color: var(--text-light); }
@@ -705,18 +808,53 @@
 
   /* ===== CLIENT AVATAR ===== */
   .client-avatar {
-    width: 38px; height: 38px;
+    width: 40px; height: 40px;
     border-radius: 12px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 15px; font-weight: 800; color: #fff;
+    font-size: 14px; font-weight: 800; color: #fff;
     flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    letter-spacing: 0.5px;
+    position: relative;
   }
   .client-row-info {
     display: flex; align-items: center; gap: 12px;
   }
-  .client-row-text { display: flex; flex-direction: column; }
+  .client-row-text { display: flex; flex-direction: column; gap: 2px; }
 
   /* ===== STEPPER ===== */
+  /* Edit Tabs */
+  .edit-tabs {
+    display: flex; gap: 4px;
+    margin-bottom: 20px;
+    background: var(--surface2);
+    border-radius: var(--radius-sm);
+    padding: 4px;
+    border: 1px solid var(--border);
+  }
+  .edit-tab {
+    flex: 1; padding: 8px 10px;
+    border: none; background: transparent;
+    border-radius: calc(var(--radius-sm) - 2px);
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--text-muted); cursor: pointer;
+    transition: var(--transition);
+    white-space: nowrap;
+  }
+  .edit-tab:hover { color: var(--text); background: rgba(0,0,0,0.04); }
+  .edit-tab.active {
+    background: #fff;
+    color: var(--accent);
+    font-weight: 700;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  }
+  .edit-footer {
+    display: flex; justify-content: flex-end; gap: 10px;
+    margin-top: 20px; padding-top: 16px;
+    border-top: 1px solid var(--border);
+  }
+
   .stepper-header {
     display: flex; align-items: center; gap: 0;
     margin-bottom: 24px;
@@ -861,6 +999,13 @@
     font-size: 16px;
     font-weight: 800;
     color: var(--text);
+  }
+
+  .height-val {
+    font-size: 11px;
+    font-weight: 500;
+    color: var(--text-muted);
+    white-space: nowrap;
   }
 
   .bmi-badge {
@@ -1146,77 +1291,54 @@
   .wch-badge.sub-expired { background: #fff5f5; color: #e53e3e; border: 1px solid #fecaca; }
   .wch-badge.sub-none    { background: var(--surface2); color: var(--text-light); border: 1px solid var(--border); }
 
-  .weight-summary {
-    display: grid; grid-template-columns: repeat(4, 1fr);
-    gap: 10px; margin-bottom: 0;
-  }
+  /* summary bar — مدمج في detail bar */
+  #weight-summary-bar .sub-detail-bar { margin-bottom: 12px; }
 
-  .w-sum-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
+  /* منطقة إضافة وزن */
+  .weight-add-section {
+    background: var(--surface2);
+    border: 1.5px solid var(--border);
     border-radius: var(--radius);
-    padding: 14px 10px;
-    text-align: center;
-    position: relative;
-    overflow: hidden;
-    transition: var(--transition);
+    padding: 14px 16px;
+    margin-bottom: 4px;
   }
-  .w-sum-card::after {
-    content: '';
-    position: absolute;
-    bottom: 0; left: 0; right: 0;
-    height: 3px;
-    border-radius: 0 0 var(--radius) var(--radius);
-  }
-  .w-sum-card:nth-child(1)::after { background: var(--accent); }
-  .w-sum-card:nth-child(2)::after { background: var(--success); }
-  .w-sum-card:nth-child(3)::after { background: var(--warning); }
-  .w-sum-card:nth-child(4)::after { background: #8b5cf6; }
-  .w-sum-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-  .w-sum-card .val {
-    font-size: 22px; font-weight: 800; color: var(--text);
-    display: block; line-height: 1;
-    letter-spacing: -0.5px;
-  }
-  .w-sum-card:nth-child(1) .val { color: var(--accent); }
-  .w-sum-card:nth-child(2) .val { color: var(--success); }
-  .w-sum-card:nth-child(3) .val { color: var(--warning); }
-  .w-sum-card:nth-child(4) .val { color: #8b5cf6; }
-  .w-sum-card .lbl {
-    font-size: 10px; color: var(--text-muted);
-    font-weight: 600; margin-top: 8px; display: block;
+  .weight-add-section-title {
+    font-size: 11px; font-weight: 700;
+    color: var(--text-muted); margin-bottom: 12px;
     text-transform: uppercase; letter-spacing: 0.4px;
   }
-
   .weight-add-row {
-    display: grid; grid-template-columns: 1fr 1fr;
-    gap: 10px;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px; align-items: end;
-    margin-bottom: 0;
+    display: grid; grid-template-columns: 1fr 1fr auto;
+    gap: 10px; align-items: end;
   }
   .weight-add-row .form-field { margin: 0; }
-  .weight-add-row-btn { grid-column: 1 / -1; }
+  .weight-add-row-btn { }
 
   .btn-add-weight {
-    width: 100%;
+    height: 42px; padding: 0 20px;
     background: linear-gradient(135deg, var(--success), #10b981);
-    color: #fff;
-    border: none; border-radius: var(--radius-sm);
-    height: 42px; cursor: pointer;
-    font-family: 'Tajawal', sans-serif;
+    color: #fff; border: none; border-radius: var(--radius-sm);
+    cursor: pointer; font-family: 'Tajawal', sans-serif;
     font-weight: 700; font-size: 14px;
     transition: var(--transition);
     box-shadow: 0 3px 10px rgba(5,150,105,0.3);
-    letter-spacing: 0.3px;
+    white-space: nowrap;
   }
-  .btn-add-weight:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 5px 16px rgba(5,150,105,0.4);
-  }
+  .btn-add-weight:hover { transform: translateY(-1px); box-shadow: 0 5px 16px rgba(5,150,105,0.4); }
   .btn-add-weight:disabled { opacity: 0.7; transform: none; cursor: not-allowed; }
+
+  .diet-toggle-row { margin-top: 10px; border-top: 1px dashed var(--border); padding-top: 10px; }
+  .diet-toggle-btn {
+    background: none; border: none;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px; font-weight: 600;
+    color: var(--text-muted); cursor: pointer;
+    padding: 0; display: flex; align-items: center; gap: 5px;
+  }
+  .diet-toggle-btn:hover { color: var(--accent); }
+  .diet-toggle-arrow { font-size: 10px; transition: transform 0.2s; }
+  .diet-toggle-btn.open .diet-toggle-arrow { transform: rotate(180deg); }
+  .diet-upload-area-wrap { margin-top: 8px; }
 
   /* section label */
   .weight-history-label {
@@ -1471,7 +1593,7 @@
     font-size: 12px; color: var(--text-muted); font-weight: 500; line-height: 1.6;
   }
   .sub-card-days {
-    font-size: 22px; font-weight: 800; flex-shrink: 0; text-align: center; line-height: 1;
+    font-size: 15px; font-weight: 800; flex-shrink: 0; text-align: center; line-height: 1.3;
   }
   .sub-card-days .days-lbl { font-size: 10px; font-weight: 600; display: block; margin-top: 2px; }
   .sub-card.active-sub  .sub-card-days { color: #15803d; }
@@ -1493,15 +1615,15 @@
   }
   .sub-renew-select:focus { border-color: var(--accent); }
   .btn-renew {
-    background: linear-gradient(135deg, var(--accent), #3b82f6);
-    color: #fff; border: none; border-radius: var(--radius-sm);
-    padding: 7px 16px; font-family: 'Tajawal', sans-serif;
+    background: var(--accent-light);
+    color: var(--accent); border: 1.5px solid rgba(26,86,219,0.25);
+    border-radius: var(--radius-sm);
+    padding: 7px 18px; font-family: 'Tajawal', sans-serif;
     font-size: 12px; font-weight: 700; cursor: pointer;
     transition: var(--transition); white-space: nowrap;
-    box-shadow: 0 2px 8px rgba(26,86,219,0.3);
   }
-  .btn-renew:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(26,86,219,0.4); }
-  .btn-renew:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+  .btn-renew:hover { background: #dbeafe; border-color: var(--accent); }
+  .btn-renew:disabled { opacity: 0.5; cursor: not-allowed; }
   .sub-badge {
     display: inline-flex; align-items: center; gap: 5px;
     padding: 4px 10px; border-radius: 20px;
@@ -1529,8 +1651,154 @@
   .btn-sub:hover { background: #dcfce7; border-color: #86efac; }
 
   .sub-modal-box { max-width: 500px; }
-  .sub-modal-form {
+
+  /* Header موحد */
+  .sub-modal-header {
+    display: flex; align-items: center; gap: 12px;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .sub-modal-status-badge {
+    flex-shrink: 0;
+  }
+
+  /* شريط تفاصيل الاشتراك */
+  .sub-detail-bar {
+    display: flex; gap: 0;
+    border-radius: var(--radius);
+    overflow: hidden;
+    margin-bottom: 18px;
+    border: 1px solid var(--border);
+  }
+  .sub-detail-bar.active-sub  { border-color: #bbf7d0; }
+  .sub-detail-bar.warning-sub { border-color: #fde68a; }
+  .sub-detail-bar.expired-sub { border-color: #fecaca; }
+
+  .sub-detail-item {
+    flex: 1; padding: 10px 14px; text-align: center;
+    background: var(--surface2);
+    border-left: 1px solid var(--border);
+    min-width: 0;
+  }
+  .sub-detail-item:last-child { border-left: none; }
+  .sub-detail-bar.active-sub  .sub-detail-item { background: #f0fdf4; border-color: #bbf7d0; }
+  .sub-detail-bar.warning-sub .sub-detail-item { background: #fefce8; border-color: #fde68a; }
+  .sub-detail-bar.expired-sub .sub-detail-item { background: #fff5f5; border-color: #fecaca; }
+
+  .sub-detail-lbl {
+    font-size: 10px; color: var(--text-muted); font-weight: 600;
+    text-transform: uppercase; letter-spacing: 0.4px; margin-bottom: 3px;
+  }
+  .sub-detail-val {
+    font-size: 13px; font-weight: 800; color: var(--text); white-space: nowrap;
+  }
+  .sub-detail-item.highlight .sub-detail-val { color: #15803d; }
+  .sub-detail-item.highlight-warn .sub-detail-val { color: #d97706; }
+  .sub-detail-item.highlight-exp  .sub-detail-val { color: #dc2626; }
     display: grid; grid-template-columns: 1fr 1fr; gap: 12px;
+  }
+
+  /* أقسام modal الاشتراك */
+  .sub-section {
+    margin-top: 18px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface2);
+  }
+  .sub-section-header {
+    display: flex; align-items: center; gap: 8px;
+    margin-bottom: 14px;
+  }
+  .sub-section-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .sub-section-title {
+    font-size: 12px; font-weight: 800; color: var(--text);
+    text-transform: uppercase; letter-spacing: 0.5px;
+  }
+  .sub-section-hint {
+    font-size: 11px; color: var(--text-muted); margin-bottom: 0;
+  }
+  .sub-section-actions {
+    display: flex; justify-content: flex-end; gap: 8px;
+    margin-top: 14px; padding-top: 12px;
+    border-top: 1px solid var(--border);
+  }
+  .sub-sections-divider {
+    display: flex; align-items: center; gap: 10px;
+    margin-top: 14px;
+    color: var(--text-muted); font-size: 11px; font-weight: 700;
+  }
+  .sub-sections-divider::before,
+  .sub-sections-divider::after {
+    content: ''; flex: 1; height: 1px; background: var(--border);
+  }
+
+  .sub-mini-bars {
+    margin-top: 7px;
+    display: flex; flex-direction: column; gap: 4px;
+  }
+  .smb-row {
+    display: flex; align-items: center; gap: 5px;
+  }
+  .smb-dot {
+    width: 5px; height: 5px; border-radius: 50%; flex-shrink: 0;
+  }
+  .smb-lbl {
+    font-size: 10px; color: var(--text-muted); font-weight: 500;
+    min-width: 62px; white-space: nowrap;
+  }
+  .smb-track {
+    flex: 1; height: 3px; background: var(--border);
+    border-radius: 99px; overflow: hidden;
+  }
+  .smb-fill {
+    height: 100%; border-radius: 99px;
+    transition: width 0.4s ease;
+    min-width: 3px;
+  }
+  .smb-num {
+    font-size: 10px; font-weight: 700; color: var(--text);
+    min-width: 14px; text-align: left;
+  }
+
+  /* سجل الاشتراكات */
+  .sub-history-wrap {
+    padding: 4px 0 8px;
+  }
+  .sub-history-loading {
+    font-size: 12px; color: var(--text-muted); padding: 8px 0;
+  }
+  .sub-history-empty {
+    font-size: 12px; color: var(--text-muted); padding: 8px 0; text-align: center;
+  }
+  .sub-history-item {
+    display: flex; gap: 12px; align-items: flex-start;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    position: relative;
+  }
+  .sub-history-item:last-child { border-bottom: none; }
+  .sub-history-dot {
+    width: 28px; height: 28px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; flex-shrink: 0; margin-top: 1px;
+  }
+  .sub-history-dot.type-renew   { background: #dcfce7; }
+  .sub-history-dot.type-edit    { background: #dbeafe; }
+  .sub-history-dot.type-create  { background: #fef9c3; }
+  .sub-history-body { flex: 1; min-width: 0; }
+  .sub-history-title {
+    font-size: 13px; font-weight: 700; color: var(--text); line-height: 1.3;
+  }
+  .sub-history-meta {
+    font-size: 11px; color: var(--text-muted); margin-top: 3px;
+  }
+  .sub-history-date {
+    font-size: 11px; color: var(--text-muted); white-space: nowrap; flex-shrink: 0;
+    margin-top: 4px;
   }
 
   .form-section {
@@ -1570,7 +1838,7 @@
   <!-- الجانب الأيمن: فورم -->
   <div class="login-form-side">
     <div class="login-form-inner">
-      <div style="width:64px;height:64px;border-radius:18px;overflow:hidden;margin:0 0 20px 0;box-shadow:0 4px 16px rgba(26,86,219,0.2);border:2px solid rgba(26,86,219,0.1);">
+      <div class="login-brand-logo" style="margin:0 0 20px 0;width:64px;height:64px;border-radius:18px;overflow:hidden;box-shadow:0 4px 16px rgba(26,86,219,0.2);border:2px solid rgba(26,86,219,0.1);">
         <img src="logo.jpg" alt="Logo" style="width:100%;height:100%;object-fit:cover;">
       </div>
       <div class="login-form-title">مرحباً بك 👋</div>
@@ -1587,6 +1855,7 @@
       <div id="login-error"></div>
     </div>
   </div>
+
   <!-- الجانب الأيسر: Branding -->
   <div class="login-brand">
     <div class="login-brand-content">
@@ -1607,7 +1876,29 @@
 
 <!-- APP -->
 <div id="app-screen">
-  <div class="topbar">
+  <!-- Modal تعديل الاسم -->
+<div class="modal-overlay" id="edit-name-modal">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h2>تعديل الاسم</h2>
+      <button class="btn-close" onclick="closeEditNameModal()">×</button>
+    </div>
+    <div class="form-field">
+      <label>الاسم الأول</label>
+      <input type="text" id="edit-first-name" placeholder="الاسم الأول">
+    </div>
+    <div class="form-field" style="margin-top:12px;">
+      <label>الاسم الأخير</label>
+      <input type="text" id="edit-last-name" placeholder="الاسم الأخير">
+    </div>
+    <div class="modal-footer" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;">
+      <button class="btn-cancel" onclick="closeEditNameModal()">إلغاء</button>
+      <button class="btn-save" onclick="saveDisplayName()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<div class="topbar">
     <div class="topbar-brand">
       <div class="topbar-logo">
         <img src="logo.jpg" alt="Logo">
@@ -1619,10 +1910,26 @@
     </div>
     <div class="topbar-actions">
       <span class="topbar-date" id="topbar-date"></span>
-      <div class="user-badge" id="user-email-badge">—</div>
       <button class="btn-dashboard" onclick="openDashboard()">📊 الداشبورد</button>
       <button class="col-registrar btn-migration" onclick="runMigration()" title="تحديث إيميلات المسجِّلين" style="font-size:11px; padding:0 10px; height:30px; border-radius:20px;">🔄</button>
-      <button class="btn-logout" onclick="doLogout()">خروج</button>
+      <!-- User Menu -->
+      <div class="user-menu-wrap" id="user-menu-wrap">
+        <button class="user-menu-btn" onclick="toggleUserMenu()" id="user-menu-btn">
+          <div class="user-menu-avatar" id="user-menu-avatar">—</div>
+          <span class="user-menu-name" id="user-menu-name">—</span>
+          <span class="user-menu-arrow">▾</span>
+        </button>
+        <div class="user-menu-dropdown" id="user-menu-dropdown">
+          <div class="user-menu-info">
+            <div class="user-menu-info-name" id="user-menu-info-name">—</div>
+            <div class="user-menu-info-email" id="user-menu-info-email">—</div>
+          </div>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item" onclick="openEditNameModal()">✏️ تعديل الاسم</button>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item danger" onclick="doLogout()">🚪 خروج</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1659,6 +1966,32 @@
           <div class="stat-val" id="stat-maintain">0</div>
           <div class="stat-label">تثبيت الوزن</div>
           <div class="stat-sub" id="stat-maintain-sub"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- كارت الاشتراكات -->
+    <div class="sub-status-card" id="sub-status-card">
+      <div class="sub-status-title">حالة الاشتراكات</div>
+      <div class="sub-status-items">
+        <div class="sub-status-item sub-status-active">
+          <div class="sub-status-val" id="ssc-active">0</div>
+          <div class="sub-status-lbl">فعال</div>
+        </div>
+        <div class="sub-status-divider"></div>
+        <div class="sub-status-item sub-status-expiring">
+          <div class="sub-status-val" id="ssc-expiring">0</div>
+          <div class="sub-status-lbl">ينتهي قريباً</div>
+        </div>
+        <div class="sub-status-divider"></div>
+        <div class="sub-status-item sub-status-expired">
+          <div class="sub-status-val" id="ssc-expired">0</div>
+          <div class="sub-status-lbl">منتهي</div>
+        </div>
+        <div class="sub-status-divider"></div>
+        <div class="sub-status-item sub-status-none">
+          <div class="sub-status-val" id="ssc-none">0</div>
+          <div class="sub-status-lbl">بدون اشتراك</div>
         </div>
       </div>
     </div>
@@ -1700,6 +2033,14 @@
               <option value="all">الكل</option>
             </select>
           </div>
+          <div class="filter-panel-row">
+            <span class="filter-label">الاشتراك</span>
+            <button class="filter-chip active" onclick="setFilter('sub','all',this)">الكل</button>
+            <button class="filter-chip" onclick="setFilter('sub','active',this)">فعال</button>
+            <button class="filter-chip" onclick="setFilter('sub','expiring',this)">ينتهي قريباً</button>
+            <button class="filter-chip" onclick="setFilter('sub','expired',this)">منتهي</button>
+            <button class="filter-chip" onclick="setFilter('sub','none',this)">بدون</button>
+          </div>
           <div class="filter-panel-footer">
             <button class="btn-clear-filters" onclick="clearFilters()">مسح الفلاتر</button>
           </div>
@@ -1723,7 +2064,6 @@
             <th>العميل</th>
             <th>التليفون</th>
             <th>الوزن / BMI</th>
-            <th>الطول</th>
             <th>الهدف</th>
             <th>الاشتراك</th>
             <th class="col-registrar">المسجِّل</th>
@@ -1750,8 +2090,8 @@
       <button class="btn-close" onclick="closeModal()">×</button>
     </div>
 
-    <!-- Stepper Header -->
-    <div class="stepper-header">
+    <!-- Stepper — يظهر عند الإضافة فقط -->
+    <div class="stepper-header" id="modal-stepper-header">
       <div class="stepper-step active" id="step-ind-1">
         <div class="stepper-num">1</div>
         <div class="stepper-label">بيانات شخصية</div>
@@ -1768,7 +2108,14 @@
       </div>
     </div>
 
-    <!-- Step 1: بيانات شخصية -->
+    <!-- Tabs — تظهر عند التعديل فقط -->
+    <div class="edit-tabs" id="modal-edit-tabs" style="display:none;">
+      <button class="edit-tab active" onclick="switchEditTab('personal', this)">👤 بيانات شخصية</button>
+      <button class="edit-tab" onclick="switchEditTab('body', this)">⚖️ بيانات جسمية</button>
+      <button class="edit-tab" onclick="switchEditTab('goal', this)">🎯 الهدف والاشتراك</button>
+    </div>
+
+    <!-- Step 1 / Tab: بيانات شخصية -->
     <div class="stepper-page active" id="step-page-1">
       <div class="form-grid">
         <div class="form-field full"><label>الاسم الكامل *</label><input type="text" id="f-name" placeholder="أدخل الاسم الكامل"></div>
@@ -1805,25 +2152,33 @@
           </select>
         </div>
       </div>
-      <div class="stepper-footer">
+      <div class="stepper-footer" id="step-footer-1">
         <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
         <button class="btn-save" onclick="stepperNext(1)">التالي ←</button>
       </div>
+      <div class="edit-footer" id="edit-footer-1" style="display:none;">
+        <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+        <button class="btn-save" onclick="saveClient()">💾 حفظ التغييرات</button>
+      </div>
     </div>
 
-    <!-- Step 2: بيانات جسمية -->
+    <!-- Step 2 / Tab: بيانات جسمية -->
     <div class="stepper-page" id="step-page-2">
       <div class="form-grid">
         <div class="form-field"><label>الوزن الحالي (كجم)</label><input type="number" id="f-weight" step="0.1" placeholder="70.0"></div>
         <div class="form-field"><label>الطول (سم)</label><input type="number" id="f-height" placeholder="170"></div>
       </div>
-      <div class="stepper-footer">
+      <div class="stepper-footer" id="step-footer-2">
         <button class="btn-cancel" onclick="stepperBack(2)">→ السابق</button>
         <button class="btn-save" onclick="stepperNext(2)">التالي ←</button>
       </div>
+      <div class="edit-footer" id="edit-footer-2" style="display:none;">
+        <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+        <button class="btn-save" onclick="saveClient()">💾 حفظ التغييرات</button>
+      </div>
     </div>
 
-    <!-- Step 3: الهدف والملاحظات -->
+    <!-- Step 3 / Tab: الهدف والملاحظات -->
     <div class="stepper-page" id="step-page-3">
       <div class="form-grid">
         <div class="form-field full"><label>الهدف</label>
@@ -1852,9 +2207,13 @@
         </div>
         <div class="form-field full"><label>ملاحظات</label><textarea id="f-notes" placeholder="أي معلومات إضافية..."></textarea></div>
       </div>
-      <div class="stepper-footer">
+      <div class="stepper-footer" id="step-footer-3">
         <button class="btn-cancel" onclick="stepperBack(3)">→ السابق</button>
         <button class="btn-save" onclick="saveClient()">💾 حفظ العميل</button>
+      </div>
+      <div class="edit-footer" id="edit-footer-3" style="display:none;">
+        <button class="btn-cancel" onclick="closeModal()">إلغاء</button>
+        <button class="btn-save" onclick="saveClient()">💾 حفظ التغييرات</button>
       </div>
     </div>
 
@@ -1864,45 +2223,43 @@
 <!-- Weight Modal -->
 <div class="modal-overlay" id="weight-modal">
   <div class="modal weight-modal">
-    <div class="modal-header">
-      <h2>سجل الأوزان</h2>
-      <button class="btn-close" onclick="closeWeightModal()">×</button>
+    <!-- Header موحد -->
+    <div class="sub-modal-header">
+      <div id="weight-client-name" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;"></div>
+      <div id="weight-client-badges"></div>
+      <button class="btn-close" onclick="closeWeightModal()" style="flex-shrink:0;">×</button>
     </div>
+    <!-- شريط تفاصيل العميل -->
+    <div id="weight-client-detail-bar"></div>
 
-    <div class="weight-client-header">
-      <div class="weight-client-avatar" id="weight-client-avatar">👤</div>
-      <div class="weight-client-header-info">
-        <div id="weight-client-name">—</div>
-        <div class="weight-client-header-sub" id="weight-client-info"></div>
-        <div class="weight-client-header-badges" id="weight-client-badges"></div>
-      </div>
-    </div>
-
-    <div class="weight-summary">
-      <div class="w-sum-card"><span class="val" id="ws-start">—</span><span class="lbl">البداية (كجم)</span></div>
-      <div class="w-sum-card"><span class="val" id="ws-current">—</span><span class="lbl">الحالي (كجم)</span></div>
-      <div class="w-sum-card"><span class="val" id="ws-diff">—</span><span class="lbl">الفرق (كجم)</span></div>
-      <div class="w-sum-card"><span class="val" id="ws-visits">0</span><span class="lbl">عدد الزيارات</span></div>
-    </div>
+    <!-- ملخص الأوزان (يتعبى بـ JS) -->
+    <div id="weight-summary-bar" style="margin-bottom:16px;"></div>
 
     <div class="weight-chart-container" id="weight-chart-container">
       <canvas id="weight-chart"></canvas>
     </div>
 
-    <div class="weight-add-row">
-      <div class="form-field"><label>الوزن (كجم)</label><input type="number" id="w-new-weight" step="0.1" placeholder="70.0"></div>
-      <div class="form-field"><label>التاريخ</label><input type="date" id="w-new-date"></div>
-      <div class="form-field full diet-file-section" style="margin:0; grid-column:1/-1">
-        <span class="diet-file-label">📋 ملف الدايت (اختياري)</span>
+    <!-- منطقة إضافة وزن جديد -->
+    <div class="weight-add-section">
+      <div class="weight-add-section-title">➕ إضافة وزن جديد</div>
+      <div class="weight-add-row">
+        <div class="form-field"><label>الوزن (كجم)</label><input type="number" id="w-new-weight" step="0.1" placeholder="70.0"></div>
+        <div class="form-field"><label>التاريخ</label><input type="date" id="w-new-date"></div>
+        <div class="weight-add-row-btn">
+          <button class="btn-add-weight" onclick="addWeightEntry()">حفظ</button>
+        </div>
+      </div>
+      <!-- ملف الدايت collapsible -->
+      <div class="diet-toggle-row">
+        <button class="diet-toggle-btn" onclick="toggleDietUpload(this)">📋 إرفاق ملف دايت <span class="diet-toggle-arrow">▾</span></button>
+      </div>
+      <div class="diet-upload-area-wrap" id="diet-upload-wrap" style="display:none;">
         <label class="diet-upload-area" id="diet-upload-label">
           <input type="file" id="w-diet-file" accept=".pdf,.doc,.docx,.jpg,.jpeg,.png,.xlsx,.xls" onchange="updateDietFileLabel()">
           <div class="diet-upload-icon">📁</div>
           <div class="diet-upload-text">اسحب الملف هنا أو <span>اضغط للاختيار</span></div>
-          <div id="diet-file-name" style="font-size:12px; color:var(--accent); font-weight:600; margin-top:4px; display:none"></div>
+          <div id="diet-file-name" style="font-size:12px;color:var(--accent);font-weight:600;margin-top:4px;display:none"></div>
         </label>
-      </div>
-      <div class="weight-add-row-btn">
-        <button class="btn-add-weight" onclick="addWeightEntry()">+ إضافة وزن جديد</button>
       </div>
     </div>
 
@@ -1914,17 +2271,23 @@
 <!-- Subscription Modal -->
 <div class="modal-overlay" id="sub-modal">
   <div class="modal sub-modal-box">
-    <div class="modal-header">
-      <h2>🗓 إدارة الاشتراك</h2>
-      <button class="btn-close" onclick="closeSubModal()">×</button>
+    <!-- Header موحد: avatar + اسم + badge الحالة + زر إغلاق -->
+    <div class="sub-modal-header">
+      <div id="sub-modal-client-name" style="display:flex;align-items:center;gap:10px;flex:1;min-width:0;"></div>
+      <div id="sub-modal-status-badge"></div>
+      <button class="btn-close" onclick="closeSubModal()" style="flex-shrink:0;">×</button>
     </div>
-    <div id="sub-modal-client-name" style="font-size:15px;font-weight:800;color:var(--text);margin-bottom:16px;"></div>
-    <div id="sub-modal-card"></div>
-    <div style="margin-top:18px;padding-top:16px;border-top:1px solid var(--border);">
-      <div style="font-size:11px;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">تجديد / تعديل الاشتراك</div>
+    <!-- تفاصيل الاشتراك (بداية / نهاية / متبقي) -->
+    <div id="sub-modal-detail-bar"></div>
+    <!-- قسم تعديل الاشتراك -->
+    <div class="sub-section">
+      <div class="sub-section-header">
+        <span class="sub-section-dot" style="background:var(--accent);"></span>
+        <span class="sub-section-title">تعديل الاشتراك</span>
+      </div>
       <div class="sub-modal-form">
         <div class="form-field">
-          <label>تاريخ بداية الاشتراك</label>
+          <label>تاريخ البداية</label>
           <input type="date" id="sub-modal-start">
         </div>
         <div class="form-field">
@@ -1941,7 +2304,24 @@
           </select>
         </div>
       </div>
-      <div style="margin-top:8px;font-size:11px;color:var(--text-muted);font-weight:500;">أو تجديد سريع: أضف شهور من تاريخ انتهاء الاشتراك الحالي</div>
+      <div class="sub-section-actions">
+        <button class="btn-cancel" onclick="closeSubModal()">إغلاق</button>
+        <button class="btn-save" onclick="saveSubModal()">💾 حفظ التغييرات</button>
+      </div>
+    </div>
+
+    <!-- فاصل -->
+    <div class="sub-sections-divider">
+      <span>أو</span>
+    </div>
+
+    <!-- قسم التجديد -->
+    <div class="sub-section">
+      <div class="sub-section-header">
+        <span class="sub-section-dot" style="background:#059669;"></span>
+        <span class="sub-section-title">تجديد الاشتراك</span>
+      </div>
+      <div class="sub-section-hint">أضف شهور تُحتسب من تاريخ انتهاء الاشتراك الحالي</div>
       <div class="sub-renew-row" style="margin-top:10px;padding-top:0;border-top:none;">
         <span class="sub-renew-label">إضافة:</span>
         <select class="sub-renew-select" id="sub-modal-renew-months">
@@ -1953,12 +2333,14 @@
           <option value="9">9 أشهر</option>
           <option value="12">سنة كاملة</option>
         </select>
-        <button class="btn-renew" onclick="renewFromSubModal()">🔄 تجديد سريع</button>
+        <button class="btn-renew" onclick="renewFromSubModal()">تجديد</button>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn-cancel" onclick="closeSubModal()">إغلاق</button>
-      <button class="btn-save" onclick="saveSubModal()">💾 حفظ التغييرات</button>
+
+    <!-- سجل الاشتراكات -->
+    <div class="sub-sections-divider"><span>السجل</span></div>
+    <div class="sub-history-wrap">
+      <div id="sub-history-list"><div class="sub-history-loading">⏳ جاري التحميل...</div></div>
     </div>
   </div>
 </div>
@@ -1992,8 +2374,21 @@
 
     <!-- جدول المستخدمين -->
     <div class="dash-card full">
-      <div class="dash-card-title">المستخدمون وعملاؤهم</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
+        <div class="dash-card-title" style="margin-bottom:0;">المستخدمون وعملاؤهم</div>
+        <input type="text" id="admin-user-search" placeholder="🔍 بحث بالاسم أو الإيميل..."
+          oninput="filterAdminTable(this.value)"
+          style="height:36px;border:1.5px solid var(--border);border-radius:var(--radius-sm);
+          padding:0 12px;font-family:'Tajawal',sans-serif;font-size:13px;
+          color:var(--text);background:var(--bg);outline:none;width:240px;">
+      </div>
       <div id="admin-users-table"></div>
+    </div>
+
+    <!-- رسم بياني للاشتراكات لكل مستخدم -->
+    <div class="dash-card full">
+      <div class="dash-card-title">توزيع الاشتراكات لكل مستخدم</div>
+      <div class="dash-chart-wrap" style="height:280px;"><canvas id="admin-sub-chart"></canvas></div>
     </div>
 
     <!-- الأكثر نشاطاً -->
@@ -2038,6 +2433,12 @@
         <span id="dash-followup-count" class="dash-followup-badge"></span>
       </div>
       <div id="dash-followup-list"></div>
+    </div>
+
+    <!-- حالة الاشتراكات -->
+    <div class="dash-card">
+      <div class="dash-card-title">حالة الاشتراكات</div>
+      <div class="dash-chart-wrap"><canvas id="dash-sub-chart"></canvas></div>
     </div>
 
     <!-- توزيع الأهداف -->
@@ -2110,16 +2511,37 @@ onAuthStateChanged(auth, user => {
     isAdmin = ADMIN_EMAILS.includes(user.email);
     document.getElementById('app-screen').style.display = 'block';
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('user-email-badge').textContent = user.email.split('@')[0];
     if (isAdmin) document.body.classList.add('is-admin');
-    // تاريخ اليوم
     const today = new Date().toLocaleDateString('ar', { weekday: 'short', day: 'numeric', month: 'short' });
     document.getElementById('topbar-date').textContent = today;
-    // حفظ بيانات اليوزر في users collection
-    setDoc(doc(db, 'users', user.uid), {
-      email: user.email,
-      lastLogin: serverTimestamp()
-    }, { merge: true });
+
+    // اقرأ بيانات اليوزر أولاً ثم حدّث lastLogin فقط لتجنّب مسح displayName
+    getDoc(doc(db, 'users', user.uid)).then(async userDoc => {
+      const userData = userDoc.exists() ? userDoc.data() : {};
+      const displayName = userData.displayName || '';
+      const firstName = displayName.split(' ')[0] || user.email.split('@')[0];
+      const initials = displayName
+        ? displayName.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('')
+        : user.email[0].toUpperCase();
+      document.getElementById('user-menu-avatar').textContent = initials;
+      document.getElementById('user-menu-name').textContent = firstName;
+      document.getElementById('user-menu-info-name').textContent = displayName || user.email.split('@')[0];
+      document.getElementById('user-menu-info-email').textContent = user.email;
+      // حدّث email و lastLogin فقط بعد قراءة البيانات
+      await setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        lastLogin: serverTimestamp()
+      }, { merge: true });
+    }).catch(() => {
+      document.getElementById('user-menu-avatar').textContent = user.email[0].toUpperCase();
+      document.getElementById('user-menu-name').textContent = user.email.split('@')[0];
+      document.getElementById('user-menu-info-email').textContent = user.email;
+      setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        lastLogin: serverTimestamp()
+      }, { merge: true });
+    });
+
     loadClients();
   } else {
     document.getElementById('login-screen').style.display = 'flex';
@@ -2172,6 +2594,47 @@ window.doLogin = async () => {
 };
 
 window.doLogout = () => signOut(auth);
+
+// User Menu
+window.toggleUserMenu = () => {
+  document.getElementById('user-menu-wrap').classList.toggle('open');
+};
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('user-menu-wrap');
+  if (wrap && !wrap.contains(e.target)) wrap.classList.remove('open');
+});
+
+// تعديل الاسم
+window.openEditNameModal = () => {
+  document.getElementById('user-menu-wrap').classList.remove('open');
+  const nameEl = document.getElementById('user-menu-info-name');
+  const parts = (nameEl?.textContent || '').trim().split(' ');
+  document.getElementById('edit-first-name').value = parts[0] || '';
+  document.getElementById('edit-last-name').value = parts.slice(1).join(' ') || '';
+  document.getElementById('edit-name-modal').classList.add('open');
+};
+window.closeEditNameModal = () => {
+  document.getElementById('edit-name-modal').classList.remove('open');
+};
+window.saveDisplayName = async () => {
+  const first = document.getElementById('edit-first-name').value.trim();
+  const last  = document.getElementById('edit-last-name').value.trim();
+  if (!first) { showToast('أدخل الاسم الأول', 'error'); return; }
+  const displayName = [first, last].filter(Boolean).join(' ');
+  const user = auth.currentUser;
+  if (!user) { showToast('خطأ في المصادقة', 'error'); return; }
+  try {
+    await setDoc(doc(db, 'users', user.uid), { displayName }, { merge: true });
+    const initials = displayName.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('');
+    document.getElementById('user-menu-avatar').textContent = initials;
+    document.getElementById('user-menu-name').textContent = first;
+    document.getElementById('user-menu-info-name').textContent = displayName;
+    closeEditNameModal();
+    showToast('تم تحديث الاسم', 'success');
+  } catch(e) {
+    showToast('خطأ في الحفظ: ' + e.message, 'error');
+  }
+};
 
 async function loadClients() {
   const user = auth.currentUser;
@@ -2230,6 +2693,18 @@ window.saveClient = async () => {
           date: today
         });
       }
+      // تسجيل الاشتراك الأول في سجل الاشتراكات
+      if (data.subStart && data.subMonths) {
+        const sub = getSubStatus(data.subStart, data.subMonths);
+        await addDoc(collection(db, 'clients', newClientRef.id, 'subHistory'), {
+          type: 'create',
+          months: data.subMonths,
+          startDate: data.subStart,
+          endDate: sub ? sub.end.toISOString().split('T')[0] : null,
+          by: user.email,
+          createdAt: serverTimestamp()
+        });
+      }
       showToast('تم إضافة العميل بنجاح', 'success');
     }
     closeModal();
@@ -2261,6 +2736,15 @@ function getBMICategory(bmi) {
   return { label: 'سمنة', color: '#c53030', bg: '#fff5f5' };
 }
 
+function formatDaysLeft(daysLeft) {
+  if (daysLeft <= 0) return null;
+  const months = Math.floor(daysLeft / 30);
+  const days = daysLeft % 30;
+  if (months === 0) return `${days} يوم`;
+  if (days === 0) return `${months} ${months === 1 ? 'شهر' : 'أشهر'}`;
+  return `${months} ${months === 1 ? 'شهر' : 'أشهر'} و ${days} يوم`;
+}
+
 function getSubStatus(subStart, subMonths) {
   if (!subStart || !subMonths) return null;
   const start = new Date(subStart);
@@ -2284,7 +2768,7 @@ function renderSubCard(client) {
     <div class="sub-renew-row">
       <span class="sub-renew-label">تجديد:</span>
       <select class="sub-renew-select" id="sub-renew-months">${renewOptions}</select>
-      <button class="btn-renew" onclick="renewSubscription('${client.id}')">🔄 تجديد</button>
+      <button class="btn-renew" onclick="renewSubscription('${client.id}')">تجديد</button>
     </div>`;
 
   if (!sub) {
@@ -2328,8 +2812,8 @@ function renderSubCard(client) {
           <div class="sub-card-detail">بدأ: ${startStr}<br>ينتهي: ${endStr}</div>
         </div>
         <div class="sub-card-days">
-          ${sub.daysLeft}
-          <span class="days-lbl">يوم متبقي</span>
+          ${formatDaysLeft(sub.daysLeft)}
+          <span class="days-lbl">متبقي</span>
         </div>
         ${renewRow}
       </div>`;
@@ -2342,8 +2826,8 @@ function renderSubCard(client) {
           <div class="sub-card-detail">بدأ: ${startStr}<br>ينتهي: ${endStr}</div>
         </div>
         <div class="sub-card-days">
-          ${sub.daysLeft}
-          <span class="days-lbl">يوم متبقي</span>
+          ${formatDaysLeft(sub.daysLeft)}
+          <span class="days-lbl">متبقي</span>
         </div>
         ${renewRow}
       </div>`;
@@ -2401,6 +2885,16 @@ window.renderTable = () => {
   if (activeFilters.gender !== 'all') filtered = filtered.filter(c => c.gender === activeFilters.gender);
   if (activeFilters.nationality !== 'all') filtered = filtered.filter(c => c.nationality === activeFilters.nationality);
   if (activeFilters.registrar !== 'all') filtered = filtered.filter(c => c.userEmail === activeFilters.registrar);
+  if (activeFilters.sub !== 'all') {
+    filtered = filtered.filter(c => {
+      const sub = getSubStatus(c.subStart, c.subMonths);
+      if (activeFilters.sub === 'active')   return sub && sub.daysLeft > 7;
+      if (activeFilters.sub === 'expiring') return sub && sub.daysLeft > 0 && sub.daysLeft <= 7;
+      if (activeFilters.sub === 'expired')  return sub && sub.daysLeft <= 0;
+      if (activeFilters.sub === 'none')     return !sub;
+      return true;
+    });
+  }
 
   const tbody = document.getElementById('clients-tbody');
   populateFilterDropdowns();
@@ -2413,16 +2907,27 @@ window.renderTable = () => {
     const cat = bmi ? getBMICategory(bmi) : null;
     const goalMap = { loss: 'خسارة وزن', gain: 'زيادة وزن', maintain: 'تثبيت' };
     const goalText = goalMap[c.goal] || c.goal;
-    const avatarColors = ['#1a56db','#059669','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#e53e3e','#0ea5e9'];
-    const colorIdx = c.name.charCodeAt(0) % avatarColors.length;
-    const avatarColor = avatarColors[colorIdx];
-    const initials = c.name.trim().split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
+    const avatarPalette = [
+      ['#1a56db','#1e40af'], // أزرق
+      ['#059669','#047857'], // أخضر
+      ['#8b5cf6','#7c3aed'], // بنفسجي
+      ['#ec4899','#db2777'], // وردي
+      ['#f59e0b','#d97706'], // برتقالي
+      ['#06b6d4','#0891b2'], // سماوي
+      ['#e53e3e','#c53030'], // أحمر
+      ['#0ea5e9','#0284c7'], // أزرق فاتح
+      ['#10b981','#059669'], // أخضر فاتح
+      ['#6366f1','#4f46e5'], // نيلي
+    ];
+    const nameHash = c.name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+    const [avatarColor, avatarDark] = avatarPalette[nameHash % avatarPalette.length];
+    const initials = c.name.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase();
 
     return `
     <tr onclick="openWeightModal('${c.id}')">
       <td>
         <div class="client-row-info">
-          <div class="client-avatar" style="background:${avatarColor}">${initials}</div>
+          <div class="client-avatar" style="background:linear-gradient(135deg,${avatarColor},${avatarDark})">${initials}</div>
           <div class="client-row-text">
             <div class="client-name">${c.name}</div>
             ${c.age ? `<div class="client-meta">${c.age} سنة</div>` : ''}
@@ -2437,17 +2942,17 @@ window.renderTable = () => {
       <td>
         <div class="weight-info">
           ${c.weight ? `<span class="weight-val">${c.weight} كجم</span>` : '<span style="color:var(--text-light)">—</span>'}
+          ${c.height ? `<span class="height-val">${c.height} سم</span>` : ''}
           ${bmi ? `<span class="bmi-badge" style="background:${cat.bg}; color:${cat.color}; border:1px solid ${cat.color}20;">${bmi} · ${cat.label}</span>` : ''}
         </div>
       </td>
-      <td>${c.height ? `${c.height} سم` : '<span style="color:var(--text-light)">—</span>'}</td>
       <td><span class="badge badge-${c.goal}">${goalText}</span></td>
       <td onclick="event.stopPropagation()">
         ${(() => {
           const sub = getSubStatus(c.subStart, c.subMonths);
           if (!sub) return '<span class="sub-badge none">بدون اشتراك</span>';
           if (sub.daysLeft <= 0) return `<span class="sub-badge expired">⛔ منتهي</span>`;
-          if (sub.daysLeft <= 7) return `<span class="sub-badge warning">⚠️ فعال</span>`;
+          if (sub.daysLeft <= 7) return `<span class="sub-badge warning">⚠️ ينتهي قريباً</span>`;
           return `<span class="sub-badge active">✅ فعال</span>`;
         })()}
       </td>
@@ -2457,7 +2962,7 @@ window.renderTable = () => {
       <td onclick="event.stopPropagation()">
         <div class="action-btns">
           <button class="btn-edit" onclick="editClient('${c.id}')">تعديل</button>
-          <button class="btn-sub" onclick="openSubModal('${c.id}')">🗓 الاشتراك</button>
+          <button class="btn-sub" onclick="openSubModal('${c.id}')">الاشتراك</button>
           <button class="btn-del" onclick="confirmDelete('${c.id}')">حذف</button>
         </div>
       </td>
@@ -2488,17 +2993,16 @@ window.openWeightModal = async (id) => {
   weightClientId = id;
   const c = clients.find(x => x.id === id);
 
-  // Avatar بأول حرفين
-  const avatarColors = ['#1a56db','#059669','#f59e0b','#8b5cf6','#ec4899','#06b6d4','#e53e3e','#0ea5e9'];
-  const colorIdx = c.name.charCodeAt(0) % avatarColors.length;
-  const initials = c.name.trim().split(' ').slice(0,2).map(w => w[0]).join('').toUpperCase();
-  const avatarEl = document.getElementById('weight-client-avatar');
-  avatarEl.textContent = initials;
-  avatarEl.style.background = `linear-gradient(135deg, ${avatarColors[colorIdx]}, ${avatarColors[(colorIdx+1)%avatarColors.length]})`;
+  // Avatar + اسم
+  const avatarPalette = [
+    ['#1a56db','#1e40af'], ['#059669','#047857'], ['#8b5cf6','#7c3aed'],
+    ['#ec4899','#db2777'], ['#f59e0b','#d97706'], ['#06b6d4','#0891b2'],
+    ['#e53e3e','#c53030'], ['#0ea5e9','#0284c7'], ['#10b981','#059669'], ['#6366f1','#4f46e5'],
+  ];
+  const nameHash = c.name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const [avatarColor, avatarDark] = avatarPalette[nameHash % avatarPalette.length];
+  const initials = c.name.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase();
 
-  document.getElementById('weight-client-name').textContent = c.name;
-
-  // النوع والجنسية
   const genderMap = { male: 'ذكر', female: 'أنثى' };
   const natMap = {
     SA:'السعودية', AE:'الإمارات', EG:'مصر', KW:'الكويت', QA:'قطر',
@@ -2510,36 +3014,65 @@ window.openWeightModal = async (id) => {
   if (c.age) parts.push(`${c.age} سنة`);
   if (c.gender) parts.push(genderMap[c.gender] || c.gender);
   if (c.nationality) parts.push(natMap[c.nationality] || c.nationality);
-  document.getElementById('weight-client-info').textContent = parts.join(' · ');
 
-  // Badges — الهدف + BMI
-  const goalMap = { loss: { label: 'خسارة وزن', cls: 'goal-loss' }, gain: { label: 'زيادة وزن', cls: 'goal-gain' }, maintain: { label: 'تثبيت', cls: 'goal-maintain' } };
-  const goal = goalMap[c.goal] || { label: c.goal, cls: '' };
-  const bmi = c.weight && c.height ? (c.weight / ((c.height/100) ** 2)).toFixed(1) : null;
-  let bmiCls = 'bmi', bmiLabel = '';
-  if (bmi) {
-    if (bmi < 18.5) { bmiCls = 'bmi bmi-under'; bmiLabel = `BMI ${bmi} · نقص`; }
-    else if (bmi < 25) { bmiCls = 'bmi bmi-ideal'; bmiLabel = `BMI ${bmi} · مثالي`; }
-    else if (bmi < 30) { bmiCls = 'bmi bmi-over'; bmiLabel = `BMI ${bmi} · زيادة`; }
-    else { bmiCls = 'bmi bmi-over'; bmiLabel = `BMI ${bmi} · سمنة`; }
-  }
+  document.getElementById('weight-client-name').innerHTML = `
+    <div style="width:40px;height:40px;border-radius:12px;display:flex;align-items:center;justify-content:center;
+      font-size:14px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);
+      background:linear-gradient(135deg,${avatarColor},${avatarDark})">${initials}</div>
+    <div style="min-width:0;">
+      <div style="font-size:15px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.name}</div>
+      ${parts.length ? `<div style="font-size:11px;color:var(--text-muted);font-weight:500;margin-top:1px;">${parts.join(' · ')}</div>` : ''}
+    </div>`;
+
+  // Badge الاشتراك في الـ header
   const sub = getSubStatus(c.subStart, c.subMonths);
-  let subBadge = '';
+  let subBadgeHtml = '';
   if (!sub) {
-    subBadge = `<span class="wch-badge sub-none">بدون اشتراك</span>`;
+    subBadgeHtml = `<span class="sub-badge none">بدون اشتراك</span>`;
   } else if (sub.daysLeft <= 0) {
-    subBadge = `<span class="wch-badge sub-expired">⛔ منتهي منذ ${Math.abs(sub.daysLeft)} يوم</span>`;
+    subBadgeHtml = `<span class="sub-badge expired">⛔ منتهي</span>`;
   } else if (sub.daysLeft <= 7) {
-    subBadge = `<span class="wch-badge sub-warning">⚠️ ${sub.daysLeft} يوم متبقي</span>`;
+    subBadgeHtml = `<span class="sub-badge warning">⚠️ ينتهي قريباً</span>`;
   } else {
-    subBadge = `<span class="wch-badge sub-active">✅ ${sub.daysLeft} يوم متبقي</span>`;
+    subBadgeHtml = `<span class="sub-badge active">✅ فعال</span>`;
   }
-  document.getElementById('weight-client-badges').innerHTML = `
-    <span class="wch-badge ${goal.cls}">${goal.label}</span>
-    ${bmi ? `<span class="wch-badge ${bmiCls}">${bmiLabel}</span>` : ''}
-    ${c.height ? `<span class="wch-badge bmi">${c.height} سم</span>` : ''}
-    ${subBadge}
-  `;
+  document.getElementById('weight-client-badges').innerHTML = subBadgeHtml;
+
+  // شريط التفاصيل: الهدف + BMI + الطول + الاشتراك
+  const goalMap = { loss: { label: '📉 خسارة وزن' }, gain: { label: '📈 زيادة وزن' }, maintain: { label: '⚖️ تثبيت' } };
+  const goalLabel = (goalMap[c.goal] || {}).label || '—';
+  const bmi = c.weight && c.height ? (c.weight / ((c.height/100) ** 2)).toFixed(1) : null;
+  let bmiLabel = bmi || '—';
+  let bmiHighlight = '';
+  if (bmi) {
+    if      (bmi < 18.5) { bmiLabel = `${bmi} · نقص`;  bmiHighlight = 'highlight-warn'; }
+    else if (bmi < 25)   { bmiLabel = `${bmi} · مثالي`; bmiHighlight = 'highlight'; }
+    else                 { bmiLabel = `${bmi} · زيادة`; bmiHighlight = 'highlight-exp'; }
+  }
+  const subDetailVal = !sub ? '—'
+    : sub.daysLeft <= 0  ? `انتهى منذ ${Math.abs(sub.daysLeft)} يوم`
+    : formatDaysLeft(sub.daysLeft);
+  const subHighlight = !sub ? '' : sub.daysLeft <= 0 ? 'highlight-exp' : sub.daysLeft <= 7 ? 'highlight-warn' : 'highlight';
+
+  document.getElementById('weight-client-detail-bar').innerHTML = `
+    <div class="sub-detail-bar" style="margin-bottom:16px;">
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الهدف</div>
+        <div class="sub-detail-val">${goalLabel}</div>
+      </div>
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الطول</div>
+        <div class="sub-detail-val">${c.height ? c.height + ' سم' : '—'}</div>
+      </div>
+      <div class="sub-detail-item ${bmiHighlight}">
+        <div class="sub-detail-lbl">BMI</div>
+        <div class="sub-detail-val">${bmiLabel}</div>
+      </div>
+      <div class="sub-detail-item ${subHighlight}">
+        <div class="sub-detail-lbl">الاشتراك</div>
+        <div class="sub-detail-val">${subDetailVal}</div>
+      </div>
+    </div>`;
 
   document.getElementById('w-new-date').value = new Date().toISOString().split('T')[0];
 
@@ -2651,38 +3184,77 @@ window.deleteWeightEntry = async (entryId) => {
   loadClients();
 };
 
+window.toggleDietUpload = (btn) => {
+  const wrap = document.getElementById('diet-upload-wrap');
+  const isOpen = wrap.style.display !== 'none';
+  wrap.style.display = isOpen ? 'none' : 'block';
+  btn.classList.toggle('open', !isOpen);
+};
+
 function renderWeightHistory() {
   const list = document.getElementById('weight-history-list');
+  const summaryBar = document.getElementById('weight-summary-bar');
+
   if (weightEntries.length === 0) {
     list.innerHTML = '<div class="empty-state" style="padding:40px 20px"><div class="empty-state-illustration" style="width:60px;height:60px;font-size:26px;border-radius:16px;">⚖️</div><div class="empty-state-title" style="font-size:14px;">لا يوجد سجل أوزان</div><div class="empty-state-sub" style="font-size:12px;">أضف أول وزن للعميل من الأعلى</div></div>';
-    ['ws-start','ws-current','ws-diff','ws-visits'].forEach(id => document.getElementById(id).textContent = '—');
-    document.getElementById('ws-visits').textContent = '0';
+    summaryBar.innerHTML = '';
     renderWeightChart([]);
     return;
   }
-
-  list.innerHTML = weightEntries.map(e => `
-    <div class="weight-entry">
-      <span class="weight-entry-val">${e.weight} كجم</span>
-      <div style="margin-right:auto; display:flex; align-items:center; gap:8px;">
-        ${e.dietFileURL ? `
-          <button class="btn-diet-download" onclick="downloadDietFile('${e.dietFileURL}', '${(e.dietFileName || 'diet').replace(/'/g, "\\'")}')">
-            📥 ${e.dietFileName ? e.dietFileName.length > 18 ? e.dietFileName.substring(0,18)+'...' : e.dietFileName : 'دايت'}
-          </button>` : ''}
-        <span class="weight-entry-date">${e.date}</span>
-        <button class="btn-del-weight" onclick="deleteWeightEntry('${e.id}')" title="حذف">×</button>
-      </div>
-    </div>`).join('');
 
   const sorted = [...weightEntries].sort((a, b) => new Date(a.date) - new Date(b.date));
   const startWeight = sorted[0].weight;
   const currentWeight = sorted[sorted.length - 1].weight;
   const diff = (currentWeight - startWeight).toFixed(1);
+  const diffSign = diff > 0 ? '+' : '';
+  const diffColor = diff < 0 ? '#15803d' : diff > 0 ? '#dc2626' : 'var(--text-muted)';
 
-  document.getElementById('ws-start').textContent = startWeight;
-  document.getElementById('ws-current').textContent = currentWeight;
-  document.getElementById('ws-visits').textContent = weightEntries.length;
-  document.getElementById('ws-diff').textContent = diff > 0 ? `+${diff}` : diff;
+  // ملخص مدمج
+  summaryBar.innerHTML = `
+    <div class="sub-detail-bar">
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">البداية</div>
+        <div class="sub-detail-val" style="color:var(--accent)">${startWeight} كجم</div>
+      </div>
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الحالي</div>
+        <div class="sub-detail-val" style="color:var(--success)">${currentWeight} كجم</div>
+      </div>
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الفرق</div>
+        <div class="sub-detail-val" style="color:${diffColor}">${diffSign}${diff} كجم</div>
+      </div>
+      <div class="sub-detail-item">
+        <div class="sub-detail-lbl">الزيارات</div>
+        <div class="sub-detail-val" style="color:#8b5cf6">${weightEntries.length}</div>
+      </div>
+    </div>`;
+
+  // الـ entries مع الفرق عن السابقة
+  const entriesByDate = [...weightEntries].sort((a, b) => new Date(b.date) - new Date(a.date));
+  list.innerHTML = entriesByDate.map((e, i) => {
+    const prev = entriesByDate[i + 1];
+    let diffBadge = '';
+    if (prev) {
+      const d = (e.weight - prev.weight).toFixed(1);
+      const sign = d > 0 ? '+' : '';
+      const col = d < 0 ? '#15803d' : d > 0 ? '#dc2626' : 'var(--text-muted)';
+      const icon = d < 0 ? '↓' : d > 0 ? '↑' : '—';
+      diffBadge = `<span style="font-size:11px;font-weight:700;color:${col};background:${col}15;padding:2px 7px;border-radius:20px;">${icon} ${sign}${d}</span>`;
+    } else {
+      diffBadge = `<span style="font-size:10px;color:var(--text-muted);background:var(--surface2);padding:2px 7px;border-radius:20px;">بداية</span>`;
+    }
+    return `
+      <div class="weight-entry">
+        <span class="weight-entry-val">${e.weight} كجم</span>
+        ${diffBadge}
+        <div style="margin-right:auto;display:flex;align-items:center;gap:8px;">
+          ${e.dietFileURL ? `<button class="btn-diet-download" onclick="downloadDietFile('${e.dietFileURL}','${(e.dietFileName||'diet').replace(/'/g,"\\'")}')">📥 ${e.dietFileName ? e.dietFileName.length>18?e.dietFileName.substring(0,18)+'...':e.dietFileName:'دايت'}</button>` : ''}
+          <span class="weight-entry-date">${e.date}</span>
+          <button class="btn-del-weight" onclick="deleteWeightEntry('${e.id}')" title="حذف">×</button>
+        </div>
+      </div>`;
+  }).join('');
 
   renderWeightChart(sorted);
 }
@@ -2755,6 +3327,19 @@ function renderWeightChart(sorted) {
   });
 }
 
+window.switchEditTab = (tab, btn) => {
+  // إخفاء كل الصفحات
+  [1,2,3].forEach(i => {
+    document.getElementById(`step-page-${i}`).classList.remove('active');
+  });
+  // إلغاء تفعيل كل الـ tabs
+  document.querySelectorAll('.edit-tab').forEach(t => t.classList.remove('active'));
+  // إظهار الصفحة المطلوبة
+  const map = { personal: 1, body: 2, goal: 3 };
+  document.getElementById(`step-page-${map[tab]}`).classList.add('active');
+  btn.classList.add('active');
+};
+
 window.editClient = (id) => {
   const c = clients.find(x => x.id === id);
   editingId = id;
@@ -2770,7 +3355,18 @@ window.editClient = (id) => {
   document.getElementById('f-sub-start').value = c.subStart || '';
   document.getElementById('f-sub-months').value = c.subMonths || '';
   document.getElementById('modal-title').textContent = 'تعديل بيانات العميل';
+
+  // إظهار الـ tabs وإخفاء الـ stepper
+  document.getElementById('modal-stepper-header').style.display = 'none';
+  document.getElementById('modal-edit-tabs').style.display = 'flex';
+  // إخفاء stepper footers وإظهار edit footers
+  [1,2,3].forEach(i => {
+    document.getElementById(`step-footer-${i}`).style.display = 'none';
+    document.getElementById(`edit-footer-${i}`).style.display = 'flex';
+  });
+  // إظهار أول tab
   goToStep(1);
+  document.querySelectorAll('.edit-tab').forEach((t,i) => t.classList.toggle('active', i===0));
   document.getElementById('client-modal').classList.add('open');
 };
 
@@ -2799,13 +3395,22 @@ function updateStats() {
     return d.getMonth() === now.getMonth() && d.getFullYear() === now.getFullYear();
   }).length;
 
+  // إحصائيات الاشتراكات
+  let subActive = 0, subExpiring = 0, subExpired = 0, subNone = 0;
+  clients.forEach(c => {
+    const sub = getSubStatus(c.subStart, c.subMonths);
+    if (!sub) { subNone++; }
+    else if (sub.daysLeft <= 0) { subExpired++; }
+    else if (sub.daysLeft <= 7) { subExpiring++; }
+    else { subActive++; }
+  });
+
   document.getElementById('stat-total').textContent = total;
   document.getElementById('stat-loss').textContent = loss;
   document.getElementById('stat-gain').textContent = gain;
   document.getElementById('stat-maintain').textContent = maintain;
   document.getElementById('client-count-badge').textContent = `${clients.length} عميل`;
 
-  // sub info
   const totalSubEl = document.getElementById('stat-total-sub');
   if (thisMonth > 0) {
     totalSubEl.textContent = `+${thisMonth} هذا الشهر`;
@@ -2814,6 +3419,16 @@ function updateStats() {
     totalSubEl.textContent = 'لا إضافات هذا الشهر';
     totalSubEl.className = 'stat-sub neutral';
   }
+
+  // كارت حالة الاشتراكات
+  const sscActive    = document.getElementById('ssc-active');
+  const sscExpiring  = document.getElementById('ssc-expiring');
+  const sscExpired   = document.getElementById('ssc-expired');
+  const sscNone      = document.getElementById('ssc-none');
+  if (sscActive)   sscActive.textContent   = subActive;
+  if (sscExpiring) sscExpiring.textContent = subExpiring;
+  if (sscExpired)  sscExpired.textContent  = subExpired;
+  if (sscNone)     sscNone.textContent     = subNone;
 
   const pct = (n) => total > 0 ? Math.round((n / total) * 100) + '%' : '0%';
   document.getElementById('stat-loss-sub').textContent = `${pct(loss)} من الإجمالي`;
@@ -2825,26 +3440,27 @@ function updateStats() {
 }
 
 // ===== ADMIN DASHBOARD =====
+const userName = (u) => u.displayName || u.email.split('@')[0];
+
 async function buildAdminDashboard() {
-  // جيب كل المستخدمين
+  try {
+  // جيب المستخدمين فقط — العملاء موجودين في clients array
   const usersSnap = await getDocs(collection(db, 'users'));
   const users = usersSnap.docs.map(d => ({ uid: d.id, ...d.data() }));
+  const allClients = clients; // الأدمن عنده كل العملاء أصلاً
 
-  // جيب كل العملاء مع آخر وزن ليهم
-  const allWeightData = await Promise.all(
-    clients.map(async c => {
-      const q = query(collection(db, 'clients', c.id, 'weights'), orderBy('date', 'desc'));
-      const snap = await getDocs(q);
-      const entries = snap.docs.map(d => d.data());
-      return { client: c, lastEntry: entries[0] || null, totalEntries: entries.length };
-    })
-  );
-
-  // KPIs
-  const totalClients = clients.length;
+  const totalClients = allClients.length;
   const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
-  const activeClients = allWeightData.filter(d => d.lastEntry && new Date(d.lastEntry.date) >= twoWeeksAgo).length;
-  const inactiveClients = totalClients - activeClients;
+
+  // إجمالي الاشتراكات
+  let totalSubActive = 0, totalSubExpiring = 0, totalSubExpired = 0;
+  allClients.forEach(c => {
+    const sub = getSubStatus(c.subStart, c.subMonths);
+    if (!sub) return;
+    if (sub.daysLeft <= 0) totalSubExpired++;
+    else if (sub.daysLeft <= 7) totalSubExpiring++;
+    else totalSubActive++;
+  });
 
   document.getElementById('admin-kpi-row').innerHTML = `
     <div class="stat-card">
@@ -2864,87 +3480,174 @@ async function buildAdminDashboard() {
     <div class="stat-card">
       <div class="stat-icon">✅</div>
       <div class="stat-info">
-        <div class="stat-val" style="color:var(--success)">${activeClients}</div>
-        <div class="stat-label">عملاء نشطون</div>
+        <div class="stat-val" style="color:#15803d">${totalSubActive}</div>
+        <div class="stat-label">اشتراكات فعالة</div>
       </div>
     </div>
     <div class="stat-card">
-      <div class="stat-icon">⚠️</div>
+      <div class="stat-icon">⛔</div>
       <div class="stat-info">
-        <div class="stat-val" style="color:var(--danger)">${inactiveClients}</div>
-        <div class="stat-label">عملاء غير نشطين</div>
+        <div class="stat-val" style="color:var(--danger)">${totalSubExpired}</div>
+        <div class="stat-label">اشتراكات منتهية</div>
       </div>
     </div>`;
 
   // جدول المستخدمين
   const userStats = users.map(u => {
-    const userClients = clients.filter(c => c.userId === u.uid);
-    const userWeightData = allWeightData.filter(d => d.client.userId === u.uid);
-    const activeCount = userWeightData.filter(d => d.lastEntry && new Date(d.lastEntry.date) >= twoWeeksAgo).length;
+    const userClients = allClients.filter(c => c.userId === u.uid);
     const lastLogin = u.lastLogin?.toDate ? u.lastLogin.toDate() : null;
-    return { ...u, clientCount: userClients.length, activeCount, lastLogin };
-  }).sort((a, b) => b.clientCount - a.clientCount);
 
-  const maxClients = userStats[0]?.clientCount || 1;
+    let subActive = 0, subExpiring = 0, subExpired = 0, subNone = 0;
+    userClients.forEach(c => {
+      const sub = getSubStatus(c.subStart, c.subMonths);
+      if (!sub) subNone++;
+      else if (sub.daysLeft <= 0) subExpired++;
+      else if (sub.daysLeft <= 7) subExpiring++;
+      else subActive++;
+    });
+
+    return { ...u, clientCount: userClients.length, subActive, subExpiring, subExpired, subNone, lastLogin };
+  }).sort((a, b) => b.subActive - a.subActive);
+
+  const maxClients = Math.max(...userStats.map(u => u.clientCount), 1);
+  const maxSubActive = Math.max(...userStats.map(u => u.subActive), 1);
 
   document.getElementById('admin-users-table').innerHTML = `
     <table class="admin-users-table">
       <thead>
         <tr>
+          <th>#</th>
           <th>المستخدم</th>
-          <th>عدد العملاء</th>
-          <th>نشطون</th>
-          <th>غير نشطين</th>
+          <th>إجمالي العملاء</th>
+          <th>اشتراك فعال</th>
+          <th>ينتهي قريباً</th>
+          <th>منتهي</th>
+          <th>بدون اشتراك</th>
           <th>آخر دخول</th>
         </tr>
       </thead>
       <tbody>
-        ${userStats.map(u => `
+        ${userStats.map((u, i) => `
           <tr>
-            <td><span style="font-weight:700;color:var(--text);">${u.email}</span></td>
+            <td style="color:var(--text-muted);font-weight:700;font-size:13px;">${i + 1}</td>
+            <td><span style="font-weight:700;color:var(--text);">${userName(u)}</span><br><span style="font-size:11px;color:var(--text-muted);">${u.email}</span></td>
             <td>
-              <div style="font-weight:800;color:var(--accent);margin-bottom:4px;">${u.clientCount} عميل</div>
+              <div style="font-weight:800;color:var(--accent);margin-bottom:4px;">${u.clientCount}</div>
               <div class="admin-progress-bar">
-                <div class="admin-progress-fill" style="width:${(u.clientCount/maxClients)*100}%"></div>
+                <div class="admin-progress-fill" style="width:${(u.clientCount/maxClients)*100}%;background:var(--accent);"></div>
               </div>
             </td>
-            <td><span style="color:var(--success);font-weight:700;">✅ ${u.activeCount}</span></td>
-            <td><span style="color:var(--danger);font-weight:700;">⚠️ ${u.clientCount - u.activeCount}</span></td>
+            <td>
+              <div style="font-weight:800;color:#15803d;margin-bottom:4px;">✅ ${u.subActive}</div>
+              <div class="admin-progress-bar">
+                <div class="admin-progress-fill" style="width:${(u.subActive/maxSubActive)*100}%;background:#15803d;"></div>
+              </div>
+            </td>
+            <td><span style="color:#d97706;font-weight:700;">⚠️ ${u.subExpiring}</span></td>
+            <td><span style="color:#dc2626;font-weight:700;">⛔ ${u.subExpired}</span></td>
+            <td><span style="color:var(--text-muted);font-weight:600;">— ${u.subNone}</span></td>
             <td style="color:var(--text-muted);font-size:12px;">${u.lastLogin ? u.lastLogin.toLocaleDateString('ar') : '—'}</td>
           </tr>`).join('')}
       </tbody>
     </table>`;
 
-  // الأكثر نشاطاً
-  const topActive = [...userStats].sort((a, b) => b.activeCount - a.activeCount).slice(0, 5);
+  // الأكثر اشتراكات فعالة
+  const topActive = [...userStats].slice(0, 5);
   const rankClass = ['gold', 'silver', 'bronze'];
   document.getElementById('admin-top-active').innerHTML = topActive.length ? topActive.map((u, i) => `
     <div class="dash-top-item">
       <div class="dash-top-rank ${rankClass[i] || ''}">${i+1}</div>
-      <div class="dash-top-name">${u.email.split('@')[0]}</div>
-      <div class="dash-top-val loss">${u.activeCount} نشط</div>
+      <div class="dash-top-name">${userName(u)}</div>
+      <div class="dash-top-val loss">✅ ${u.subActive} فعال</div>
     </div>`).join('') : '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات</div>';
 
-  // آخر تسجيل وزن
-  const lastWeights = allWeightData
-    .filter(d => d.lastEntry)
-    .sort((a, b) => new Date(b.lastEntry.date) - new Date(a.lastEntry.date))
-    .slice(0, 5);
+  // آخر تسجيل وزن في النظام
+  try {
+    const weightPromises = allClients.map(async c => {
+      const wq = query(collection(db, 'clients', c.id, 'weights'), orderBy('date', 'desc'));
+      const wSnap = await getDocs(wq);
+      if (wSnap.empty) return null;
+      const latest = wSnap.docs[0].data();
+      return { clientName: c.name, weight: latest.weight, date: latest.date, userId: c.userId };
+    });
+    const weightResults = (await Promise.all(weightPromises)).filter(Boolean);
+    weightResults.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const top5 = weightResults.slice(0, 5);
+    const lastWeightsEl = document.getElementById('admin-last-weights');
+    if (top5.length === 0) {
+      lastWeightsEl.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات أوزان</div>';
+    } else {
+      const fmtDate = d => new Date(d).toLocaleDateString('ar', { day: 'numeric', month: 'short', year: 'numeric' });
+      const userMap = {};
+      users.forEach(u => { userMap[u.uid] = userName(u); });
+      lastWeightsEl.innerHTML = top5.map((item, i) => `
+        <div class="dash-top-item">
+          <div class="dash-top-rank ${['gold','silver','bronze'][i] || ''}">${i + 1}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="dash-top-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.clientName}</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:1px;">${userMap[item.userId] || '—'} · ${fmtDate(item.date)}</div>
+          </div>
+          <div class="dash-top-val" style="color:var(--accent);font-weight:800;">${item.weight} كجم</div>
+        </div>`).join('');
+    }
+  } catch(e) {
+    document.getElementById('admin-last-weights').innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">تعذّر التحميل</div>';
+  }
 
-  document.getElementById('admin-last-weights').innerHTML = lastWeights.length ? lastWeights.map((d, i) => `
-    <div class="dash-top-item">
-      <div class="dash-top-rank ${rankClass[i] || ''}">${i+1}</div>
-      <div class="dash-top-name">${d.client.name}</div>
-      <div class="dash-top-val" style="background:var(--accent-light);color:var(--accent);">${d.lastEntry.date}</div>
-    </div>`).join('') : '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات</div>';
-
-  buildAdminGrowthChart();
-  buildAdminUserGrowthChart(users);
+  buildAdminGrowthChart(allClients);
+  buildAdminUserGrowthChart(users, allClients);
+  buildAdminSubChart(userStats);
+  } catch(e) {
+    console.error('Admin dashboard error:', e);
+    document.getElementById('admin-kpi-row').innerHTML = `<div style="color:var(--danger);padding:20px;">خطأ في تحميل البيانات: ${e.message}</div>`;
+  }
 }
 
-let adminGrowthChart = null, adminUserGrowthChart = null;
+let adminGrowthChart = null, adminUserGrowthChart = null, adminSubChart = null;
 
-function buildAdminGrowthChart() {
+// فلتر جدول المستخدمين
+window.filterAdminTable = (val) => {
+  const q = val.trim().toLowerCase();
+  document.querySelectorAll('#admin-users-table tbody tr').forEach(row => {
+    const text = row.textContent.toLowerCase();
+    row.style.display = !q || text.includes(q) ? '' : 'none';
+  });
+};
+
+function buildAdminSubChart(userStats) {
+  if (adminSubChart) { adminSubChart.destroy(); adminSubChart = null; }
+  const labels  = userStats.map(u => userName(u));
+  const active   = userStats.map(u => u.subActive);
+  const expiring = userStats.map(u => u.subExpiring);
+  const expired  = userStats.map(u => u.subExpired);
+  const none     = userStats.map(u => u.subNone);
+
+  adminSubChart = new Chart(document.getElementById('admin-sub-chart'), {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'فعال',          data: active,   backgroundColor: '#15803d' },
+        { label: 'ينتهي قريباً',  data: expiring, backgroundColor: '#d97706' },
+        { label: 'منتهي',         data: expired,  backgroundColor: '#dc2626' },
+        { label: 'بدون اشتراك',  data: none,     backgroundColor: '#cbd5e1' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { family: 'Tajawal', size: 12 }, padding: 16 } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.parsed.y}` } }
+      },
+      scales: {
+        x: { stacked: true, ticks: { font: { family: 'Tajawal', size: 12 } } },
+        y: { stacked: true, beginAtZero: true, ticks: { stepSize: 1, font: { family: 'Tajawal', size: 12 } } }
+      }
+    }
+  });
+}
+
+function buildAdminGrowthChart(allClients) {
   const now = new Date();
   const months = [];
   const totals = [];
@@ -2954,8 +3657,7 @@ function buildAdminGrowthChart() {
     const nextMonth = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
     const label = d.toLocaleDateString('ar', { month: 'short', year: '2-digit' });
     months.push(label);
-    // عدد العملاء التراكمي لحد نهاية الشهر ده
-    const count = clients.filter(c => {
+    const count = allClients.filter(c => {
       if (!c.createdAt) return false;
       const cd = c.createdAt.toDate ? c.createdAt.toDate() : new Date(c.createdAt);
       return cd < nextMonth;
@@ -2993,7 +3695,7 @@ function buildAdminGrowthChart() {
   });
 }
 
-function buildAdminUserGrowthChart(users) {
+function buildAdminUserGrowthChart(users, allClients) {
   const now = new Date();
   const months = [];
   for (let i = 5; i >= 0; i--) {
@@ -3008,7 +3710,7 @@ function buildAdminUserGrowthChart(users) {
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const nextMonth = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-      const count = clients.filter(c => {
+      const count = allClients.filter(c => {
         if (c.userId !== u.uid || !c.createdAt) return false;
         const cd = c.createdAt.toDate ? c.createdAt.toDate() : new Date(c.createdAt);
         return cd >= d && cd < nextMonth;
@@ -3017,7 +3719,7 @@ function buildAdminUserGrowthChart(users) {
     }
     const color = colors[idx % colors.length];
     return {
-      label: u.email.split('@')[0],
+      label: u.displayName || u.email.split('@')[0],
       data,
       borderColor: color,
       backgroundColor: color + '20',
@@ -3045,7 +3747,7 @@ function buildAdminUserGrowthChart(users) {
 }
 
 // ===== DASHBOARD =====
-let dashGoalsChart = null, dashGenderChart = null, dashActivityChart = null;
+let dashGoalsChart = null, dashGenderChart = null, dashActivityChart = null, dashSubChart = null;
 
 window.openDashboard = async () => {
   if (isAdmin) {
@@ -3072,12 +3774,65 @@ async function buildDashboard() {
     })
   );
 
+  buildSubChart();
   buildGoalsChart();
   buildGenderChart();
   buildNationalityBars();
   buildTopProgress(weightData);
   buildActivityChart();
   buildFollowUp(weightData);
+}
+
+function buildSubChart() {
+  let subActive = 0, subExpiring = 0, subExpired = 0, subNone = 0;
+  clients.forEach(c => {
+    const sub = getSubStatus(c.subStart, c.subMonths);
+    if (!sub) subNone++;
+    else if (sub.daysLeft <= 0) subExpired++;
+    else if (sub.daysLeft <= 7) subExpiring++;
+    else subActive++;
+  });
+
+  if (dashSubChart) { dashSubChart.destroy(); dashSubChart = null; }
+
+  const labels  = ['فعال', 'ينتهي قريباً', 'منتهي', 'بدون اشتراك'];
+  const data    = [subActive, subExpiring, subExpired, subNone];
+  const colors  = ['#15803d', '#d97706', '#dc2626', '#94a3b8'];
+
+  dashSubChart = new Chart(document.getElementById('dash-sub-chart'), {
+    type: 'doughnut',
+    data: {
+      labels,
+      datasets: [{
+        data,
+        backgroundColor: colors,
+        borderWidth: 0,
+        hoverOffset: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'bottom',
+          labels: { font: { family: 'Tajawal', size: 12 }, padding: 14,
+            filter: (item, chart) => chart.datasets[0].data[item.index] > 0
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: ctx => {
+              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+              const pct = total > 0 ? Math.round((ctx.parsed / total) * 100) : 0;
+              return ` ${ctx.label}: ${ctx.parsed} عميل (${pct}%)`;
+            }
+          }
+        }
+      },
+      cutout: '62%'
+    }
+  });
 }
 
 function buildGoalsChart() {
@@ -3322,7 +4077,7 @@ window.clearFilters = () => {
   activeFilters.gender = 'all';
   activeFilters.nationality = 'all';
   activeFilters.registrar = 'all';
-  // reset chips
+  activeFilters.sub = 'all';
   document.querySelectorAll('.filter-chip').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.filter-chip').forEach(c => {
     if (c.onclick?.toString().includes("'all'")) c.classList.add('active');
@@ -3348,7 +4103,7 @@ function updateFilterBadge() {
 }
 
 // ===== FILTERS =====
-const activeFilters = { goal: 'all', gender: 'all', nationality: 'all', registrar: 'all' };
+const activeFilters = { goal: 'all', gender: 'all', nationality: 'all', registrar: 'all', sub: 'all' };
 
 window.setFilter = (type, value, btn) => {
   activeFilters[type] = value;
@@ -3402,37 +4157,149 @@ window.openModal = () => {
 
 window.closeModal = () => {
   document.getElementById('client-modal').classList.remove('open');
+  editingId = null;
+  // إرجاع الـ stepper
+  document.getElementById('modal-stepper-header').style.display = 'flex';
+  document.getElementById('modal-edit-tabs').style.display = 'none';
+  [1,2,3].forEach(i => {
+    document.getElementById(`step-footer-${i}`).style.display = 'flex';
+    document.getElementById(`edit-footer-${i}`).style.display = 'none';
+  });
+  document.getElementById('modal-title').textContent = 'إضافة عميل جديد';
   goToStep(1);
 };
 window.closeSubModal = () => document.getElementById('sub-modal').classList.remove('open');
 
 let subModalClientId = null;
 
+async function loadSubHistory(clientId) {
+  const listEl = document.getElementById('sub-history-list');
+  if (!listEl) return;
+  listEl.innerHTML = '<div class="sub-history-loading">⏳ جاري التحميل...</div>';
+  try {
+    const q = query(collection(db, 'clients', clientId, 'subHistory'), orderBy('createdAt', 'desc'));
+    const snap = await getDocs(q);
+    if (snap.empty) {
+      listEl.innerHTML = '<div class="sub-history-empty">لا يوجد سجل اشتراكات بعد</div>';
+      return;
+    }
+    const fmtDate = (ts) => {
+      if (!ts) return '—';
+      const d = ts.toDate ? ts.toDate() : new Date(ts);
+      return d.toLocaleDateString('ar', { day: 'numeric', month: 'long', year: 'numeric' });
+    };
+    const typeConfig = {
+      renew:  { icon: '🔄', cls: 'type-renew',  label: 'تجديد' },
+      edit:   { icon: '✏️', cls: 'type-edit',   label: 'تعديل' },
+      create: { icon: '🆕', cls: 'type-create', label: 'تفعيل' },
+    };
+    const fmtRange = (dateVal) => {
+      if (!dateVal) return null;
+      if (typeof dateVal === 'string') return dateVal;
+      if (dateVal.toDate) return dateVal.toDate().toISOString().split('T')[0];
+      return String(dateVal);
+    };
+    listEl.innerHTML = snap.docs.map(d => {
+      const h = d.data();
+      const cfg = typeConfig[h.type] || typeConfig.edit;
+      const months = h.months ? `${h.months} ${h.months === 1 ? 'شهر' : 'أشهر'}` : '';
+      const start = fmtRange(h.startDate);
+      const end   = fmtRange(h.endDate);
+      const range = (start && end) ? `${start} ← ${end}` : '';
+      return `
+        <div class="sub-history-item">
+          <div class="sub-history-dot ${cfg.cls}">${cfg.icon}</div>
+          <div class="sub-history-body">
+            <div class="sub-history-title">${cfg.label}${months ? ' · ' + months : ''}</div>
+            ${range ? `<div class="sub-history-meta">${range}</div>` : ''}
+            ${h.by ? `<div class="sub-history-meta">بواسطة: ${h.by}</div>` : ''}
+          </div>
+          <div class="sub-history-date">${fmtDate(h.createdAt)}</div>
+        </div>`;
+    }).join('');
+  } catch(e) {
+    listEl.innerHTML = '<div class="sub-history-empty">تعذّر تحميل السجل</div>';
+  }
+}
+
 window.openSubModal = (id) => {
   subModalClientId = id;
   const c = clients.find(x => x.id === id);
-  document.getElementById('sub-modal-client-name').textContent = '👤 ' + c.name;
+  const avatarPalette = [
+    ['#1a56db','#1e40af'], ['#059669','#047857'], ['#8b5cf6','#7c3aed'],
+    ['#ec4899','#db2777'], ['#f59e0b','#d97706'], ['#06b6d4','#0891b2'],
+    ['#e53e3e','#c53030'], ['#0ea5e9','#0284c7'], ['#10b981','#059669'], ['#6366f1','#4f46e5'],
+  ];
+  const nameHash = c.name.split('').reduce((acc, ch) => acc + ch.charCodeAt(0), 0);
+  const [avColor, avDark] = avatarPalette[nameHash % avatarPalette.length];
+  const avInitials = c.name.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0]).join('').toUpperCase();
 
-  // عرض بطاقة الحالة
+  // Avatar + اسم
+  document.getElementById('sub-modal-client-name').innerHTML = `
+    <div style="width:38px;height:38px;border-radius:11px;display:flex;align-items:center;justify-content:center;
+      font-size:14px;font-weight:800;color:#fff;flex-shrink:0;box-shadow:0 2px 8px rgba(0,0,0,0.15);
+      background:linear-gradient(135deg,${avColor},${avDark})">${avInitials}</div>
+    <div style="min-width:0;">
+      <div style="font-size:15px;font-weight:800;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${c.name}</div>
+      <div style="font-size:11px;color:var(--text-muted);font-weight:500;margin-top:1px;">إدارة الاشتراك</div>
+    </div>`;
+
+  // Badge الحالة
   const sub = getSubStatus(c.subStart, c.subMonths);
-  const container = document.getElementById('sub-modal-card');
-  const fmt = d => new Date(d).toLocaleDateString('ar', { day:'numeric', month:'long', year:'numeric' });
-
+  const statusBadgeEl = document.getElementById('sub-modal-status-badge');
   if (!sub) {
-    container.innerHTML = `<div class="sub-card none-sub"><div class="sub-card-icon">📋</div><div class="sub-card-info"><div class="sub-card-title">بدون اشتراك</div><div class="sub-card-detail">لم يتم تسجيل اشتراك لهذا العميل</div></div></div>`;
+    statusBadgeEl.innerHTML = `<span class="sub-badge none">بدون اشتراك</span>`;
   } else if (sub.daysLeft <= 0) {
-    container.innerHTML = `<div class="sub-card expired-sub"><div class="sub-card-icon">⛔</div><div class="sub-card-info"><div class="sub-card-title">الاشتراك منتهي</div><div class="sub-card-detail">بدأ: ${fmt(sub.start)}<br>انتهى: ${fmt(sub.end)} · (${c.subMonths} ${c.subMonths===1?'شهر':'أشهر'})</div></div><div class="sub-card-days" style="color:#e53e3e">${Math.abs(sub.daysLeft)}<span class="days-lbl">يوم مضى</span></div></div>`;
+    statusBadgeEl.innerHTML = `<span class="sub-badge expired">⛔ منتهي</span>`;
   } else if (sub.daysLeft <= 7) {
-    container.innerHTML = `<div class="sub-card warning-sub"><div class="sub-card-icon">⚠️</div><div class="sub-card-info"><div class="sub-card-title">على وشك الانتهاء</div><div class="sub-card-detail">بدأ: ${fmt(sub.start)}<br>ينتهي: ${fmt(sub.end)}</div></div><div class="sub-card-days">${sub.daysLeft}<span class="days-lbl">يوم متبقي</span></div></div>`;
+    statusBadgeEl.innerHTML = `<span class="sub-badge warning">⚠️ ينتهي قريباً</span>`;
   } else {
-    container.innerHTML = `<div class="sub-card active-sub"><div class="sub-card-icon">✅</div><div class="sub-card-info"><div class="sub-card-title">اشتراك فعال</div><div class="sub-card-detail">بدأ: ${fmt(sub.start)}<br>ينتهي: ${fmt(sub.end)}</div></div><div class="sub-card-days">${sub.daysLeft}<span class="days-lbl">يوم متبقي</span></div></div>`;
+    statusBadgeEl.innerHTML = `<span class="sub-badge active">✅ فعال</span>`;
+  }
+
+  // شريط التفاصيل
+  const detailBar = document.getElementById('sub-modal-detail-bar');
+  const fmt = d => d ? new Date(d).toLocaleDateString('ar', {day:'numeric', month:'short', year:'numeric'}) : '—';
+  if (sub) {
+    let barCls = sub.daysLeft <= 0 ? 'expired-sub' : sub.daysLeft <= 7 ? 'warning-sub' : 'active-sub';
+    let remHighlight = sub.daysLeft <= 0 ? 'highlight-exp' : sub.daysLeft <= 7 ? 'highlight-warn' : 'highlight';
+    let remVal = sub.daysLeft <= 0 ? `انتهى منذ ${Math.abs(sub.daysLeft)} يوم` : formatDaysLeft(sub.daysLeft);
+    detailBar.innerHTML = `
+      <div class="sub-detail-bar ${barCls}">
+        <div class="sub-detail-item">
+          <div class="sub-detail-lbl">بداية</div>
+          <div class="sub-detail-val">${fmt(c.subStart)}</div>
+        </div>
+        <div class="sub-detail-item">
+          <div class="sub-detail-lbl">نهاية</div>
+          <div class="sub-detail-val">${fmt(sub.end)}</div>
+        </div>
+        <div class="sub-detail-item ${remHighlight}">
+          <div class="sub-detail-lbl">متبقي</div>
+          <div class="sub-detail-val">${remVal}</div>
+        </div>
+      </div>`;
+  } else {
+    detailBar.innerHTML = '';
   }
 
   // تعبئة الفورم
   document.getElementById('sub-modal-start').value = c.subStart || '';
   document.getElementById('sub-modal-months').value = c.subMonths || '';
   document.getElementById('sub-modal').classList.add('open');
+
+  // جلب السجل
+  loadSubHistory(id);
 };
+
+async function getCurrentUserName() {
+  const user = auth.currentUser;
+  if (!user) return '—';
+  try {
+    const d = await getDoc(doc(db, 'users', user.uid));
+    return d.exists() && d.data().displayName ? d.data().displayName : user.email.split('@')[0];
+  } catch { return user.email.split('@')[0]; }
+}
 
 window.saveSubModal = async () => {
   const btn = document.querySelector('#sub-modal .btn-save');
@@ -3441,9 +4308,23 @@ window.saveSubModal = async () => {
     const newStart = document.getElementById('sub-modal-start').value || null;
     const newMonths = +document.getElementById('sub-modal-months').value || null;
     await updateDoc(doc(db, 'clients', subModalClientId), { subStart: newStart, subMonths: newMonths });
+
+    // سجّل العملية
+    const c = clients.find(x => x.id === subModalClientId);
+    const sub = newStart && newMonths ? getSubStatus(newStart, newMonths) : null;
+    const byName = await getCurrentUserName();
+    await addDoc(collection(db, 'clients', subModalClientId, 'subHistory'), {
+      type: 'edit',
+      months: newMonths || null,
+      startDate: newStart || null,
+      endDate: sub ? sub.end.toISOString().split('T')[0] : null,
+      by: byName,
+      createdAt: serverTimestamp()
+    });
+
     const idx = clients.findIndex(x => x.id === subModalClientId);
     if (idx !== -1) { clients[idx].subStart = newStart; clients[idx].subMonths = newMonths; }
-    renderTable();
+    renderTable(); updateStats();
     closeSubModal();
     showToast('تم حفظ بيانات الاشتراك', 'success');
   } catch(e) { showToast('خطأ في الحفظ', 'error'); }
@@ -3467,14 +4348,26 @@ window.renewFromSubModal = async () => {
       newMonths = (c.subMonths || 0) + addMonths;
     }
     await updateDoc(doc(db, 'clients', subModalClientId), { subStart: newStart, subMonths: newMonths });
+
+    // سجّل التجديد
+    const newSub = getSubStatus(newStart, newMonths);
+    const byName2 = await getCurrentUserName();
+    await addDoc(collection(db, 'clients', subModalClientId, 'subHistory'), {
+      type: 'renew',
+      months: addMonths,
+      startDate: newStart,
+      endDate: newSub ? newSub.end.toISOString().split('T')[0] : null,
+      by: byName2,
+      createdAt: serverTimestamp()
+    });
+
     const idx = clients.findIndex(x => x.id === subModalClientId);
     if (idx !== -1) { clients[idx].subStart = newStart; clients[idx].subMonths = newMonths; }
-    renderTable();
-    // تحديث الـ modal نفسه
+    renderTable(); updateStats();
     openSubModal(subModalClientId);
     showToast(`تم التجديد — ${addMonths} ${addMonths===1?'شهر':'أشهر'}`, 'success');
   } catch(e) { showToast('خطأ في التجديد', 'error'); }
-  finally { const b = document.querySelector('#sub-modal .btn-renew'); if(b){b.disabled=false; b.textContent='🔄 تجديد سريع';} }
+  finally { const b = document.querySelector('#sub-modal .btn-renew'); if(b){b.disabled=false; b.textContent='تجديد';} }
 };
 
 window.closeWeightModal = () => document.getElementById('weight-modal').classList.remove('open');
