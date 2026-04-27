@@ -251,37 +251,53 @@
     padding-left: 12px; margin-left: 4px;
   }
 
-  .user-badge {
-    background: var(--surface2);
-    color: var(--text-muted);
-    border: 1px solid var(--border);
-    border-radius: 20px;
-    padding: 4px 12px;
-    font-size: 11px;
-    font-weight: 600;
-    max-width: 160px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .btn-logout {
-    background: transparent;
-    border: 1.5px solid var(--border);
-    color: var(--text-muted);
-    border-radius: var(--radius-sm);
-    padding: 6px 14px;
-    font-family: 'Tajawal', sans-serif;
-    font-size: 12px;
-    font-weight: 600;
-    cursor: pointer;
+  /* User Menu Dropdown */
+  .user-menu-wrap { position: relative; }
+  .user-menu-btn {
+    display: flex; align-items: center; gap: 8px;
+    background: var(--surface2); border: 1.5px solid var(--border);
+    border-radius: 20px; padding: 4px 12px 4px 8px;
+    cursor: pointer; font-family: 'Tajawal', sans-serif;
     transition: var(--transition);
   }
-  .btn-logout:hover {
-    border-color: var(--danger);
-    color: var(--danger);
-    background: var(--danger-light);
+  .user-menu-btn:hover { border-color: var(--accent); background: var(--accent-light); }
+  .user-menu-avatar {
+    width: 26px; height: 26px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), #3b82f6);
+    color: #fff; font-size: 11px; font-weight: 800;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
   }
+  .user-menu-name {
+    font-size: 12px; font-weight: 700; color: var(--text);
+    max-width: 110px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .user-menu-arrow { font-size: 10px; color: var(--text-muted); transition: transform 0.2s; }
+  .user-menu-wrap.open .user-menu-arrow { transform: rotate(180deg); }
+
+  .user-menu-dropdown {
+    position: absolute; top: calc(100% + 8px); left: 0;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: var(--radius); box-shadow: var(--shadow);
+    min-width: 200px; z-index: 1000;
+    display: none; flex-direction: column;
+    overflow: hidden;
+  }
+  .user-menu-wrap.open .user-menu-dropdown { display: flex; }
+  .user-menu-info { padding: 12px 14px; }
+  .user-menu-info-name { font-size: 13px; font-weight: 800; color: var(--text); }
+  .user-menu-info-email { font-size: 11px; color: var(--text-muted); margin-top: 2px; }
+  .user-menu-divider { height: 1px; background: var(--border); }
+  .user-menu-item {
+    padding: 10px 14px; text-align: right;
+    background: none; border: none; width: 100%;
+    font-family: 'Tajawal', sans-serif; font-size: 13px;
+    font-weight: 600; color: var(--text); cursor: pointer;
+    transition: background 0.15s;
+  }
+  .user-menu-item:hover { background: var(--surface2); }
+  .user-menu-item.danger { color: var(--danger); }
+  .user-menu-item.danger:hover { background: var(--danger-light); }
 
   .btn-close-dashboard {
     background: transparent;
@@ -1860,7 +1876,29 @@
 
 <!-- APP -->
 <div id="app-screen">
-  <div class="topbar">
+  <!-- Modal تعديل الاسم -->
+<div class="modal-overlay" id="edit-name-modal">
+  <div class="modal" style="max-width:400px;">
+    <div class="modal-header">
+      <h2>تعديل الاسم</h2>
+      <button class="btn-close" onclick="closeEditNameModal()">×</button>
+    </div>
+    <div class="form-field">
+      <label>الاسم الأول</label>
+      <input type="text" id="edit-first-name" placeholder="الاسم الأول">
+    </div>
+    <div class="form-field" style="margin-top:12px;">
+      <label>الاسم الأخير</label>
+      <input type="text" id="edit-last-name" placeholder="الاسم الأخير">
+    </div>
+    <div class="modal-footer" style="margin-top:20px;padding-top:16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px;">
+      <button class="btn-cancel" onclick="closeEditNameModal()">إلغاء</button>
+      <button class="btn-save" onclick="saveDisplayName()">💾 حفظ</button>
+    </div>
+  </div>
+</div>
+
+<div class="topbar">
     <div class="topbar-brand">
       <div class="topbar-logo">
         <img src="logo.jpg" alt="Logo">
@@ -1872,10 +1910,26 @@
     </div>
     <div class="topbar-actions">
       <span class="topbar-date" id="topbar-date"></span>
-      <div class="user-badge" id="user-email-badge">—</div>
       <button class="btn-dashboard" onclick="openDashboard()">📊 الداشبورد</button>
       <button class="col-registrar btn-migration" onclick="runMigration()" title="تحديث إيميلات المسجِّلين" style="font-size:11px; padding:0 10px; height:30px; border-radius:20px;">🔄</button>
-      <button class="btn-logout" onclick="doLogout()">خروج</button>
+      <!-- User Menu -->
+      <div class="user-menu-wrap" id="user-menu-wrap">
+        <button class="user-menu-btn" onclick="toggleUserMenu()" id="user-menu-btn">
+          <div class="user-menu-avatar" id="user-menu-avatar">—</div>
+          <span class="user-menu-name" id="user-menu-name">—</span>
+          <span class="user-menu-arrow">▾</span>
+        </button>
+        <div class="user-menu-dropdown" id="user-menu-dropdown">
+          <div class="user-menu-info">
+            <div class="user-menu-info-name" id="user-menu-info-name">—</div>
+            <div class="user-menu-info-email" id="user-menu-info-email">—</div>
+          </div>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item" onclick="openEditNameModal()">✏️ تعديل الاسم</button>
+          <div class="user-menu-divider"></div>
+          <button class="user-menu-item danger" onclick="doLogout()">🚪 خروج</button>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -2425,7 +2479,7 @@
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getAuth, signInWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
-import { getFirestore, collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, orderBy, where, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getFirestore, collection, addDoc, getDocs, getDoc, updateDoc, deleteDoc, doc, query, orderBy, where, serverTimestamp, setDoc } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyAyOMhcHlrbBgkSfFu-hkIHBgpsHp3QJHY",
@@ -2457,16 +2511,34 @@ onAuthStateChanged(auth, user => {
     isAdmin = ADMIN_EMAILS.includes(user.email);
     document.getElementById('app-screen').style.display = 'block';
     document.getElementById('login-screen').style.display = 'none';
-    document.getElementById('user-email-badge').textContent = user.email.split('@')[0];
     if (isAdmin) document.body.classList.add('is-admin');
-    // تاريخ اليوم
     const today = new Date().toLocaleDateString('ar', { weekday: 'short', day: 'numeric', month: 'short' });
     document.getElementById('topbar-date').textContent = today;
-    // حفظ بيانات اليوزر في users collection
+
+    // حفظ بيانات اليوزر
     setDoc(doc(db, 'users', user.uid), {
       email: user.email,
       lastLogin: serverTimestamp()
     }, { merge: true });
+
+    // جلب الاسم بشكل مستقل — لا يؤثر على loadClients
+    getDoc(doc(db, 'users', user.uid)).then(userDoc => {
+      const userData = userDoc.exists() ? userDoc.data() : {};
+      const displayName = userData.displayName || '';
+      const firstName = displayName.split(' ')[0] || user.email.split('@')[0];
+      const initials = displayName
+        ? displayName.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('')
+        : user.email[0].toUpperCase();
+      document.getElementById('user-menu-avatar').textContent = initials;
+      document.getElementById('user-menu-name').textContent = firstName;
+      document.getElementById('user-menu-info-name').textContent = displayName || user.email.split('@')[0];
+      document.getElementById('user-menu-info-email').textContent = user.email;
+    }).catch(() => {
+      document.getElementById('user-menu-avatar').textContent = user.email[0].toUpperCase();
+      document.getElementById('user-menu-name').textContent = user.email.split('@')[0];
+      document.getElementById('user-menu-info-email').textContent = user.email;
+    });
+
     loadClients();
   } else {
     document.getElementById('login-screen').style.display = 'flex';
@@ -2519,6 +2591,47 @@ window.doLogin = async () => {
 };
 
 window.doLogout = () => signOut(auth);
+
+// User Menu
+window.toggleUserMenu = () => {
+  document.getElementById('user-menu-wrap').classList.toggle('open');
+};
+document.addEventListener('click', e => {
+  const wrap = document.getElementById('user-menu-wrap');
+  if (wrap && !wrap.contains(e.target)) wrap.classList.remove('open');
+});
+
+// تعديل الاسم
+window.openEditNameModal = () => {
+  document.getElementById('user-menu-wrap').classList.remove('open');
+  const nameEl = document.getElementById('user-menu-info-name');
+  const parts = (nameEl?.textContent || '').trim().split(' ');
+  document.getElementById('edit-first-name').value = parts[0] || '';
+  document.getElementById('edit-last-name').value = parts.slice(1).join(' ') || '';
+  document.getElementById('edit-name-modal').classList.add('open');
+};
+window.closeEditNameModal = () => {
+  document.getElementById('edit-name-modal').classList.remove('open');
+};
+window.saveDisplayName = async () => {
+  const first = document.getElementById('edit-first-name').value.trim();
+  const last  = document.getElementById('edit-last-name').value.trim();
+  if (!first) { showToast('أدخل الاسم الأول', 'error'); return; }
+  const displayName = [first, last].filter(Boolean).join(' ');
+  const user = auth.currentUser;
+  if (!user) { showToast('خطأ في المصادقة', 'error'); return; }
+  try {
+    await setDoc(doc(db, 'users', user.uid), { displayName }, { merge: true });
+    const initials = displayName.trim().split(' ').filter(Boolean).slice(0,2).map(w => w[0].toUpperCase()).join('');
+    document.getElementById('user-menu-avatar').textContent = initials;
+    document.getElementById('user-menu-name').textContent = first;
+    document.getElementById('user-menu-info-name').textContent = displayName;
+    closeEditNameModal();
+    showToast('تم تحديث الاسم', 'success');
+  } catch(e) {
+    showToast('خطأ في الحفظ: ' + e.message, 'error');
+  }
+};
 
 async function loadClients() {
   const user = auth.currentUser;
@@ -3324,30 +3437,21 @@ function updateStats() {
 }
 
 // ===== ADMIN DASHBOARD =====
+const userName = (u) => u.displayName || u.email.split('@')[0];
+
 async function buildAdminDashboard() {
-  // جيب كل المستخدمين
+  try {
+  // جيب المستخدمين فقط — العملاء موجودين في clients array
   const usersSnap = await getDocs(collection(db, 'users'));
   const users = usersSnap.docs.map(d => ({ uid: d.id, ...d.data() }));
+  const allClients = clients; // الأدمن عنده كل العملاء أصلاً
 
-  // جيب كل العملاء مع آخر وزن ليهم
-  const allWeightData = await Promise.all(
-    clients.map(async c => {
-      const q = query(collection(db, 'clients', c.id, 'weights'), orderBy('date', 'desc'));
-      const snap = await getDocs(q);
-      const entries = snap.docs.map(d => d.data());
-      return { client: c, lastEntry: entries[0] || null, totalEntries: entries.length };
-    })
-  );
-
-  // KPIs
-  const totalClients = clients.length;
+  const totalClients = allClients.length;
   const twoWeeksAgo = new Date(Date.now() - 14 * 24 * 60 * 60 * 1000);
-  const activeClients = allWeightData.filter(d => d.lastEntry && new Date(d.lastEntry.date) >= twoWeeksAgo).length;
-  const inactiveClients = totalClients - activeClients;
 
-  // إجمالي الاشتراكات الفعالة عبر كل المستخدمين
+  // إجمالي الاشتراكات
   let totalSubActive = 0, totalSubExpiring = 0, totalSubExpired = 0;
-  clients.forEach(c => {
+  allClients.forEach(c => {
     const sub = getSubStatus(c.subStart, c.subMonths);
     if (!sub) return;
     if (sub.daysLeft <= 0) totalSubExpired++;
@@ -3387,12 +3491,9 @@ async function buildAdminDashboard() {
 
   // جدول المستخدمين
   const userStats = users.map(u => {
-    const userClients = clients.filter(c => c.userId === u.uid);
-    const userWeightData = allWeightData.filter(d => d.client.userId === u.uid);
-    const activeWeightCount = userWeightData.filter(d => d.lastEntry && new Date(d.lastEntry.date) >= twoWeeksAgo).length;
+    const userClients = allClients.filter(c => c.userId === u.uid);
     const lastLogin = u.lastLogin?.toDate ? u.lastLogin.toDate() : null;
 
-    // إحصائيات الاشتراكات
     let subActive = 0, subExpiring = 0, subExpired = 0, subNone = 0;
     userClients.forEach(c => {
       const sub = getSubStatus(c.subStart, c.subMonths);
@@ -3402,9 +3503,8 @@ async function buildAdminDashboard() {
       else subActive++;
     });
 
-    return { ...u, clientCount: userClients.length, activeWeightCount, subActive, subExpiring, subExpired, subNone, lastLogin };
+    return { ...u, clientCount: userClients.length, subActive, subExpiring, subExpired, subNone, lastLogin };
   }).sort((a, b) => b.subActive - a.subActive);
-
   const maxClients = Math.max(...userStats.map(u => u.clientCount), 1);
   const maxSubActive = Math.max(...userStats.map(u => u.subActive), 1);
 
@@ -3426,7 +3526,7 @@ async function buildAdminDashboard() {
         ${userStats.map((u, i) => `
           <tr>
             <td style="color:var(--text-muted);font-weight:700;font-size:13px;">${i + 1}</td>
-            <td><span style="font-weight:700;color:var(--text);">${u.email.split('@')[0]}</span><br><span style="font-size:11px;color:var(--text-muted);">${u.email}</span></td>
+            <td><span style="font-weight:700;color:var(--text);">${userName(u)}</span><br><span style="font-size:11px;color:var(--text-muted);">${u.email}</span></td>
             <td>
               <div style="font-weight:800;color:var(--accent);margin-bottom:4px;">${u.clientCount}</div>
               <div class="admin-progress-bar">
@@ -3453,26 +3553,50 @@ async function buildAdminDashboard() {
   document.getElementById('admin-top-active').innerHTML = topActive.length ? topActive.map((u, i) => `
     <div class="dash-top-item">
       <div class="dash-top-rank ${rankClass[i] || ''}">${i+1}</div>
-      <div class="dash-top-name">${u.email.split('@')[0]}</div>
+      <div class="dash-top-name">${userName(u)}</div>
       <div class="dash-top-val loss">✅ ${u.subActive} فعال</div>
     </div>`).join('') : '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات</div>';
 
-  // آخر تسجيل وزن
-  const lastWeights = allWeightData
-    .filter(d => d.lastEntry)
-    .sort((a, b) => new Date(b.lastEntry.date) - new Date(a.lastEntry.date))
-    .slice(0, 5);
+  // آخر تسجيل وزن في النظام — جيب آخر وزن لكل عميل
+  try {
+    const weightPromises = allClients.map(async c => {
+      const wq = query(collection(db, 'clients', c.id, 'weights'), orderBy('date', 'desc'));
+      const wSnap = await getDocs(wq);
+      if (wSnap.empty) return null;
+      const latest = wSnap.docs[0].data();
+      return { clientName: c.name, weight: latest.weight, date: latest.date, userId: c.userId };
+    });
+    const weightResults = (await Promise.all(weightPromises)).filter(Boolean);
+    weightResults.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const top5 = weightResults.slice(0, 5);
+    const lastWeightsEl = document.getElementById('admin-last-weights');
+    if (top5.length === 0) {
+      lastWeightsEl.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات أوزان</div>';
+    } else {
+      const fmtDate = d => new Date(d).toLocaleDateString('ar', { day: 'numeric', month: 'short', year: 'numeric' });
+      const userMap = {};
+      users.forEach(u => { userMap[u.uid] = userName(u); });
+      lastWeightsEl.innerHTML = top5.map((item, i) => `
+        <div class="dash-top-item">
+          <div class="dash-top-rank ${['gold','silver','bronze'][i] || ''}">${i + 1}</div>
+          <div style="flex:1;min-width:0;">
+            <div class="dash-top-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.clientName}</div>
+            <div style="font-size:11px;color:var(--text-muted);margin-top:1px;">${userMap[item.userId] || '—'} · ${fmtDate(item.date)}</div>
+          </div>
+          <div class="dash-top-val" style="color:var(--accent);font-weight:800;">${item.weight} كجم</div>
+        </div>`).join('');
+    }
+  } catch(e) {
+    document.getElementById('admin-last-weights').innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">تعذّر التحميل</div>';
+  }
 
-  document.getElementById('admin-last-weights').innerHTML = lastWeights.length ? lastWeights.map((d, i) => `
-    <div class="dash-top-item">
-      <div class="dash-top-rank ${rankClass[i] || ''}">${i+1}</div>
-      <div class="dash-top-name">${d.client.name}</div>
-      <div class="dash-top-val" style="background:var(--accent-light);color:var(--accent);">${d.lastEntry.date}</div>
-    </div>`).join('') : '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات</div>';
-
-  buildAdminGrowthChart();
-  buildAdminUserGrowthChart(users);
+  buildAdminGrowthChart(allClients);
+  buildAdminUserGrowthChart(users, allClients);
   buildAdminSubChart(userStats);
+  } catch(e) {
+    console.error('Admin dashboard error:', e);
+    document.getElementById('admin-kpi-row').innerHTML = `<div style="color:var(--danger);padding:20px;">خطأ في تحميل البيانات: ${e.message}</div>`;
+  }
 }
 
 let adminGrowthChart = null, adminUserGrowthChart = null, adminSubChart = null;
@@ -3488,7 +3612,7 @@ window.filterAdminTable = (val) => {
 
 function buildAdminSubChart(userStats) {
   if (adminSubChart) { adminSubChart.destroy(); adminSubChart = null; }
-  const labels  = userStats.map(u => u.email.split('@')[0]);
+  const labels  = userStats.map(u => userName(u));
   const active   = userStats.map(u => u.subActive);
   const expiring = userStats.map(u => u.subExpiring);
   const expired  = userStats.map(u => u.subExpired);
@@ -3519,7 +3643,7 @@ function buildAdminSubChart(userStats) {
   });
 }
 
-function buildAdminGrowthChart() {
+function buildAdminGrowthChart(allClients) {
   const now = new Date();
   const months = [];
   const totals = [];
@@ -3529,8 +3653,7 @@ function buildAdminGrowthChart() {
     const nextMonth = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
     const label = d.toLocaleDateString('ar', { month: 'short', year: '2-digit' });
     months.push(label);
-    // عدد العملاء التراكمي لحد نهاية الشهر ده
-    const count = clients.filter(c => {
+    const count = allClients.filter(c => {
       if (!c.createdAt) return false;
       const cd = c.createdAt.toDate ? c.createdAt.toDate() : new Date(c.createdAt);
       return cd < nextMonth;
@@ -3568,7 +3691,7 @@ function buildAdminGrowthChart() {
   });
 }
 
-function buildAdminUserGrowthChart(users) {
+function buildAdminUserGrowthChart(users, allClients) {
   const now = new Date();
   const months = [];
   for (let i = 5; i >= 0; i--) {
@@ -3583,7 +3706,7 @@ function buildAdminUserGrowthChart(users) {
     for (let i = 5; i >= 0; i--) {
       const d = new Date(now.getFullYear(), now.getMonth() - i, 1);
       const nextMonth = new Date(now.getFullYear(), now.getMonth() - i + 1, 1);
-      const count = clients.filter(c => {
+      const count = allClients.filter(c => {
         if (c.userId !== u.uid || !c.createdAt) return false;
         const cd = c.createdAt.toDate ? c.createdAt.toDate() : new Date(c.createdAt);
         return cd >= d && cd < nextMonth;
@@ -3592,7 +3715,7 @@ function buildAdminUserGrowthChart(users) {
     }
     const color = colors[idx % colors.length];
     return {
-      label: u.email.split('@')[0],
+      label: u.displayName || u.email.split('@')[0],
       data,
       borderColor: color,
       backgroundColor: color + '20',
@@ -4165,6 +4288,15 @@ window.openSubModal = (id) => {
   loadSubHistory(id);
 };
 
+async function getCurrentUserName() {
+  const user = auth.currentUser;
+  if (!user) return '—';
+  try {
+    const d = await getDoc(doc(db, 'users', user.uid));
+    return d.exists() && d.data().displayName ? d.data().displayName : user.email.split('@')[0];
+  } catch { return user.email.split('@')[0]; }
+}
+
 window.saveSubModal = async () => {
   const btn = document.querySelector('#sub-modal .btn-save');
   btn.disabled = true; btn.textContent = '⏳ جاري الحفظ...';
@@ -4176,12 +4308,13 @@ window.saveSubModal = async () => {
     // سجّل العملية
     const c = clients.find(x => x.id === subModalClientId);
     const sub = newStart && newMonths ? getSubStatus(newStart, newMonths) : null;
+    const byName = await getCurrentUserName();
     await addDoc(collection(db, 'clients', subModalClientId, 'subHistory'), {
       type: 'edit',
       months: newMonths || null,
       startDate: newStart || null,
       endDate: sub ? sub.end.toISOString().split('T')[0] : null,
-      by: auth.currentUser?.email || '—',
+      by: byName,
       createdAt: serverTimestamp()
     });
 
@@ -4214,12 +4347,13 @@ window.renewFromSubModal = async () => {
 
     // سجّل التجديد
     const newSub = getSubStatus(newStart, newMonths);
+    const byName2 = await getCurrentUserName();
     await addDoc(collection(db, 'clients', subModalClientId, 'subHistory'), {
       type: 'renew',
       months: addMonths,
       startDate: newStart,
       endDate: newSub ? newSub.end.toISOString().split('T')[0] : null,
-      by: auth.currentUser?.email || '—',
+      by: byName2,
       createdAt: serverTimestamp()
     });
 
