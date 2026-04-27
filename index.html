@@ -1570,6 +1570,19 @@
   body.is-admin .filter-panel-row.col-registrar { display: flex !important; }
   .admin-only { display: none; }
   body.is-admin .admin-only { display: inline-flex; }
+  .admin-badge {
+    display: none;
+    align-items: center;
+    background: #f3f0ff;
+    border: 1.5px solid rgba(109,40,217,0.25);
+    color: #6d28d9;
+    border-radius: var(--radius-sm);
+    padding: 6px 14px;
+    font-family: 'Tajawal', sans-serif;
+    font-size: 12px; font-weight: 700;
+    cursor: default; user-select: none;
+  }
+  body.is-admin .admin-badge { display: inline-flex; }
 
   /* ===== SUBSCRIPTION CARD IN WEIGHT MODAL ===== */
   .sub-card {
@@ -1949,6 +1962,7 @@
       <button class="btn-dashboard" onclick="openDashboard()">📊 الداشبورد</button>
       
       <!-- User Menu -->
+      <span class="admin-badge">Admin</span>
       <div class="user-menu-wrap" id="user-menu-wrap">
         <button class="user-menu-btn" onclick="toggleUserMenu()" id="user-menu-btn">
           <div class="user-menu-avatar" id="user-menu-avatar">—</div>
