@@ -2515,14 +2515,8 @@ onAuthStateChanged(auth, user => {
     const today = new Date().toLocaleDateString('ar', { weekday: 'short', day: 'numeric', month: 'short' });
     document.getElementById('topbar-date').textContent = today;
 
-    // حفظ بيانات اليوزر
-    setDoc(doc(db, 'users', user.uid), {
-      email: user.email,
-      lastLogin: serverTimestamp()
-    }, { merge: true });
-
-    // جلب الاسم بشكل مستقل — لا يؤثر على loadClients
-    getDoc(doc(db, 'users', user.uid)).then(userDoc => {
+    // اقرأ بيانات اليوزر أولاً ثم حدّث lastLogin فقط لتجنّب مسح displayName
+    getDoc(doc(db, 'users', user.uid)).then(async userDoc => {
       const userData = userDoc.exists() ? userDoc.data() : {};
       const displayName = userData.displayName || '';
       const firstName = displayName.split(' ')[0] || user.email.split('@')[0];
@@ -2533,10 +2527,19 @@ onAuthStateChanged(auth, user => {
       document.getElementById('user-menu-name').textContent = firstName;
       document.getElementById('user-menu-info-name').textContent = displayName || user.email.split('@')[0];
       document.getElementById('user-menu-info-email').textContent = user.email;
+      // حدّث email و lastLogin فقط بعد قراءة البيانات
+      await setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        lastLogin: serverTimestamp()
+      }, { merge: true });
     }).catch(() => {
       document.getElementById('user-menu-avatar').textContent = user.email[0].toUpperCase();
       document.getElementById('user-menu-name').textContent = user.email.split('@')[0];
       document.getElementById('user-menu-info-email').textContent = user.email;
+      setDoc(doc(db, 'users', user.uid), {
+        email: user.email,
+        lastLogin: serverTimestamp()
+      }, { merge: true });
     });
 
     loadClients();
@@ -3437,8 +3440,6 @@ function updateStats() {
 }
 
 // ===== ADMIN DASHBOARD =====
-const userName = (u) => u.displayName || u.email.split('@')[0];
-
 async function buildAdminDashboard() {
   try {
   // جيب المستخدمين فقط — العملاء موجودين في clients array
@@ -3505,6 +3506,8 @@ async function buildAdminDashboard() {
 
     return { ...u, clientCount: userClients.length, subActive, subExpiring, subExpired, subNone, lastLogin };
   }).sort((a, b) => b.subActive - a.subActive);
+
+  const userName = (u) => u.displayName || u.email.split('@')[0];
   const maxClients = Math.max(...userStats.map(u => u.clientCount), 1);
   const maxSubActive = Math.max(...userStats.map(u => u.subActive), 1);
 
@@ -3557,38 +3560,7 @@ async function buildAdminDashboard() {
       <div class="dash-top-val loss">✅ ${u.subActive} فعال</div>
     </div>`).join('') : '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات</div>';
 
-  // آخر تسجيل وزن في النظام — جيب آخر وزن لكل عميل
-  try {
-    const weightPromises = allClients.map(async c => {
-      const wq = query(collection(db, 'clients', c.id, 'weights'), orderBy('date', 'desc'));
-      const wSnap = await getDocs(wq);
-      if (wSnap.empty) return null;
-      const latest = wSnap.docs[0].data();
-      return { clientName: c.name, weight: latest.weight, date: latest.date, userId: c.userId };
-    });
-    const weightResults = (await Promise.all(weightPromises)).filter(Boolean);
-    weightResults.sort((a, b) => new Date(b.date) - new Date(a.date));
-    const top5 = weightResults.slice(0, 5);
-    const lastWeightsEl = document.getElementById('admin-last-weights');
-    if (top5.length === 0) {
-      lastWeightsEl.innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">لا توجد بيانات أوزان</div>';
-    } else {
-      const fmtDate = d => new Date(d).toLocaleDateString('ar', { day: 'numeric', month: 'short', year: 'numeric' });
-      const userMap = {};
-      users.forEach(u => { userMap[u.uid] = userName(u); });
-      lastWeightsEl.innerHTML = top5.map((item, i) => `
-        <div class="dash-top-item">
-          <div class="dash-top-rank ${['gold','silver','bronze'][i] || ''}">${i + 1}</div>
-          <div style="flex:1;min-width:0;">
-            <div class="dash-top-name" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${item.clientName}</div>
-            <div style="font-size:11px;color:var(--text-muted);margin-top:1px;">${userMap[item.userId] || '—'} · ${fmtDate(item.date)}</div>
-          </div>
-          <div class="dash-top-val" style="color:var(--accent);font-weight:800;">${item.weight} كجم</div>
-        </div>`).join('');
-    }
-  } catch(e) {
-    document.getElementById('admin-last-weights').innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">تعذّر التحميل</div>';
-  }
+  document.getElementById('admin-last-weights').innerHTML = '<div style="color:var(--text-light);font-size:13px;padding:12px 0;">—</div>';
 
   buildAdminGrowthChart(allClients);
   buildAdminUserGrowthChart(users, allClients);
