@@ -640,42 +640,48 @@
   .stat-sub.positive { color: var(--success); }
   .stat-sub.neutral { color: var(--text-light); }
 
-  /* ===== TOOLBAR ===== */
-  .toolbar {
+  /* ===== TOOLBAR — hidden, controls moved into table-card ===== */
+  .toolbar { display: none; }
+
+  /* ===== TABLE CARD HEADER ===== */
+  .table-card-header {
     display: flex;
     align-items: center;
-    gap: 8px;
-    margin-bottom: 16px;
+    gap: 10px;
+    padding: 14px 20px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    flex-wrap: wrap;
   }
 
   .search-wrap {
     flex: 1;
     position: relative;
-    max-width: 420px;
+    min-width: 180px;
+    max-width: 360px;
   }
 
   .search-icon {
     position: absolute;
-    right: 14px; top: 50%; transform: translateY(-50%);
+    right: 12px; top: 50%; transform: translateY(-50%);
     color: var(--text-light);
-    font-size: 13px;
+    font-size: 12px;
     pointer-events: none;
   }
 
   .search-box {
     width: 100%;
-    height: 38px;
-    background: var(--surface);
+    height: 34px;
+    background: var(--bg);
     border: 1.5px solid var(--border);
-    border-radius: 20px;
-    padding: 0 38px 0 14px;
+    border-radius: var(--radius-sm);
+    padding: 0 34px 0 10px;
     font-size: 13px;
     color: var(--text);
     font-family: 'Tajawal', sans-serif;
     transition: var(--transition);
     direction: rtl;
     outline: none;
-    box-shadow: var(--shadow-sm);
   }
 
   .search-box:focus {
@@ -686,13 +692,27 @@
 
   .search-box::placeholder { color: var(--text-light); font-size: 13px; }
 
+  /* divider line */
+  .table-header-sep {
+    width: 1px; height: 22px;
+    background: var(--border);
+    flex-shrink: 0;
+  }
+
+  /* count badge in header */
+  .table-header-count {
+    font-size: 12px; color: var(--text-muted);
+    font-weight: 600; white-space: nowrap;
+    margin-left: auto; flex-shrink: 0;
+  }
+
   .btn-add {
-    background: var(--accent-light);
-    color: var(--accent);
-    border: 1.5px solid rgba(26,86,219,0.2);
-    border-radius: 20px;
-    padding: 0 16px;
-    height: 38px;
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    border-radius: var(--radius-sm);
+    padding: 0 14px;
+    height: 34px;
     font-family: 'Tajawal', sans-serif;
     font-size: 13px;
     font-weight: 700;
@@ -700,28 +720,27 @@
     white-space: nowrap;
     transition: var(--transition);
     display: flex; align-items: center; gap: 5px;
+    flex-shrink: 0;
+    box-shadow: 0 2px 8px rgba(26,86,219,0.25);
   }
-  .btn-add:hover {
-    background: #dbeafe;
-    border-color: var(--accent);
-  }
+  .btn-add:hover { background: var(--accent-dark); transform: translateY(-1px); }
+  .btn-add:active { transform: translateY(0); }
 
   /* ===== FILTERS ===== */
   .btn-filter {
-    background: var(--surface);
+    background: var(--bg);
     border: 1.5px solid var(--border);
     color: var(--text-muted);
-    border-radius: 20px;
-    padding: 0 14px;
-    height: 38px;
+    border-radius: var(--radius-sm);
+    padding: 0 12px;
+    height: 34px;
     font-family: 'Tajawal', sans-serif;
-    font-size: 13px; font-weight: 600;
+    font-size: 12px; font-weight: 600;
     cursor: pointer; transition: var(--transition);
     display: flex; align-items: center; gap: 6px;
     white-space: nowrap; position: relative;
-    box-shadow: var(--shadow-sm);
   }
-  .btn-filter:hover { border-color: var(--accent); color: var(--accent); }
+  .btn-filter:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
   .btn-filter.has-filters { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
 
   .filter-badge {
@@ -737,7 +756,7 @@
     display: none;
     position: absolute;
     top: calc(100% + 6px);
-    left: 0;
+    right: 0;
     background: var(--surface);
     border: 1px solid var(--border);
     border-radius: var(--radius);
@@ -1466,20 +1485,10 @@
   .toast.error { background: var(--danger); }
   .toast.success { background: var(--success); }
 
-  /* ===== SECTION HEADER ===== */
-  .section-header {
-    display: flex; align-items: center; justify-content: space-between;
-    margin-bottom: 16px;
-  }
-  .section-title {
-    font-size: 13px; font-weight: 700; color: var(--text-muted);
-    text-transform: uppercase; letter-spacing: 0.5px;
-  }
-  .client-count {
-    font-size: 12px; color: var(--text-muted);
-    background: var(--surface2); border: 1px solid var(--border);
-    padding: 3px 10px; border-radius: 20px; font-weight: 600;
-  }
+  /* ===== SECTION HEADER (hidden — merged into table-card-header) ===== */
+  .section-header { display: none; }
+  .section-title { display: none; }
+  .client-count { display: none; }
 
   /* ===== DIET FILE ===== */
   .diet-file-section {
@@ -2047,67 +2056,66 @@
     </div>
 
     <!-- Toolbar -->
-    <div class="toolbar">
-      <div class="search-wrap">
-        <span class="search-icon">🔍</span>
-        <input class="search-box" type="text" id="search-input" placeholder="ابحث بالاسم أو رقم التليفون..." oninput="renderTable()">
-      </div>
-      <div class="filter-btn-wrap">
-        <button class="btn-filter" id="btn-filter" onclick="toggleFilterPanel()">
-          ⚙️ فلتر
-          <span class="filter-badge" id="filter-badge" style="display:none">0</span>
-        </button>
-        <div class="filter-panel" id="filter-panel">
-          <div class="filter-panel-row">
-            <span class="filter-label">الهدف</span>
-            <button class="filter-chip active" onclick="setFilter('goal','all',this)">الكل</button>
-            <button class="filter-chip" onclick="setFilter('goal','loss',this)">خسارة</button>
-            <button class="filter-chip" onclick="setFilter('goal','gain',this)">زيادة</button>
-            <button class="filter-chip" onclick="setFilter('goal','maintain',this)">تثبيت</button>
-          </div>
-          <div class="filter-panel-row">
-            <span class="filter-label">النوع</span>
-            <button class="filter-chip active" onclick="setFilter('gender','all',this)">الكل</button>
-            <button class="filter-chip" onclick="setFilter('gender','male',this)">ذكر</button>
-            <button class="filter-chip" onclick="setFilter('gender','female',this)">أنثى</button>
-          </div>
-          <div class="filter-panel-row">
-            <span class="filter-label">الجنسية</span>
-            <select class="filter-select" id="filter-nationality" onchange="setNatFilter(this.value)">
-              <option value="all">الكل</option>
-            </select>
-          </div>
-          <div class="filter-panel-row col-registrar">
-            <span class="filter-label">المسجِّل</span>
-            <select class="filter-select col-registrar" id="filter-registrar" onchange="setRegistrarFilter(this.value)">
-              <option value="all">الكل</option>
-            </select>
-          </div>
-          <div class="filter-panel-row">
-            <span class="filter-label">الاشتراك</span>
-            <button class="filter-chip active" onclick="setFilter('sub','all',this)">الكل</button>
-            <button class="filter-chip" onclick="setFilter('sub','active',this)">فعال</button>
-            <button class="filter-chip" onclick="setFilter('sub','expiring',this)">ينتهي قريباً</button>
-            <button class="filter-chip" onclick="setFilter('sub','expired',this)">منتهي</button>
-            <button class="filter-chip" onclick="setFilter('sub','none',this)">بدون</button>
-          </div>
-          <div class="filter-panel-footer">
-            <button class="btn-clear-filters" onclick="clearFilters()">مسح الفلاتر</button>
+    <!-- Unified Table Card -->
+    <div class="table-wrap">
+
+      <!-- Header: بحث + فلتر + عداد + زر إضافة -->
+      <div class="table-card-header">
+        <div class="search-wrap">
+          <span class="search-icon">🔍</span>
+          <input class="search-box" type="text" id="search-input" placeholder="ابحث بالاسم أو رقم التليفون..." oninput="renderTable()">
+        </div>
+        <div class="filter-btn-wrap" style="position:relative;">
+          <button class="btn-filter" id="btn-filter" onclick="toggleFilterPanel()">
+            ⚙️ فلتر
+            <span class="filter-badge" id="filter-badge" style="display:none">0</span>
+          </button>
+          <div class="filter-panel" id="filter-panel">
+            <div class="filter-panel-row">
+              <span class="filter-label">الهدف</span>
+              <button class="filter-chip active" onclick="setFilter('goal','all',this)">الكل</button>
+              <button class="filter-chip" onclick="setFilter('goal','loss',this)">خسارة</button>
+              <button class="filter-chip" onclick="setFilter('goal','gain',this)">زيادة</button>
+              <button class="filter-chip" onclick="setFilter('goal','maintain',this)">تثبيت</button>
+            </div>
+            <div class="filter-panel-row">
+              <span class="filter-label">النوع</span>
+              <button class="filter-chip active" onclick="setFilter('gender','all',this)">الكل</button>
+              <button class="filter-chip" onclick="setFilter('gender','male',this)">ذكر</button>
+              <button class="filter-chip" onclick="setFilter('gender','female',this)">أنثى</button>
+            </div>
+            <div class="filter-panel-row">
+              <span class="filter-label">الجنسية</span>
+              <select class="filter-select" id="filter-nationality" onchange="setNatFilter(this.value)">
+                <option value="all">الكل</option>
+              </select>
+            </div>
+            <div class="filter-panel-row col-registrar">
+              <span class="filter-label">المسجِّل</span>
+              <select class="filter-select col-registrar" id="filter-registrar" onchange="setRegistrarFilter(this.value)">
+                <option value="all">الكل</option>
+              </select>
+            </div>
+            <div class="filter-panel-row">
+              <span class="filter-label">الاشتراك</span>
+              <button class="filter-chip active" onclick="setFilter('sub','all',this)">الكل</button>
+              <button class="filter-chip" onclick="setFilter('sub','active',this)">فعال</button>
+              <button class="filter-chip" onclick="setFilter('sub','expiring',this)">ينتهي قريباً</button>
+              <button class="filter-chip" onclick="setFilter('sub','expired',this)">منتهي</button>
+              <button class="filter-chip" onclick="setFilter('sub','none',this)">بدون</button>
+            </div>
+            <div class="filter-panel-footer">
+              <button class="btn-clear-filters" onclick="clearFilters()">مسح الفلاتر</button>
+            </div>
           </div>
         </div>
+        <div class="table-header-sep"></div>
+        <span class="table-header-count" id="client-count-badge">0 عميل</span>
+        <button class="btn-add" onclick="openModal()">
+          <span>+</span> عميل جديد
+        </button>
       </div>
-      <button class="btn-add" onclick="openModal()">
-        <span>+</span> عميل جديد
-      </button>
-    </div>
 
-    <!-- Table -->
-    <div class="section-header">
-      <span class="section-title">قائمة العملاء</span>
-      <span class="client-count" id="client-count-badge">0 عميل</span>
-    </div>
-
-    <div class="table-wrap">
       <table>
         <thead>
           <tr>
