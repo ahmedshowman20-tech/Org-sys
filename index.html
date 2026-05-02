@@ -8,7 +8,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
-    --bg: #f0f4f8;
+    --header-bg: #e8edf5;
     --surface: #ffffff;
     --surface2: #f7f9fc;
     --border: #e2e8f0;
@@ -209,15 +209,14 @@
   #app-screen { display: none; }
 
   .topbar {
-    background: var(--surface);
-    border-bottom: 1px solid var(--border);
+    background: var(--header-bg);
+    border-bottom: none;
     padding: 0 28px;
     height: 56px;
     display: flex;
     align-items: center;
     justify-content: space-between;
     position: sticky; top: 0; z-index: 100;
-    box-shadow: var(--shadow-sm);
   }
 
   .topbar-brand {
@@ -531,112 +530,67 @@
     padding: 28px 28px 40px;
   }
 
-  /* ===== STATS ===== */
-  .stats-row {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 14px;
-    margin-bottom: 14px;
-  }
+  /* ===== MINI DASHBOARD ===== */
+  .stats-row { display: none; }
+  .sub-status-card { display: none !important; }
 
-  .stat-card {
+  .mini-dashboard {
     background: var(--surface);
-    border-radius: var(--radius);
-    padding: 18px 20px;
-    box-shadow: var(--shadow-sm);
     border: 1px solid var(--border);
+    border-radius: var(--radius);
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
-    transition: var(--transition);
+    align-items: stretch;
     overflow: hidden;
-    position: relative;
+    margin-bottom: 16px;
   }
-
-  .stat-card::before {
-    content: '';
-    position: absolute;
-    top: 0; right: 0;
-    width: 4px; height: 100%;
-    border-radius: 0 var(--radius) var(--radius) 0;
+  .md-group { display: flex; align-items: stretch; }
+  .md-cell {
+    display: flex; flex-direction: column; justify-content: center;
+    padding: 14px 20px;
   }
-
-  .stat-card:nth-child(1)::before { background: var(--accent); }
-  .stat-card:nth-child(2)::before { background: var(--danger); }
-  .stat-card:nth-child(3)::before { background: var(--success); }
-  .stat-card:nth-child(4)::before { background: var(--warning); }
-
-  .stat-card:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-
-  .stat-icon {
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 18px; flex-shrink: 0; margin-top: 2px;
+  .md-cell-label {
+    font-size: 11px; font-weight: 500;
+    color: var(--text-muted); margin-bottom: 4px; white-space: nowrap;
   }
+  .md-cell-val {
+    font-size: 22px; font-weight: 700;
+    color: var(--text); line-height: 1;
+  }
+  .md-cell-sub {
+    font-size: 11px; color: var(--text-light);
+    margin-top: 3px; font-weight: 500;
+  }
+  .md-sep { width: 1px; background: var(--border); flex-shrink: 0; align-self: stretch; }
+  .md-sep-main { width: 1px; background: var(--border); flex-shrink: 0; align-self: stretch; margin: 0 3px; }
+  .md-val-success { color: var(--success); }
+  .md-val-warning { color: var(--warning); }
+  .md-val-danger  { color: var(--danger); }
+  .md-val-muted   { color: var(--text-muted); }
 
-  .stat-card:nth-child(1) .stat-icon { background: var(--accent-light); }
-  .stat-card:nth-child(2) .stat-icon { background: var(--danger-light); }
-  .stat-card:nth-child(3) .stat-icon { background: var(--success-light); }
-  .stat-card:nth-child(4) .stat-icon { background: #fffbeb; }
-
-  /* كارت حالة الاشتراكات */
-  .sub-status-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow-sm);
-    padding: 12px 20px;
-    margin-bottom: 20px;
+  .md-group-col {
     display: flex;
-    align-items: center;
-    gap: 16px;
+    flex-direction: column;
+    align-self: stretch;
   }
-  .sub-status-title {
-    font-size: 11px; font-weight: 700;
-    color: var(--text-muted); text-transform: uppercase;
-    letter-spacing: 0.5px; white-space: nowrap; flex-shrink: 0;
+  .md-group-title {
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    padding: 9px 20px 0;
+    white-space: nowrap;
   }
-  .sub-status-items {
-    display: flex; align-items: center; flex: 1;
+  .md-group-cells {
+    display: flex;
+    align-items: stretch;
+    flex: 1;
   }
-  .sub-status-item {
-    display: flex; align-items: center; gap: 8px;
-    padding: 4px 20px; flex: 1; justify-content: center;
-  }
-  .sub-status-val {
-    font-size: 20px; font-weight: 800; line-height: 1;
-  }
-  .sub-status-lbl {
-    font-size: 11px; font-weight: 500; color: var(--text-muted); white-space: nowrap;
-  }
-  .sub-status-divider {
-    width: 1px; height: 28px; background: var(--border); flex-shrink: 0;
-  }
-  .sub-status-active   .sub-status-val { color: #15803d; }
-  .sub-status-expiring .sub-status-val { color: #d97706; }
-  .sub-status-expired  .sub-status-val { color: #dc2626; }
-  .sub-status-none     .sub-status-val { color: var(--text-muted); }
 
   .stat-info { flex: 1; min-width: 0; }
-  .stat-val {
-    font-size: 24px;
-    font-weight: 800;
-    color: var(--text);
-    line-height: 1;
-    letter-spacing: -0.5px;
-  }
-  .stat-label {
-    font-size: 11px;
-    color: var(--text-muted);
-    font-weight: 500;
-    margin-top: 3px;
-  }
-
-  .stat-sub {
-    font-size: 10px; color: var(--text-light);
-    font-weight: 500; margin-top: 3px;
-  }
+  .stat-val { font-size: 24px; font-weight: 800; color: var(--text); line-height: 1; letter-spacing: -0.5px; }
+  .stat-label { font-size: 11px; color: var(--text-muted); font-weight: 500; margin-top: 3px; }
+  .stat-sub { font-size: 10px; color: var(--text-light); font-weight: 500; margin-top: 3px; }
   .stat-sub.positive { color: var(--success); }
   .stat-sub.neutral { color: var(--text-light); }
 
@@ -649,8 +603,7 @@
     align-items: center;
     gap: 10px;
     padding: 14px 20px;
-    border-bottom: 1px solid var(--border);
-    background: var(--surface);
+    background: var(--header-bg);
     flex-wrap: wrap;
   }
 
@@ -672,8 +625,8 @@
   .search-box {
     width: 100%;
     height: 34px;
-    background: var(--bg);
-    border: 1.5px solid var(--border);
+    background: var(--surface);
+    border: 1px solid var(--border);
     border-radius: var(--radius-sm);
     padding: 0 34px 0 10px;
     font-size: 13px;
@@ -715,21 +668,20 @@
     height: 34px;
     font-family: 'Tajawal', sans-serif;
     font-size: 13px;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
     white-space: nowrap;
-    transition: var(--transition);
+    transition: background 0.15s;
     display: flex; align-items: center; gap: 5px;
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(26,86,219,0.25);
   }
-  .btn-add:hover { background: var(--accent-dark); transform: translateY(-1px); }
-  .btn-add:active { transform: translateY(0); }
+  .btn-add:hover { background: var(--accent-dark); }
+  .btn-add:active { opacity: 0.9; }
 
   /* ===== FILTERS ===== */
   .btn-filter {
-    background: var(--bg);
-    border: 1.5px solid var(--border);
+    background: var(--surface);
+    border: 1px solid var(--border);
     color: var(--text-muted);
     border-radius: var(--radius-sm);
     padding: 0 12px;
@@ -827,12 +779,11 @@
 
   /* ===== CLIENT AVATAR ===== */
   .client-avatar {
-    width: 40px; height: 40px;
-    border-radius: 12px;
+    width: 34px; height: 34px;
+    border-radius: 50%;
     display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 800; color: #fff;
+    font-size: 12px; font-weight: 700; color: #fff;
     flex-shrink: 0;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
     letter-spacing: 0.5px;
     position: relative;
   }
@@ -925,9 +876,8 @@
   /* ===== TABLE ===== */
   .table-wrap {
     background: var(--surface);
-    border-radius: var(--radius-lg);
+    border-radius: var(--radius);
     border: 1px solid var(--border);
-    box-shadow: var(--shadow-sm);
     overflow: hidden;
   }
 
@@ -937,17 +887,17 @@
   }
 
   thead tr {
-    background: var(--surface2);
+    background: var(--bg);
     border-bottom: 1px solid var(--border);
   }
 
   thead th {
-    padding: 14px 20px;
+    padding: 11px 16px;
     font-size: 11px;
-    font-weight: 700;
-    color: var(--text-muted);
+    font-weight: 600;
+    color: var(--text-light);
     text-align: right;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.4px;
     text-transform: uppercase;
     white-space: nowrap;
   }
@@ -962,121 +912,118 @@
   th:nth-child(8) { width: 14%; text-align: center; }
 
   tbody tr {
-    border-bottom: 1px solid #f1f5f9;
-    transition: var(--transition);
+    border-bottom: 1px solid var(--border);
+    transition: background 0.12s;
     cursor: pointer;
   }
 
   tbody tr:last-child { border-bottom: none; }
 
-  tbody tr:hover {
-    background: #fafcff;
-  }
+  tbody tr:hover { background: var(--bg); }
 
   tbody td {
-    padding: 16px 20px;
-    font-size: 14px;
+    padding: 13px 16px;
+    font-size: 13px;
     vertical-align: middle;
+    color: var(--text);
   }
 
   .client-name {
-    font-size: 15px;
-    font-weight: 700;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--text);
   }
 
   .client-meta {
     font-size: 11px;
-    color: var(--text-muted);
+    color: var(--text-light);
     margin-top: 2px;
   }
 
   .whatsapp-link {
     color: #16a34a;
     text-decoration: none;
-    font-weight: 600;
-    font-size: 14px;
+    font-weight: 500;
+    font-size: 13px;
     display: inline-flex;
     align-items: center;
-    gap: 6px;
-    padding: 4px 10px 4px 8px;
-    border-radius: 20px;
-    background: #f0fdf4;
-    border: 1px solid #bbf7d0;
-    transition: var(--transition);
+    gap: 5px;
+    transition: color 0.12s;
   }
-  .whatsapp-link:hover { background: #dcfce7; }
+  .whatsapp-link:hover { color: #15803d; }
 
   .weight-info {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 6px;
     flex-wrap: wrap;
   }
 
   .weight-val {
-    font-size: 16px;
-    font-weight: 800;
+    font-size: 14px;
+    font-weight: 600;
     color: var(--text);
   }
 
   .height-val {
     font-size: 11px;
-    font-weight: 500;
-    color: var(--text-muted);
+    font-weight: 400;
+    color: var(--text-light);
     white-space: nowrap;
   }
 
   .bmi-badge {
     font-size: 11px;
-    font-weight: 700;
-    padding: 3px 9px;
-    border-radius: 20px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: var(--radius-sm);
     white-space: nowrap;
   }
 
   .badge {
     display: inline-flex;
     align-items: center;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 12px;
-    font-weight: 700;
+    padding: 3px 9px;
+    border-radius: var(--radius-sm);
+    font-size: 11px;
+    font-weight: 600;
     white-space: nowrap;
   }
 
-  .badge-loss { background: #dcfce7; color: #15803d; }
-  .badge-gain { background: #fef9c3; color: #92400e; }
+  .badge-loss     { background: #f0fdf4; color: #15803d; }
+  .badge-gain     { background: #fefce8; color: #92400e; }
   .badge-maintain { background: var(--accent-light); color: var(--accent); }
 
+  /* أزرار الإجراءات */
   .action-btns {
-    display: flex; gap: 8px;
+    display: flex; gap: 4px;
     justify-content: center;
   }
 
   .btn-edit, .btn-del {
-    border: none; border-radius: var(--radius-sm);
-    padding: 7px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 5px 11px;
     font-family: 'Tajawal', sans-serif;
     font-size: 12px;
-    font-weight: 700;
+    font-weight: 600;
     cursor: pointer;
+    background: var(--surface);
+    color: var(--text-muted);
     transition: var(--transition);
   }
 
-  .btn-edit {
+  .btn-edit:hover {
     background: var(--accent-light);
     color: var(--accent);
-    border: 1px solid rgba(26,86,219,0.15);
+    border-color: rgba(26,86,219,0.2);
   }
-  .btn-edit:hover { background: #dbeafe; }
 
-  .btn-del {
+  .btn-del:hover {
     background: var(--danger-light);
     color: var(--danger);
-    border: 1px solid rgba(229,62,62,0.15);
+    border-color: rgba(229,62,62,0.2);
   }
-  .btn-del:hover { background: #fecaca; }
 
   .empty-state {
     text-align: center;
@@ -1853,31 +1800,31 @@
   /* ===== PAGINATION ===== */
   .pagination-bar {
     display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 20px;
-    flex-wrap: wrap; gap: 10px;
+    padding: 10px 16px;
+    flex-wrap: wrap; gap: 8px;
     border-top: 1px solid var(--border);
-    background: var(--surface2);
+    background: var(--bg);
   }
   .pagination-info {
-    font-size: 12px; color: var(--text-muted); font-weight: 500;
+    font-size: 12px; color: var(--text-light); font-weight: 400;
   }
   .pagination-controls {
-    display: flex; align-items: center; gap: 4px;
+    display: flex; align-items: center; gap: 3px;
   }
   .pg-btn {
-    min-width: 32px; height: 32px; border-radius: 8px;
-    border: 1.5px solid var(--border); background: var(--surface);
-    color: var(--text); font-size: 13px; font-family: 'Tajawal', sans-serif;
-    font-weight: 600; cursor: pointer; transition: var(--transition);
-    display: flex; align-items: center; justify-content: center; padding: 0 8px;
+    min-width: 30px; height: 30px; border-radius: var(--radius-sm);
+    border: 1px solid var(--border); background: var(--surface);
+    color: var(--text-muted); font-size: 12px; font-family: 'Tajawal', sans-serif;
+    font-weight: 500; cursor: pointer; transition: background 0.12s, color 0.12s, border-color 0.12s;
+    display: flex; align-items: center; justify-content: center; padding: 0 7px;
   }
   .pg-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); background: var(--accent-light); }
   .pg-btn.active { background: var(--accent); color: #fff; border-color: var(--accent); }
-  .pg-btn:disabled { opacity: 0.35; cursor: not-allowed; }
+  .pg-btn:disabled { opacity: 0.3; cursor: not-allowed; }
   .pg-size-select {
-    height: 32px; border-radius: 8px; border: 1.5px solid var(--border);
-    background: var(--surface); color: var(--text); font-size: 12px;
-    font-family: 'Tajawal', sans-serif; font-weight: 600;
+    height: 30px; border-radius: var(--radius-sm); border: 1px solid var(--border);
+    background: var(--surface); color: var(--text-muted); font-size: 12px;
+    font-family: 'Tajawal', sans-serif; font-weight: 400;
     padding: 0 8px; outline: none; cursor: pointer;
   }
   .pg-size-select:focus { border-color: var(--accent); }
@@ -1993,66 +1940,80 @@
   </div>
 
   <div class="main-content">
-    <!-- Stats -->
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-icon">👥</div>
-        <div class="stat-info">
-          <div class="stat-val" id="stat-total">0</div>
-          <div class="stat-label">إجمالي العملاء</div>
-          <div class="stat-sub" id="stat-total-sub"></div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">📉</div>
-        <div class="stat-info">
-          <div class="stat-val" id="stat-loss">0</div>
-          <div class="stat-label">خسارة وزن</div>
-          <div class="stat-sub" id="stat-loss-sub"></div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">📈</div>
-        <div class="stat-info">
-          <div class="stat-val" id="stat-gain">0</div>
-          <div class="stat-label">زيادة وزن</div>
-          <div class="stat-sub" id="stat-gain-sub"></div>
-        </div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon">⚖️</div>
-        <div class="stat-info">
-          <div class="stat-val" id="stat-maintain">0</div>
-          <div class="stat-label">تثبيت الوزن</div>
-          <div class="stat-sub" id="stat-maintain-sub"></div>
-        </div>
-      </div>
-    </div>
 
-    <!-- كارت الاشتراكات -->
-    <div class="sub-status-card" id="sub-status-card">
-      <div class="sub-status-title">حالة الاشتراكات</div>
-      <div class="sub-status-items">
-        <div class="sub-status-item sub-status-active">
-          <div class="sub-status-val" id="ssc-active">0</div>
-          <div class="sub-status-lbl">فعال</div>
-        </div>
-        <div class="sub-status-divider"></div>
-        <div class="sub-status-item sub-status-expiring">
-          <div class="sub-status-val" id="ssc-expiring">0</div>
-          <div class="sub-status-lbl">ينتهي قريباً</div>
-        </div>
-        <div class="sub-status-divider"></div>
-        <div class="sub-status-item sub-status-expired">
-          <div class="sub-status-val" id="ssc-expired">0</div>
-          <div class="sub-status-lbl">منتهي</div>
-        </div>
-        <div class="sub-status-divider"></div>
-        <div class="sub-status-item sub-status-none">
-          <div class="sub-status-val" id="ssc-none">0</div>
-          <div class="sub-status-lbl">بدون اشتراك</div>
+    <!-- Mini Dashboard -->
+    <div class="mini-dashboard">
+
+      <!-- المجموعة 1: الإجمالي -->
+      <div class="md-group md-group-col">
+        <div class="md-group-title">نظرة عامة</div>
+        <div class="md-group-cells">
+          <div class="md-cell">
+            <div class="md-cell-label">إجمالي العملاء</div>
+            <div class="md-cell-val" id="stat-total">0</div>
+            <div class="md-cell-sub" id="stat-total-sub"></div>
+          </div>
         </div>
       </div>
+
+      <div class="md-sep-main"></div>
+
+      <!-- المجموعة 2: الأهداف -->
+      <div class="md-group md-group-col">
+        <div class="md-group-title">الأهداف</div>
+        <div class="md-group-cells">
+          <div class="md-cell">
+            <div class="md-cell-label">خسارة وزن</div>
+            <div class="md-cell-val md-val-success" id="stat-loss">0</div>
+            <div class="md-cell-sub" id="stat-loss-sub"></div>
+          </div>
+          <div class="md-sep"></div>
+          <div class="md-cell">
+            <div class="md-cell-label">زيادة وزن</div>
+            <div class="md-cell-val md-val-warning" id="stat-gain">0</div>
+            <div class="md-cell-sub" id="stat-gain-sub"></div>
+          </div>
+          <div class="md-sep"></div>
+          <div class="md-cell">
+            <div class="md-cell-label">تثبيت</div>
+            <div class="md-cell-val" id="stat-maintain">0</div>
+            <div class="md-cell-sub" id="stat-maintain-sub"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="md-sep-main"></div>
+
+      <!-- المجموعة 3: الاشتراكات -->
+      <div class="md-group md-group-col">
+        <div class="md-group-title">الاشتراكات</div>
+        <div class="md-group-cells">
+          <div class="md-cell">
+            <div class="md-cell-label">فعال</div>
+            <div class="md-cell-val md-val-success" id="ssc-active">0</div>
+            <div class="md-cell-sub" id="ssc-active-pct">—</div>
+          </div>
+          <div class="md-sep"></div>
+          <div class="md-cell">
+            <div class="md-cell-label">ينتهي قريباً</div>
+            <div class="md-cell-val md-val-warning" id="ssc-expiring">0</div>
+            <div class="md-cell-sub" id="ssc-expiring-pct">—</div>
+          </div>
+          <div class="md-sep"></div>
+          <div class="md-cell">
+            <div class="md-cell-label">منتهي</div>
+            <div class="md-cell-val md-val-danger" id="ssc-expired">0</div>
+            <div class="md-cell-sub" id="ssc-expired-pct">—</div>
+          </div>
+          <div class="md-sep"></div>
+          <div class="md-cell">
+            <div class="md-cell-label">بدون اشتراك</div>
+            <div class="md-cell-val md-val-muted" id="ssc-none">0</div>
+            <div class="md-cell-sub" id="ssc-none-pct">—</div>
+          </div>
+        </div>
+      </div>
+
     </div>
 
     <!-- Toolbar -->
@@ -3576,6 +3537,15 @@ function updateStats() {
   if (sscNone)     sscNone.textContent     = subNone;
 
   const pct = (n) => total > 0 ? Math.round((n / total) * 100) + '%' : '0%';
+
+  const sscActivePct   = document.getElementById('ssc-active-pct');
+  const sscExpiringPct = document.getElementById('ssc-expiring-pct');
+  const sscExpiredPct  = document.getElementById('ssc-expired-pct');
+  const sscNonePct     = document.getElementById('ssc-none-pct');
+  if (sscActivePct)   sscActivePct.textContent   = `${pct(subActive)} من الإجمالي`;
+  if (sscExpiringPct) sscExpiringPct.textContent = `${pct(subExpiring)} من الإجمالي`;
+  if (sscExpiredPct)  sscExpiredPct.textContent  = `${pct(subExpired)} من الإجمالي`;
+  if (sscNonePct)     sscNonePct.textContent     = `${pct(subNone)} من الإجمالي`;
   document.getElementById('stat-loss-sub').textContent = `${pct(loss)} من الإجمالي`;
   document.getElementById('stat-loss-sub').className = 'stat-sub';
   document.getElementById('stat-gain-sub').textContent = `${pct(gain)} من الإجمالي`;
